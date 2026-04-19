@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-charcoal: #2E2E2E;
+  --color-charcoal-soft: #3D3D3D;
+  --color-cream: #F2F1ED;
+  --color-cream-lifted: #FCFBFA;
+  --color-white: #FFFFFF;
+  --color-green-900: #1E3522;
+  --color-green-800: #2A4B30;
+  --color-green-700: #355E3B;
+  --color-green-600: #4A7A52;
+  --color-green-500: #5F9568;
+  --color-green-400: #8BAF8F;
+  --color-green-300: #B3CDB6;
+  --color-green-200: #D4E5D6;
+  --color-green-100: #E8F0E9;
+  --color-green-50: #F3F8F4;
+  --color-muted: #797979;
+  --color-light: #B5AFA6;
+  --color-stroke: rgba(46, 46, 46, 0.1);
+  --color-error: #C23B22;
+  --color-warning: #C08532;
+  --color-info: #3860BE;
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-space-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #F2F1ED;
+  color: #2E2E2E;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+::selection { background-color: #355E3B; color: #F2F1ED; }
+:focus-visible { outline: 2px solid #355E3B; outline-offset: 2px; }
+
+/* Opt-in prose styling: apply to containers where constrained paragraph
+   width and refined heading rhythm are desired. Track F should wrap
+   long-form text blocks (privacy page, FAQ answers, about copy) in
+   a div with className="prose". */
+.prose p { max-width: 65ch; }
+.prose h1,
+.prose h2,
+.prose h3 {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-wrap: balance;
 }

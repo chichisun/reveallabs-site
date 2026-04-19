@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# design scratch (large binaries or throwaway exports — not the final deliverables)
+/design/video-clips/
+/design/claude-design-exports/
+
+# session artifacts — Playwright MCP + one-off verification screenshots
+/.playwright-mcp/
+/verify-page.png
