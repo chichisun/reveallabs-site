@@ -42,6 +42,32 @@ export const metadata: Metadata = {
   },
 };
 
+// Inline script that runs before first paint. Does two things:
+//   1. Sets theme (light/dark) from localStorage or prefers-color-scheme
+//      so the correct palette paints on first frame — no theme flash.
+//   2. If the brand intro will play, adds `intro-pending` class to <html>
+//      so CSS hides page content until the overlay mounts — no content flash.
+const bootScript = `
+(function(){
+  try {
+    var t = localStorage.getItem('reveal_theme');
+    if (t !== 'light' && t !== 'dark') {
+      t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
+    document.documentElement.dataset.theme = t;
+
+    var seen = localStorage.getItem('reveal_intro_seen') === 'true';
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var params = new URLSearchParams(window.location.search);
+    var force = params.get('intro') === '1' || params.has('replay');
+    if (force) seen = false;
+    if (!seen && !reduced) {
+      document.documentElement.classList.add('intro-pending');
+    }
+  } catch(e) {}
+})();
+`.trim();
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -51,7 +77,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${spaceMono.variable} antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+      </head>
       <body className="min-h-screen flex flex-col">
         {children}
         <Analytics />

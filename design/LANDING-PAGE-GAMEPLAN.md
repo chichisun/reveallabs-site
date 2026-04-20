@@ -64,12 +64,14 @@ Tuesday 4/21 AM — HARD STOP
 | 6 | Brand entrance | Mojang-inspired utensil→letters card flip |
 | 7 | Base code source | Migrate scrollytelling from `Restaurant App/landing/` |
 | 8 | **CTA target (v1)** | `mailto:chayadol@reveallabs.co?subject=Join%20the%20reveal.%20waitlist` — CTA text = "Join the waitlist" |
-| 9 | **Proof numbers** | Real — use as-is ($4,032/mo leakage, $1,920 recoverable, 3 actions, +4.2% lift) |
+| 9 | **Proof numbers** | Real — from Tuk Tuk scan-06. Final CTA grid: $5,931/mo found + $67,140 annualized at pace + 3 specific moves + 30 days to measure. Updated 2026-04-20 after +4.2% was deemed weak. |
 | 10 | **Quality bar** | Ship original quality OR slip deadline — no cut criteria |
 | 11 | **OG image** | Screenshot of hero → `public/og-image.png` |
 | 12 | **Analytics** | Vercel Analytics (one import, free) |
 | 13 | **Privacy page** | Stub at `/privacy` — single paragraph |
 | 14 | **Preliminary landing/ fate** | Keep as reference, do NOT delete, not migrated to reveallabs-site beyond scrollytelling components |
+| 15 | **Target audience** | Non-technical restaurant owners. Minimal aesthetic, imagery-forward, copy-light. Emulate Sweetgreen, not Mercury/Linear. See Track F "Design Principle" block |
+| 16 | **Page type** | **LOCKED: Variant B (full-page)** — asymmetric hero + stat card + video intermission + pilot + FAQ + final CTA + footer. Chosen 2026-04-19 after comparing hero renders. Variant A (teaser) archived at https://claude.ai/design/p/df9fdd8c-1d19-41b6-b1b3-e4bb2c55ceb4 as reference. The copy-light / imagery-forward aesthetic still applies within Variant B. Only CTA = email waitlist (mailto). |
 
 ## Decisions still TBD (resolved during execution)
 
@@ -116,25 +118,35 @@ Tuesday 4/21 AM — HARD STOP
 
 **To resume:** In the new session paste: *"Continue reveal landing page build. We're at Track C-2 (Higgsfield queue). Playwright MCP should be live now — drive Higgsfield.ai for me using the 8 refined Seedance prompts in this gameplan. Start with scene-1a as the C-2.5 checkpoint clip."*
 
-**Seedance 2.0 motion prompts (v2 — subject-motion-led, use verbatim):**
+**Seedance 2.0 motion prompts (v5 — full-speed + long-exposure, use verbatim):**
 
-> Principle: the subject inside the frame does the work. Camera motion is secondary. Every prompt describes an action chronologically across the clip duration.
+> **Vibe:** the restaurant feels chaotic and fast-paced. Long-exposure 1/4 second shutter smear sells the rush; the hero stays crisp. **Plays at full live-action speed — NOT slo-mo.**
+>
+> **Per-clip formula** (applies to 1a, 1b, 2a, 2b, 3, 4, 5): first ~60% of the clip is chaotic long-exposure streaking motion around the hero; the last ~40% catches the hero object crisp with minimal camera motion while background streaks continue. **Scene 6 is the exhale — dreamy closing formula.**
+>
+> **Full-speed rule (CRITICAL — Higgsfield defaults to slo-mo):** every prompt opens AND closes with explicit full-speed directives. Never use "frozen" (biases toward freeze-frame slo-mo) — use "caught" instead. If Higgsfield has a **negative prompt** field, paste: `slow motion, slo-mo, slow-mo, time dilation, speed ramp, freeze frame, 120fps slow, 60fps slow, slowed down, bullet time`.
+>
+> **No-face rule:** no identifiable faces in any clip. Background humans appear only as backlit silhouettes or heavy motion blur past recognition. Scene 5's line cook is a fully-backlit silhouette, face entirely in darkness.
+>
+> **Angles:** 1a is side-angle, **1b is top-down overhead POV** (locked straight down on the wok).
+>
+> **Pre-flight — stills:** v4+ requires long-exposure baked into the stills themselves (AI video models can't invent streak from clean photos — the still is the ceiling). Regenerate all 8 stills using the updated Nano Banana prompts in C-1 before animating. Also verify scene-5 shows a pure black silhouette with zero facial detail.
 
-1a: `The chef's wrist flicks the wok handle sharply upward — diced food and flames erupt from the pan in a rolling arc, hang airborne for a beat, then slam back down as the pan catches them; flames roar around the rim, thick smoke billows up in the wake of the toss. Camera pushes in slowly. Black and white 35mm film, high contrast, shallow depth of field, cinematic film grain.`
+1a: `FULL SPEED REAL-TIME ACTION — 24fps normal playback, NO slow motion, NO slo-mo, NO time dilation, NO bullet time. Long-exposure motion continues throughout — flames streak in painterly light trails around the wok rim, smoke smears upward in blurred wisps, a silhouetted cook's arm (no face, pure blurred silhouette) sweeps swiftly through the frame edge in heavy 1/4 second shutter smear. Camera pushes in slowly. The wrist flicks sharply and rapidly; food and flame erupt airborne at full live-action speed, the shot catches the crisp arc of diced food at the peak of the toss in center frame while long-exposure streaks continue smearing around it. No faces at any frame. Full-speed playback throughout, not slow motion. Black and white 35mm film, 1/4 second shutter feel, high contrast, cinematic film grain, no text overlay, no camera shake.`
 
-1b: `The wok tilts and the chef tosses — vegetables and meat leap off the pan's lip, tumble in mid-air, and fall back into the fire as flames curl up to meet them, the chef's hand steady on the handle throughout. Locked-off camera with minimal forward drift. Observational documentary feel, black and white 35mm, moody contrast, fine grain.`
+1b: `FULL SPEED REAL-TIME ACTION — 24fps normal playback, NO slow motion, NO slo-mo, NO time dilation, NO bullet time. Top-down overhead POV locked straight down on the wok throughout. Long-exposure motion continues — flames streak in painterly light trails curling up around the pan rim, smoke smears across frame in blurred 1/4 second shutter wisps, blurred silhouettes of other cooks smear swiftly past the edges of frame (no faces, pure blurred silhouettes). Camera stays locked overhead with minimal forward drift. The wok tilts and the contents crash back down rapidly from the peak of the toss at full live-action speed — vegetables and meat caught crisp in sharp focus as they land in the fire, sharp against the continuing long-exposure streaks. No faces at any frame. Full-speed playback throughout, not slow motion. Black and white 35mm, 1/4 second shutter feel, moody contrast, fine grain, no text overlay, no camera shake.`
 
-2a: `The chef's fingers descend into frame holding a pinch of microgreens, hover a moment over the plated dish, then release — the greens scatter and settle delicately across the food. The hand withdraws smoothly back up out of frame. Steady overhead camera with a subtle zoom in. Dramatic rim light from above, black and white 35mm film, shallow depth of field, cinematic grain.`
+2a: `FULL SPEED REAL-TIME ACTION — 24fps normal playback, NO slow motion, NO slo-mo, NO time dilation. Overhead on the plated dish. Long-exposure motion streaks across frame — blurred hands and long trails of steam race swiftly past the plate in heavy 1/4 second shutter smear. Fingers descend quickly into frame holding a pinch of microgreens, hover briefly, release; the greens scatter and settle rapidly at full live-action speed, the shot catches the crisp plated dish with greens in sharp focus, hand already withdrawn, long-exposure streaks still smearing at the edges. No faces, only blurred silhouettes at the edges. Subtle overhead zoom. Full-speed playback throughout, not slow motion. Dramatic rim light from above, black and white 35mm film, shallow depth of field, cinematic grain, no text overlay, no camera shake.`
 
-2b: `Tweezers enter from the left held steady between the chef's fingers carrying a single piece of garnish; focus racks from blurry foreground to crisp sharpness as the tweezers place the garnish precisely onto the dish, release, then pull back out of frame. Camera holds still throughout. Dreamy cinematic quality, black and white 35mm, rim light, fine film grain.`
+2b: `FULL SPEED REAL-TIME ACTION — 24fps normal playback, NO slow motion, NO slo-mo, NO time dilation. Foreground blurred with chaotic long-exposure kitchen motion — streaking hands and smeared activity racing past in heavy 1/4 second shutter trails. Tweezers enter quickly from the left carrying a single piece of garnish at full live-action speed; focus racks rapidly from the blurred chaos to crisp sharpness as the tweezers place the garnish precisely on the dish, release, and pull back out of frame while the background stays streaked and smeared. No faces, only smeared silhouettes. Camera holds still. Full-speed playback throughout, not slow motion. Dreamy cinematic quality, black and white 35mm, rim light, fine film grain, no text overlay, no camera shake.`
 
-3: `A cook's hand reaches in from the right, snatches the paper ticket off the rail, and pulls it out of frame — the empty clip sways in the wake; in the hazy background another cook passes through behind a wall of steam. Focus racks from blurred background to crisp foreground across the motion. Black and white 35mm film, high contrast, grain.`
+3: `FULL SPEED REAL-TIME ACTION — 24fps normal playback, NO slow motion, NO slo-mo, NO time dilation. The service rail pulses with chaos — long-exposure streaking steam fills the frame, backlit silhouetted cooks rush swiftly past in the blurred background in heavy 1/4 second shutter smear. A cook's hand darts in rapidly from the right at full live-action speed and snatches the paper ticket off the rail; focus racks from the streaked background to the crisp ticket and gripping hand mid-snatch, everything else still smearing around it. The empty clip sways crisp in the final beat as long-exposure streaks continue. No faces at any frame. Full-speed playback throughout, not slow motion. Black and white 35mm film, high contrast, grain, no text overlay, no camera shake.`
 
-4: `The waiter pushes the swinging kitchen door open with his shoulder and strides through carrying a tray of plated dishes; the door frame blurs past as the camera tracks behind him, the bright dining room opens up beyond with blurred diners at tables, and the door swings shut behind him in the wake. Forward camera motion following. Motion blur, black and white 35mm, cinematic grain.`
+4: `FULL SPEED REAL-TIME ACTION — 24fps normal playback, NO slow motion, NO slo-mo, NO time dilation. Tracking briskly behind the waiter's back at full live-action speed as he shoulders through the swinging kitchen door — the door frame and surroundings streak in heavy long-exposure 1/4 second shutter blur from the camera's forward push. The bright dining room opens up beyond as long-exposure streaks of blurred figures at tables (no crisp faces, all smeared past recognition in painterly motion trails). Shot catches the crisp plated dishes on the tray held steady in center frame, sharp against the still-streaked room around them, door swinging shut behind in the wake. Forward camera motion following at real-time speed. Full-speed playback throughout, not slow motion. Black and white 35mm, cinematic grain, no text overlay, no camera shake.`
 
-5: `The line cook lifts a pan off the middle burner, flicks his wrist three times to toss the contents — flames erupt in a tall column as the food returns to the pan; he sets it down and pivots to the right burner, reaching for its handle. Camera glides slowly right to left across the line of stoves. Steam rises from each station, backlit silhouette, black and white 35mm, cinematic grain.`
+5: `FULL SPEED REAL-TIME ACTION — 24fps normal playback, NO slow motion, NO slo-mo, NO time dilation. Fully backlit silhouette of a line cook working a multi-burner line — face entirely in darkness, pure black outline against the fire, zero facial detail visible at any frame. Camera glides slowly right to left. Chaotic long-exposure columns of flame, steam, and smoke streak across frame in painterly 1/4 second shutter trails; blurred silhouettes of other cooks smear swiftly past in the deep background. The shot catches one burner as a pan lifts crisp into frame at full live-action speed, flames curling up sharply around its rim, the cook's silhouette still pitch black and unresolved. No face visible at any frame. Full-speed playback throughout, not slow motion. Black and white 35mm, cinematic grain, no text overlay, no camera shake.`
 
-6: `A hand enters from the left, fingers splay and grip the rim of the plated dish, then lifts the plate cleanly up and out of the top of frame with heavy natural motion blur; steam swirls and streaks in the wake, the pass surface where the plate sat now empty. Camera pulls back gently. Long-exposure dreamy quality, black and white 35mm, soft diffused contrast, atmospheric film grain, no sharpening.`
+6: `FULL SPEED REAL-TIME ACTION — 24fps normal playback, NO slow motion, NO slo-mo, NO time dilation. A hand enters briskly from the left at full live-action speed, fingers splay and grip the rim of the plated dish, then lifts the plate cleanly up and out of the top of frame with heavy natural long-exposure 1/4 second shutter motion blur; steam swirls and streaks in the wake in painterly motion trails, the pass surface where the plate sat now empty. Camera pulls back gently. Full-speed playback throughout, not slow motion. Long-exposure dreamy quality, black and white 35mm, soft diffused contrast, atmospheric film grain, no sharpening, no text overlay, no camera shake.`
 
 ---
 
@@ -231,42 +243,51 @@ Screenshot 2-3 per search:
 
 > Start this as early as possible in the day. Renders happen async while you do other tracks.
 
-## C-1 — Generate 6 B&W kitchen stills in Nano Banana `[HUMAN]` (45 min active)
+## C-1 — Generate 7 B&W long-exposure kitchen stills in Nano Banana `[HUMAN]` (50 min active)
 Go to https://aistudio.google.com. Model: Gemini with image gen / Nano Banana 2. Aspect: 16:9. Quality: max.
 
-Paste each prompt, save best result to `design/video-stills/` as `scene-1.png` through `scene-6.png`. Expect 2-3 regens per scene.
+**Key principle (v4):** bake long-exposure 1/4 second shutter motion blur INTO the still itself. Higgsfield can't invent streak from a clean photo — the still is the ceiling. Every prompt below has painterly motion-blur streaks in the surround and the hero crisp in center frame. Scene 1 gets two still variants (1a side-angle, 1b top-down overhead) since we animate both as intercut coverage.
 
-**Prompt 1 — Wok fire** (`scene-1.png`):
+Paste each prompt, save best result to `design/video-stills/` as `scene-1a-wok.png`, `scene-1b-wok.png`, and `scene-2.png` through `scene-6.png`. Expect 2-3 regens per scene.
+
+**Watermark note:** if Gemini adds a "Gemini" watermark, crop it out in Preview (Cmd+K → crop) before using. Watermarks usually sit in a corner; the 16:9 still has tolerance for a small crop without losing composition.
+
+**Prompt 1a — Wok fire, side angle** (`scene-1a-wok.png`):
 ```
-Close-up of a chef's hand gripping a wok handle, flames leaping from the wok, thick smoke, black and white cinematic photography, extreme high contrast, deep blacks, 35mm film grain, shallow depth of field, moody kitchen lighting, 16:9, photorealistic
+Long-exposure photograph of a wok on a restaurant stove, captured with 1/4 second shutter — flames streak and smear in painterly light trails around the pan rim, thick smoke streaks upward in motion-blurred wisps, a silhouetted cook's arm streaks past the left edge of frame as a long blurred smear (no face, zero facial detail, only a blurred black silhouette). The wok and the diced food inside it stay crisp in sharp focus in center frame, sharply rendered against the streaked fire and smoke. Black and white 35mm film, extreme high contrast, deep blacks, fine film grain, shallow depth of field, moody kitchen lighting, 16:9, photorealistic, documentary cinematography style.
+```
+
+**Prompt 1b — Wok fire, top-down overhead POV** (`scene-1b-wok.png`):
+```
+Overhead top-down long-exposure photograph looking straight down into a wok on a restaurant stove, captured with 1/4 second shutter — flames streak and smear in painterly light trails curling up around the pan rim, thick smoke streaks across frame in motion-blurred wisps, a silhouetted cook's hand and forearm streak past the edge of frame as a long blurred smear (no face visible, zero facial detail, only a blurred black silhouette). The wok and the diced food and meat inside it stay crisp in sharp focus in center frame, sharply rendered against the streaked fire and smoke. Black and white 35mm film, extreme high contrast, deep blacks, fine film grain, overhead top-down angle, moody kitchen lighting, 16:9, photorealistic, documentary cinematography style.
 ```
 
 **Prompt 2 — Hands plating** (`scene-2.png`):
 ```
-Overhead shot of chef's hands placing microgreens on a plated dish, restaurant fine dining presentation, black and white, high contrast, dramatic rim light from above, film grain, shallow depth of field, 16:9, photorealistic, documentary style
+Overhead long-exposure photograph captured with 1/4 second shutter of chef's hands placing microgreens on a plated dish, restaurant fine dining presentation — the hands streak in painterly motion trails as they move, the plate and food stay crisp in sharp focus in center frame, streaked steam and blurred activity at the edges of frame (no crisp faces anywhere, only blurred silhouettes past recognition), black and white, high contrast, dramatic rim light from above, 35mm film grain, shallow depth of field, 16:9, photorealistic, documentary style
 ```
 
 **Prompt 3 — Service ticket** (`scene-3.png`):
 ```
-A paper order ticket pinned on a rail at a restaurant service window, blurred kitchen activity behind, black and white, high contrast, tight focus on ticket, film grain, cinematic, 16:9, photorealistic
+Long-exposure photograph captured with 1/4 second shutter of a paper order ticket pinned on a rail at a restaurant service window — the ticket itself held crisp in sharp focus in center frame, painterly motion-blurred streaks of blurred kitchen activity and rushing silhouetted cooks in the background (no crisp faces, all smeared past recognition in long-exposure trails), streaking steam, black and white, high contrast, film grain, cinematic, 16:9, photorealistic
 ```
 
 **Prompt 4 — Waiter through door** (`scene-4.png`):
 ```
-Behind-the-back shot of a restaurant server pushing through a swinging kitchen door carrying a tray of plated dishes, motion blur, dramatic backlight from dining room, black and white, high contrast, cinematic, 16:9, photorealistic, film grain
+Long-exposure photograph captured with 1/4 second shutter, behind-the-back shot of a restaurant server pushing through a swinging kitchen door carrying a tray of plated dishes — the tray and dishes held crisp in sharp focus in center frame, painterly motion-blurred streaks surrounding (door frame smeared, blurred diners at tables in the background smeared past recognition, streaking light trails from the dining room), dramatic backlight from dining room, no crisp faces anywhere, black and white, high contrast, cinematic, 16:9, photorealistic, film grain
 ```
 
 **Prompt 5 — Line cook** (`scene-5.png`):
 ```
-Side profile of a line cook working three stove burners at once, tall flames, thick smoke, steam rising, black and white, high contrast, backlit, film grain, cinematic kitchen photography, 16:9, photorealistic
+Long-exposure photograph captured with 1/4 second shutter, side profile of a line cook working three stove burners at once, fully backlit so the cook is rendered as a pure black silhouette with ZERO facial detail visible (no eyes, nose, mouth, or skin tone — completely featureless outline against the fire), tall flames streaking and smearing in painterly light trails, thick smoke streaks upward in motion-blurred wisps, steam streaking across frame, black and white, extreme high contrast, film grain, cinematic kitchen photography, 16:9, photorealistic
 ```
 
 **Prompt 6 — Dish on pass, motion-blurred closer** (`scene-6.png`):
 ```
-A plated dish at a restaurant service pass under a warming lamp, a waiter's hand and arm sweeping through frame lifting the plate, heavy natural motion blur on the hand and arm, long-exposure quality, steam streaking across the scene, dreamy cinematic atmosphere, soft contrast (not harsh), diffused warm top light, black and white, fine 35mm film grain, shallow depth of field, moody tonal gradation, 16:9, photorealistic, atmospheric closing frame
+Long-exposure photograph captured with 1/4 second shutter, a plated dish at a restaurant service pass under a warming lamp, a waiter's hand and arm sweeping through frame lifting the plate — heavy natural long-exposure motion blur on the hand and arm in painterly streaks, the dish and pass surface held crisp in sharp focus before the lift begins, long-exposure steam streaking across the scene in light trails, dreamy cinematic atmosphere, soft contrast (not harsh), diffused warm top light, black and white, fine 35mm film grain, shallow depth of field, moody tonal gradation, 16:9, photorealistic, atmospheric closing frame
 ```
 
-Reject stills with weird hands, melting fingers, impossible geometry. Regenerate.
+Reject stills with weird hands, melting fingers, impossible geometry, or insufficient motion-blur streak in the surround. Regenerate.
 
 ## C-2 — Queue 8 Higgsfield animations `[HUMAN]` (25 min active)
 Go to https://higgsfield.ai. Upload each still, set preset, submit. Scenes 1 and 2 have two angles each (a/b) — we use both as intercut coverage in the edit.
@@ -377,10 +398,11 @@ Option B — CLI:
 - [ ] `vercel blob put design/video-final/intermission-poster.jpg --public`
 
 Paste both URLs into ARTIFACTS table:
-- Video URL: _____
-- Poster URL: _____
+- Video URL: https://mrlkjxt3lsgrbzoh.public.blob.vercel-storage.com/intermission.mp4
+- Poster URL: https://mrlkjxt3lsgrbzoh.public.blob.vercel-storage.com/intermission-poster.jpg
 
-- [ ] Open video URL in a new browser tab — confirm it plays.
+- [x] Uploaded 2026-04-20 — both return HTTP 200 with `accept-ranges: bytes` and `access-control-allow-origin: *`.
+- Store: `reveal-blob-main` (store_mRLkJxt3LSGRbzoH), linked to all three envs, only store remaining on the project.
 
 **✓ Track C done when:** Both URLs saved in ARTIFACTS and video plays from URL.
 
@@ -399,7 +421,7 @@ Paste both URLs into ARTIFACTS table:
 - 7 custom utensil PNGs
 - More distinctive
 
-**Decision logged here: PATH = ____**
+**Decision logged here: PATH = A (Lucide icons in code)** — chosen 2026-04-19 for Monday ship-safety + Nano Banana credit conservation. Track F-11 will reference Lucide icons for the utensil→"reveal." entrance animation.
 
 If Path A → skip to D-3.
 If Path B → do D-2.
@@ -554,6 +576,68 @@ Tell Claude Code:
 
 > Don't start F until B is done (need inspiration refs), C is done (need video URL), D is done (need entrance assets). E can be in progress concurrent with F — no dependency.
 
+## ⚠️ SCOPE — build TWO variants, then A/B to pick the winner
+
+We're building **both** page shapes in Claude Design and comparing at F-17:
+
+### Variant A — Teaser page (recommended default)
+
+**Job:** Show what reveal. is at a high level. Feel aesthetic. Capture an email.
+
+**Structure (5 sections max):**
+1. Hero — brand mark (reveal.) + tagline + waitlist CTA
+2. B&W kitchen intermission video (loops)
+3. One big number (e.g., `$4,032/mo` found) + one line
+4. Final CTA — waitlist
+5. Footer (privacy link, contact email)
+
+**NOT in teaser scope:**
+- Sign-up flow, account creation, pricing
+- Feature grid, integration list, testimonials
+- Dashboard screenshots, product walkthroughs
+- Deep FAQ (more than 3 questions)
+- Pilot offer detail
+
+**Reference:** Arc Browser pre-launch, Figma beta page, Airbnb's early teaser.
+
+### Variant B — Full-page (also build)
+
+**Job:** More traditional SaaS landing — still owner-friendly in tone/copy, but includes pilot offer, deeper FAQ, slightly more product surface.
+
+**Structure (8-ish sections):**
+1. Hero + waitlist CTA
+2. B&W video intermission
+3. Stat block
+4. Pilot offer section (F-12)
+5. FAQ (F-13 full — 6+ questions)
+6. Final CTA
+7. Footer
+
+### How we decide
+At **F-17**, view both versions side-by-side. Ask: which one feels like it was built for a restaurant owner who doesn't have time for a pitch deck? That's the winner. The other gets archived to `design/claude-design-exports/` as a reference.
+
+**Across BOTH variants:** the minimal-aesthetic / copy-light / imagery-forward design principle (below) applies to every section. The teaser is minimal-by-structure; the full-page is minimal-by-craft-within-more-structure.
+
+## ⚠️ DESIGN PRINCIPLE — read this before every F step
+
+**Audience = independent restaurant owners, not tech buyers.** They are operations people under time pressure. They scan, they don't read. A dense SaaS-style page (Linear, Vercel, Stripe) reads as "this isn't for me" and they bounce.
+
+The page must be:
+- **Minimal aesthetic** — generous whitespace, few elements per screen, no busy dashboards or dense feature grids
+- **Imagery-forward** — B&W kitchen intermission + hero photography do the emotional work, not paragraphs
+- **Copy-light** — every block has to earn its word count
+
+**Emulate:** Sweetgreen, premium restaurant/food brands with confident restraint.
+**Do NOT emulate:** Mercury (too many cards), Linear (too dense), any feature-grid SaaS page.
+
+### Hard rules for every section
+- Headlines ≤ 5 words when possible
+- Paragraphs ≤ 2 short sentences. If it's longer, cut.
+- Numbers (`$4,032/mo leakage`, `+4.2% lift`, `3 actions/mo`) are **big-type visual heroes**, not buried in prose
+- **No jargon:** ban "revenue intelligence", "POS analytics", "data pipeline", "ML-powered". Say what it does in owner language: "find money you're losing", "2-3 specific moves per month"
+- FAQ: max 6 questions, one-line answers preferred
+- When choosing between two variants in F-6, F-10, F-18: pick the one with **less on screen**
+
 ## F-0 — Read reference materials `[HUMAN]` (15 min) — DO NOT SKIP
 Before touching Claude Design, internalize these so your prompts and iteration are informed:
 
@@ -564,95 +648,185 @@ Before touching Claude Design, internalize these so your prompts and iteration a
 
 **Claude Code session note:** If you're a fresh Claude Code session picking this up, read all three docs before writing any Claude Design prompts. These shape how we compose the page.
 
-## F-1 — Paste master design system `[CLAUDE DESIGN]` (10 min)
-In `reveal-landing-v1` project, paste:
+## F-1 — Paste master design system `[CLAUDE DESIGN]` (10 min per variant)
+
+Create **two** Claude Design projects and paste the block below into each:
+1. `reveal-landing-v1-teaser` (VARIANT A)
+2. `reveal-landing-v1-full` (VARIANT B)
+
+The F-1 block is identical for both — it sets up the shared design system, voice, and a blank frame. Variants diverge starting at F-2.
+
+Paste-block (identical for both projects):
 
 ```
-Build a landing page for "reveal." — a SaaS product that analyzes POS data for
-independent restaurants, finds revenue leakage, and delivers 2-3 specific actions
-per month to grow revenue.
+Build a landing page for "reveal." — a product that helps INDEPENDENT
+RESTAURANT OWNERS find money they're leaving on the table. It reads their
+POS data and delivers 2-3 specific revenue moves each month.
+
+AUDIENCE CONSTRAINT (critical):
+- Restaurant owners, NOT tech buyers. They scan, don't read.
+- This is a brand TEASER page. Only CTA is email waitlist.
+- NO signup flow, NO pricing, NO feature grid, NO dashboard screenshots,
+  NO ML/AI jargon, NO "revenue intelligence" speak. Plain owner language.
+- Reference aesthetic: Sweetgreen, Arc Browser pre-launch, Figma beta page.
+- Anti-reference: Linear, Vercel, Stripe, Mercury. Avoid feature-dense SaaS.
+
+COPY RULES:
+- Headlines ≤ 5 words. Paragraphs ≤ 2 short sentences. If longer, cut.
+- Numbers (e.g. $4,032/mo) are big-type visual heroes, not buried in prose.
+- When choosing between two variants, pick the one with LESS on screen.
 
 LOCKED DESIGN SYSTEM (use these exact values):
 
 Colors:
-- --cream: #F2F1ED (primary canvas)
+- --cream: #F2F1ED (primary canvas — NOT white)
 - --cream-lifted: #FCFBFA (surface/card)
 - --charcoal: #2E2E2E (primary text)
 - --charcoal-soft: #3D3D3D (hover)
 - --muted: #797979 (secondary text)
 - --light: #B5AFA6 (tertiary)
-- --border: rgba(46, 46, 46, 0.1)
-- --green-700: #355E3B (PRIMARY ACCENT)
+- --stroke: rgba(46, 46, 46, 0.1) (borders — called "stroke" not "border")
+- --green-700: #355E3B (PRIMARY ACCENT — hunter green)
 - --green-600: #4A7A52 (hover)
 - --green-800: #2A4B30 (pressed)
 - --green-100: #E8F0E9 (tag bg)
 - --green-50: #F3F8F4 (stat card bg)
-- --green-400: #8BAF8F (for eyebrows on dark backgrounds)
+- --green-400: #8BAF8F (eyebrows on dark bg)
 
 Typography:
-- Display: Space Grotesk weights 400/500/600/700
-- Mono: Space Mono 400 (data labels, numbers, eyebrows)
+- Display: Space Grotesk weights 400/500/700 (already loaded)
+- Mono: Space Mono 400/700 (ONLY for data, eyebrows, monospace moments)
 - H1: 72px, weight 700, tracking -3.5px, line-height 1.0
 - H2: 44px, weight 600, tracking -1.5px, line-height 1.05
 - Body: 16px, weight 400, line-height 1.65
 - Eyebrow: Space Mono 500, 11px, tracking 3px, UPPERCASE, green-700
 
 Buttons:
-- Pill (999px), Space Grotesk 500, tracking -0.3px, active scale(0.98)
+- Pill shape (999px radius), Space Grotesk 500, tracking -0.3px, active scale(0.98)
 - Primary: green-700 bg, cream text, green-600 hover
 - Secondary: charcoal bg, cream text
 - Ghost: transparent, green-700 text + 1px green-700 bottom border
 
 Cards:
-- Border-radius 12-16px, 1px --border, --cream-lifted bg
+- Border-radius 12-16px, 1px --stroke, --cream-lifted bg
 - Hover: translateY(-4px) + soft shadow
 
-Principles:
-1. One font (Space Grotesk), many weights
-2. Cream canvas, not white
+Brand principles:
+1. One font family (Space Grotesk), many weights
+2. Cream canvas (NOT white — warmth matters)
 3. Hunter green = growth signal
 4. Space Mono ONLY for data
-5. No emojis, no gradients on text/buttons, no purple/blue accents
-6. Generous whitespace, text-wrap: balance on headings
+5. No emojis, no gradients on text/buttons, no purple/blue
+6. Generous whitespace. text-wrap: balance on headings.
 
-Content (use these exact phrases):
-- Headline: "We find the money your restaurant is leaving on the table."
-- Eyebrow: "Revenue intelligence for independent restaurants"
-- Subhead: "Your POS data holds the answers. We analyze it, find the gaps, and deliver 2-3 specific actions that grow revenue in 30 days."
-- Primary CTA: "Join the waitlist" → mailto:chayadol@reveallabs.co?subject=Join%20the%20reveal.%20waitlist
-- Trust line: "Works with Clover · Toast · Square. 48-hour results. No credit card."
-- Proof stat: "$4,032/mo found at our lab restaurant (Tuk Tuk Thai Grill, April 2026)"
+Content anchors (we'll iterate copy — these are starting points):
+- Brand mark: "reveal." (charcoal "reveal" + green-700 period)
+- Short headline options (pick ONE ≤5 words):
+    "Find money you're losing."
+    "Your POS already knows."
+    "We find the money."
+- Product one-liner: "We read your POS data and show you where the money is."
+- Primary CTA: "Join the waitlist"
+    → mailto:chayadol@reveallabs.co?subject=Join%20the%20reveal.%20waitlist
+- Proof stat: "$4,032/mo — found at our lab restaurant (Tuk Tuk Thai Grill)"
+- Secondary stats available: $1,920 recoverable this month · 3 actions/mo · +4.2% lift
+- Trust line: "Works with Clover · Toast · Square"
 
-First, just set up the page frame — cream bg, Space Grotesk loaded, tokens defined,
-reveal. wordmark top-left (Space Grotesk 700, charcoal, green-700 period), no other
-content yet. Confirm before I add sections.
+STEP 1 (do this NOW): set up the page frame ONLY —
+- Cream bg (#F2F1ED)
+- Space Grotesk loaded
+- All tokens above defined as CSS variables
+- Top-left wordmark: "reveal." (Space Grotesk 700, charcoal "reveal", green-700 period)
+- No hero, no sections, no content yet
+- Just the frame. Confirm the frame looks right before I hand you the hero.
 ```
 
-- [ ] Upload moodboard HTML file as reference attachment: `/Users/kase/Desktop/Reveal LLC/Restaurant App/FrontEnd/moodboard-v2.0.html`
-- [ ] Verify: cream page with "reveal." wordmark top-left renders correctly.
+- [ ] Upload moodboard HTML file as reference attachment to BOTH projects: `/Users/kase/Desktop/Reveal LLC/Restaurant App/FrontEnd/moodboard-v2.0.html`
+- [ ] Verify: each project shows cream canvas with "reveal." wordmark top-left.
+- [ ] Log both project URLs in the ARTIFACTS table at the bottom of this doc.
 
-## F-2 — Hero variant A: centered `[CLAUDE DESIGN]` (25 min)
-Paste:
+## F-2 — Hero for each variant `[CLAUDE DESIGN]` (20 min per variant)
+
+Two different paste blocks. The teaser hero is typography-only, ultra-minimal. The full hero is 55/45 asymmetric with a stat card on the right.
+
+### F-2a — TEASER hero (paste into `reveal-landing-v1-teaser`)
+
 ```
-Build hero with CENTERED layout, 120px vertical padding, max-width 1200px, centered
-horizontally.
+Build the hero section. Typography-only, extreme restraint.
 
-Top nav:
-- Left: "reveal." wordmark
-- Right: text link "Log in" (muted) + pill CTA "Join the waitlist" (green-700 bg, cream text)
-  - Both link to mailto:chayadol@reveallabs.co?subject=Join%20the%20reveal.%20waitlist
+Top nav (horizontal, 24px top/side padding, max-width 1200px):
+- Left: "reveal." wordmark (already in place from F-1)
+- Right: pill CTA "Join the waitlist" (green-700 bg, cream text, pill 999px)
+  → mailto:chayadol@reveallabs.co?subject=Join%20the%20reveal.%20waitlist
 
-Centered hero block:
-- Eyebrow (Space Mono, green-700, 3px tracking, uppercase): "REVENUE INTELLIGENCE FOR INDEPENDENT RESTAURANTS"
-- H1 (max-width 900px): "We find the money your restaurant is leaving on the table."
-- Subhead (max-width 580px): "Your POS data holds the answers. We analyze it, find the gaps, and deliver 2-3 specific actions that grow revenue in 30 days."
-- CTA row: primary "Join the waitlist" + ghost "See how it works →"
-- Trust line below (Space Mono, 11px, --light): "CLOVER · TOAST · SQUARE · 48-HOUR RESULTS · NO CREDIT CARD"
+Hero block — vertically centered in the viewport, 120px top/bottom padding:
+- H1 (72px, weight 700, tracking -3.5px, line-height 1.0, max-width 800px, centered):
+    "Find the money you're losing."
+- Subhead (20px, weight 400, color --muted, max-width 540px, centered, mt 24px):
+    "We read your POS data. You get 2-3 moves per month."
+- CTA (mt 40px, centered):
+    Primary pill only — "Join the waitlist" (same mailto).
+    NO secondary button. NO ghost link.
 
-No stat card. Typography-only.
+Below hero = empty whitespace (the video section will drop here next).
+
+STRICT RULES:
+- No eyebrow. No trust line. No stat card. No secondary CTA.
+- Generous whitespace. The hero should feel like it has space to breathe.
+- This is a teaser. If you feel tempted to add more, DON'T.
 ```
-- [ ] Iterate with inline comments if needed
-- [ ] Screenshot when good → `design/inspiration-capture/v1-hero-a-centered.png`
+
+- [ ] Iterate in Claude Design with inline comments if the balance feels off
+- [ ] Screenshot when good → `design/inspiration-capture/v1-hero-teaser.png`
+
+### F-2b — FULL hero (paste into `reveal-landing-v1-full`)
+
+```
+Build the hero section. 55/45 asymmetric layout, left text + right stat card.
+
+Top nav (horizontal, 24px top/side padding, max-width 1200px):
+- Left: "reveal." wordmark (already in place from F-1)
+- Right: text link "Log in" (color --muted, hover --charcoal) + pill CTA
+  "Join the waitlist" (green-700 bg, cream text, pill 999px)
+  → mailto:chayadol@reveallabs.co?subject=Join%20the%20reveal.%20waitlist
+
+Hero block — max-width 1200px, 80px top / 100px bottom padding, 60px gap between columns:
+
+LEFT (55%, left-aligned):
+- Eyebrow (Space Mono 500, 11px, tracking 3px, UPPERCASE, color green-700):
+    "FOR INDEPENDENT RESTAURANTS"
+- H1 (64px, weight 700, tracking -2.5px, line-height 1.02, max-width 540px, mt 20px):
+    "We find the money."
+- Subhead (18px, weight 400, color --muted, max-width 460px, line-height 1.6, mt 20px):
+    "Your POS data has the answers. We show you where the gaps are,
+     then give you 2-3 specific moves every month to grow revenue."
+- CTA row (mt 32px, gap 16px):
+    Primary pill "Join the waitlist" +
+    Ghost link "See how it works ↓" (scrolls to video section below)
+- Trust line (mt 28px, Space Mono 400, 11px, tracking 2px, UPPERCASE, color --light):
+    "CLOVER · TOAST · SQUARE"
+
+RIGHT (45%) — mini stat card:
+- Card: bg --cream-lifted, radius 16px, 1px --stroke, padding 32px
+- Top eyebrow (Space Mono 500, 10px, tracking 3px, UPPERCASE, color green-700):
+    "LAB RESTAURANT — APRIL 2026"
+- Restaurant name (Space Grotesk 600, 22px, color --charcoal, mt 8px):
+    "Tuk Tuk Thai Grill"
+- Horizontal divider (1px --stroke, my 20px)
+- 2×2 stat grid (gap 12px between cells). Each cell:
+    bg --green-50, radius 10px, 1px --stroke, padding 20px
+    Value (Space Grotesk 700, 32px, tracking -1px, color green-700)
+    Label below (Space Mono 400, 10px, tracking 2px, UPPERCASE, color --muted, mt 8px)
+    Cell 1 — "$4,032"  / "FOUND THIS MONTH"
+    Cell 2 — "$1,920"  / "RECOVERABLE NOW"
+    Cell 3 — "3"       / "SPECIFIC ACTIONS"
+    Cell 4 — "+4.2%"   / "PROJECTED LIFT"
+
+Keep the stat card visually clean. The numbers are the hero; labels stay small and quiet.
+```
+
+- [ ] Iterate in Claude Design
+- [ ] Screenshot when good → `design/inspiration-capture/v1-hero-full.png`
 
 ## F-3 — Duplicate project for hero B `[CLAUDE DESIGN]` (3 min)
 - [ ] Duplicate project → name `reveal-landing-v1-hero-B`
@@ -705,48 +879,59 @@ If `messy`: flag to user, consider switching to "Claude Design as visual spec on
 - [ ] **HERO WINNER: ____** (A centered / B asymmetric)
 - [ ] Close the loser's Claude Design tab. Continue only in the winner's project.
 
-## F-7 — Video placement A: intermission `[CLAUDE DESIGN]` (20 min)
-In the winning hero project, paste:
+## F-7 — Video intermission section `[CLAUDE DESIGN]` (20 min)
+
+> Variant B (Full) locked. Intermission is the chosen placement. Hero-bg variant (F-9) superseded — it would fight the asymmetric hero + stat card. Video runs as its own cinematic break between hero and pilot section.
+
+Paste-block below is **placeholder-aware**. Real video file isn't ready yet (Higgsfield → CapCut → Vercel Blob). Claude Design renders a charcoal 16:9 rectangle now; Track G swaps in the real `<video>` element with `autoplay loop muted playsInline`.
+
 ```
-Add a full-bleed section BETWEEN the hero and where the next section will go.
-Full viewport width, no horizontal padding, no side margins.
+Add a cinematic video intermission section below the hero, above the next section.
 
-- Height: 90vh (mobile: 70vh)
-- Background: video loop from [PASTE VIDEO URL FROM C-5]
-  - Attributes: autoplay, muted, loop, playsInline, preload="metadata"
-  - poster="[PASTE POSTER URL FROM C-5]"
-  - object-fit: cover
-- Overlays: dark gradient top (black 0→50%) + dark gradient bottom (same) for readability
-- Centered text (Space Grotesk 500, 40px mobile 28px, cream color, tracking -1px, max-width 800px):
-  "You see food going out. We see the numbers behind every plate."
+SECTION POSITIONING:
+- Full viewport width (break out of the 1200px content container — edge-to-edge background)
+- Section background: --cream (same as page — creates breathing room, not a visual wall)
+- 100px top padding / 100px bottom padding
+
+THE VIDEO BLOCK (centered inside the section):
+- 16:9 aspect ratio (use aspect-ratio: 16/9)
+- Max-width 1400px (slightly wider than content — cinematic feel)
+- Margin-inline auto (centered horizontally with side gutters on large screens)
+- Border-radius 16px
+- Overflow hidden
+- PLACEHOLDER for now: solid bg --charcoal (#2E2E2E), no content inside.
+  Use a comment in the code: {/* TRACK G: replace with <video autoplay loop muted playsInline poster="..."> */}
+
+SMALL EYEBROW ABOVE THE VIDEO (centered, mb 32px):
+- Space Mono 500, 11px, tracking 3px, UPPERCASE, color --muted
+- Text: "INSIDE A WORKING KITCHEN"
+
+NO OTHER TEXT:
+- No heading above the video. The eyebrow is enough.
+- No caption below. The video's atmosphere is the content.
+- No overlay text on the video itself. The B&W footage speaks for itself.
+- No "watch this" copy. No play button (it autoplays).
+
+DO NOT ADD:
+- Browser chrome mockup or decorative frame
+- Multiple video thumbnails
+- Captions, subtitles, or text overlays
+- Any CTA buttons
+- A heading like "See it in action" (too salesy)
 ```
-- [ ] Screenshot → `design/inspiration-capture/v1-video-a-intermission.png`
 
-## F-8 — Duplicate for video B `[CLAUDE DESIGN]` (3 min)
-- [ ] Duplicate current project → name `reveal-landing-v1-video-B`
-- [ ] Save URL to ARTIFACTS
+- [ ] Iterate in Claude Design — if the placeholder charcoal feels too stark, try a subtle grain/noise overlay at ~5% opacity
+- [ ] Screenshot → `design/inspiration-capture/v1-video-intermission.png`
+- [ ] Once the real video URL lands (post C-5), I'll swap the placeholder for the `<video>` element in Track G
 
-## F-9 — Video placement B: hero background `[CLAUDE DESIGN]` (25 min)
-In video-B duplicate, paste:
-```
-Remove the full-bleed video intermission section.
+## F-8 — ~~Duplicate for video B~~ **SUPERSEDED** (variant lock)
+> Hero-background video variant conflicts with asymmetric stat-card hero. Skip.
 
-Rebuild the hero to use the video as BACKGROUND (not a separate section):
-- Hero section background: video loop [VIDEO URL], autoplay/muted/loop/playsInline/preload=metadata, poster=[POSTER URL], object-fit cover
-- Overlay: cream (#F2F1ED) wash at 75% opacity — keeps cream identity
-- Top + bottom dark gradients (30%) for text readability
-- Headline stays charcoal (readable through wash)
-- Stat card (if hero B variant) remains cream-lifted, unchanged
+## F-9 — ~~Video placement B: hero background~~ **SUPERSEDED** (variant lock)
+> Skip. See F-7 note.
 
-Video becomes atmospheric texture, not dominant content.
-```
-- [ ] Screenshot → `design/inspiration-capture/v1-video-b-hero-bg.png`
-
-## F-10 — Pick video placement `[HUMAN]` (10 min)
-- [ ] Compare both screenshots + open both projects
-- [ ] Consider: does hero-bg wash out cream identity? Does intermission disrupt flow?
-- [ ] **VIDEO WINNER: ____** (A intermission / B hero background)
-- [ ] Close loser tab. Continue in winner project.
+## F-10 — ~~Pick video placement~~ **RESOLVED** (variant lock → intermission wins by default)
+> Video placement = A (intermission). Logged in DECISION LOG.
 
 ## F-11 — Brand entrance animation `[CLAUDE DESIGN]` (45-60 min)
 Paste:
@@ -804,7 +989,11 @@ Test: first-load in incognito = plays, refresh = skipped, clear localStorage = p
 
 **Quality bar (per Kase's decision D10):** if entrance looks janky, iterate until clean. Do NOT cut to fallback. Slip deadline if needed.
 
-## F-12 — Pilot offer section `[CLAUDE DESIGN]` (30 min)
+## F-12 — Pilot offer section (VARIANT B: full-page only) `[CLAUDE DESIGN]` (30 min)
+> **Variant A (teaser) SKIPS this section** — skip to F-13.
+> **Variant B (full-page)** builds it. When both variants are done (F-17), compare and pick winner.
+
+### Variant B content (original full-page version):
 Paste:
 ```
 Build "Pilot Offer" section after video section.
@@ -826,7 +1015,13 @@ Centered CTA below: primary "Claim my pilot spot" → same mailto as other CTAs.
 Section padding: 96px top+bottom, max-width 1200px.
 ```
 
-## F-13 — FAQ section `[CLAUDE DESIGN]` (30 min)
+## F-13 — FAQ section (BOTH variants, different scope) `[CLAUDE DESIGN]` (15-30 min)
+
+### Variant A (teaser): 3 questions max (15 min)
+> Teaser page doesn't need a deep FAQ. Max 3 questions, one-line answers. Cut entirely if the hero + video + stat already answer "what is this".
+> Candidate questions (pick 2-3 only): (1) "What is reveal.?" (2) "How much does it cost?" (3) "When can I try it?"
+
+### Variant B (full-page): 6+ questions (30 min)
 Paste:
 ```
 Build FAQ section.
@@ -1153,9 +1348,9 @@ Tell Claude Code to fix issues.
 
 | Artifact | URL / path |
 |---|---|
-| Claude Design — main project | https://claude.ai/design/p/df9fdd8c-1d19-41b6-b1b3-e4bb2c55ceb4 |
-| Claude Design — hero B duplicate | _(F-3)_ |
-| Claude Design — video B duplicate | _(F-8)_ |
+| Claude Design — Variant A (teaser, archived) | https://claude.ai/design/p/df9fdd8c-1d19-41b6-b1b3-e4bb2c55ceb4?file=Reveal+Landing.html |
+| Claude Design — Variant X (YOU RUN / WE READ, **archived** 2026-04-20) | https://claude.ai/design/p/8caae151-7392-49c1-9f68-a59adec328eb |
+| Claude Design — **Variant Y (LOUD / QUIET) — WINNER** | https://claude.ai/design/p/2f450042-965d-4e13-a82d-7ef3283e85af |
 | Video URL (Vercel Blob) | _(C-5)_ |
 | Poster image URL (Vercel Blob) | _(C-5)_ |
 | Inspiration folder | `/Users/kase/Desktop/Reveal LLC/reveallabs-site/design/inspiration-capture/` |
@@ -1173,8 +1368,8 @@ Tell Claude Code to fix issues.
 |---|---|---|
 | Entrance asset path (A Lucide / B custom) | _____ | D-1 |
 | Export quality verdict (clean / workable / messy) | _____ | F-5 |
-| Hero winner (A centered / B asymmetric) | _____ | F-6 |
-| Video placement (A intermission / B hero bg) | _____ | F-10 |
+| Hero winner (A centered / B asymmetric) | **B asymmetric (full, with stat card)** | F-6 ✓ 2026-04-19 |
+| Video placement (A intermission / B hero bg) | **A intermission** | F-10 ✓ 2026-04-19 (by variant lock) |
 | Motion signature | _____ | F-16 |
 
 ---
