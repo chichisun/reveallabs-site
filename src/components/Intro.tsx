@@ -423,14 +423,11 @@ export function Intro() {
     try {
       seen = localStorage.getItem("reveal_intro_seen") === "true";
     } catch {}
-    const reduced =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const params = new URLSearchParams(window.location.search);
     const force = params.get("intro") === "1" || params.has("replay");
+    const optOut = params.get("no-intro") === "1";
     if (force) seen = false;
-    const willPlay = !seen && !reduced;
+    const willPlay = !seen && !optOut;
     if (!willPlay) {
       document.documentElement.classList.remove("intro-pending");
       setShow(false);
