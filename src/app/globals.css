@@ -1038,16 +1038,72 @@ html.intro-pending .theme-toggle { visibility: hidden; }
   justify-content: center;
   padding: 24px;
 }
+/* Liquid glass waitlist card — same aesthetic language as the primary pill */
 .waitlist-card {
   position: relative;
-  background: var(--cream-lifted);
-  border: 1px solid var(--stroke);
-  border-radius: 16px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(252, 251, 250, 0.88) 0%,
+      rgba(242, 241, 237, 0.82) 100%
+    );
+  backdrop-filter: blur(26px) saturate(185%);
+  -webkit-backdrop-filter: blur(26px) saturate(185%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 20px;
   padding: 40px;
   max-width: 440px;
   width: 100%;
-  box-shadow: 0 20px 60px rgba(30, 53, 34, 0.18),
-    0 2px 6px rgba(46, 46, 46, 0.1);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(30, 30, 30, 0.08),
+    0 20px 60px rgba(30, 53, 34, 0.25),
+    0 4px 12px rgba(30, 30, 30, 0.12);
+  overflow: hidden;
+  isolation: isolate;
+}
+.waitlist-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.12) 20%,
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 60%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+.waitlist-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-theme="dark"] .waitlist-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(39, 38, 32, 0.88) 0%,
+      rgba(28, 27, 23, 0.82) 100%
+    );
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+html[data-theme="dark"] .waitlist-card::before {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.03) 25%,
+    transparent 50%
+  );
 }
 .waitlist-close {
   position: absolute;
@@ -1177,9 +1233,28 @@ html.intro-pending .theme-toggle { visibility: hidden; }
   }
 }
 @media (max-width: 560px) {
-  .intro-row { gap: 20px; }
-  .intro-glyph { width: 52px; height: 72px; }
-  .intro-tumbler { width: 52px; height: 52px; }
-  .intro-letter { font-size: 52px; letter-spacing: -2px; }
-  .intro-icon svg { width: 44px; height: 44px; }
+  .intro-row { gap: 14px; }
+  .intro-glyph {
+    width: 42px !important;
+    height: 60px;
+  }
+  .intro-tumbler {
+    width: 42px !important;
+    height: 42px;
+  }
+  .intro-letter { font-size: 44px; letter-spacing: -1.7px; }
+  .intro-icon svg { width: 36px !important; height: 36px !important; }
+}
+@media (max-width: 380px) {
+  .intro-row { gap: 10px; }
+  .intro-glyph {
+    width: 34px !important;
+    height: 52px;
+  }
+  .intro-tumbler {
+    width: 34px !important;
+    height: 34px;
+  }
+  .intro-letter { font-size: 36px; letter-spacing: -1.4px; }
+  .intro-icon svg { width: 30px !important; height: 30px !important; }
 }

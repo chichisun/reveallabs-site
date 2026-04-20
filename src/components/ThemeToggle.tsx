@@ -8,8 +8,7 @@ function readTheme(): Theme {
   if (typeof window === "undefined") return "light";
   const stored = localStorage.getItem("reveal_theme");
   if (stored === "light" || stored === "dark") return stored;
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return prefersDark ? "dark" : "light";
+  return "light";
 }
 
 function applyTheme(theme: Theme) {

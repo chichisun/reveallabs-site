@@ -52,7 +52,7 @@ const bootScript = `
   try {
     var t = localStorage.getItem('reveal_theme');
     if (t !== 'light' && t !== 'dark') {
-      t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+      t = 'light';
     }
     document.documentElement.dataset.theme = t;
 
