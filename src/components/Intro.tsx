@@ -75,6 +75,13 @@ type GlyphSpec = {
   opticalScale: number;
 };
 
+// Per-icon visual-weight normalizers. Lucide icons fill their 24-unit
+// viewBox differently: ChefHat is tall/narrow, Egg is a small centered
+// oval, Wheat/Flame use thin strokes in wide bounding boxes. These
+// scale values compensate so all 7 icons read as the same visual size.
+// Transforms don't affect layout (row width is unchanged), so a scale
+// of 1.6-1.9 here doesn't break the mobile row fit — only changes how
+// the icon looks inside its 36px container.
 const GLYPHS: GlyphSpec[] = [
   { Icon: ChefHat, ch: "r", accent: false, opticalScale: 1.6 },
   { Icon: Utensils, ch: "e", accent: false, opticalScale: 1.0 },
@@ -85,16 +92,25 @@ const GLYPHS: GlyphSpec[] = [
   { Icon: Flame, ch: ".", accent: true, opticalScale: 1.95 },
 ];
 
-function measureLetterWidths(): number[] {
+// Measure each letter's width at the INTRO LETTER'S current font-size
+// (which varies by viewport via CSS media queries). Using the intro size
+// means the compactWidth values shrink the glyph boxes correctly on mobile
+// so the docked row matches the nav wordmark's visual width.
+function measureLetterWidths(introFontSize: number): number[] {
   const target = document.querySelector(".nav .wordmark");
-  if (!target) return [40, 42, 40, 42, 42, 20, 16];
+  // Fallback widths scaled to the current intro font-size
+  if (!target) {
+    return [40, 42, 40, 42, 42, 20, 16].map(
+      (w) => (w * introFontSize) / 72,
+    );
+  }
   const chars = ["r", "e", "v", "e", "a", "l", "."];
   const cs = getComputedStyle(target);
   const probe = document.createElement("span");
   probe.style.cssText = `
     position:absolute; visibility:hidden; white-space:pre; top:-9999px;
     font-family:${cs.fontFamily};
-    font-size:72px;
+    font-size:${introFontSize}px;
     font-weight:${cs.fontWeight};
     letter-spacing:${cs.letterSpacing};
   `;
@@ -133,20 +149,26 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
     const measure = () => {
       const row = rowRef.current;
       const target = document.querySelector(".nav .wordmark") as HTMLElement | null;
-      if (!row || !target) {
+      const introLetter = document.querySelector(".intro-letter") as HTMLElement | null;
+      if (!row || !target || !introLetter) {
         raf = window.requestAnimationFrame(measure);
         return;
       }
       const rr = row.getBoundingClientRect();
       const rt = target.getBoundingClientRect();
       const targetFS = parseFloat(getComputedStyle(target).fontSize) || 24;
-      const scale = targetFS / 72;
+      // Use the actual intro-letter font-size (72px desktop, smaller on
+      // mobile per media queries) so the dock scale matches the true
+      // ratio between intro and nav wordmark sizes.
+      const introFS =
+        parseFloat(getComputedStyle(introLetter).fontSize) || 72;
+      const scale = targetFS / introFS;
       const rowCx = rr.left + rr.width / 2;
       const rowCy = rr.top + rr.height / 2;
       const tgtCx = rt.left + rt.width / 2;
       const tgtCy = rt.top + rt.height / 2;
       setFlyTo({ dx: tgtCx - rowCx, dy: tgtCy - rowCy, scale });
-      setWidths(measureLetterWidths());
+      setWidths(measureLetterWidths(introFS));
     };
     raf = window.requestAnimationFrame(measure);
     return () => window.cancelAnimationFrame(raf);
@@ -364,7 +386,6 @@ function Glyph({
             }
           : undefined
       }
-      style={{ width: "72px" }}
     >
       <div className={`intro-breathe${breathing ? " is-breathing" : ""}`}>
         <div
