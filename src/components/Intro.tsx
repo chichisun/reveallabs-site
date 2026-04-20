@@ -419,16 +419,9 @@ export function Intro() {
   const [show, setShow] = useState<boolean | null>(null);
 
   useEffect(() => {
-    let seen = false;
-    try {
-      seen = localStorage.getItem("reveal_intro_seen") === "true";
-    } catch {}
     const params = new URLSearchParams(window.location.search);
-    const force = params.get("intro") === "1" || params.has("replay");
     const optOut = params.get("no-intro") === "1";
-    if (force) seen = false;
-    const willPlay = !seen && !optOut;
-    if (!willPlay) {
+    if (optOut) {
       document.documentElement.classList.remove("intro-pending");
       setShow(false);
     } else {
