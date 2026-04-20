@@ -56,14 +56,11 @@ const bootScript = `
     }
     document.documentElement.dataset.theme = t;
 
-    var seen = localStorage.getItem('reveal_intro_seen') === 'true';
+    // Intro plays on every visit. Explicit opt-out via ?no-intro=1 for
+    // anyone who wants to skip (accessibility, slow connection, etc.).
     var params = new URLSearchParams(window.location.search);
-    var force = params.get('intro') === '1' || params.has('replay');
-    // Opt-out via ?no-intro=1 for anyone who wants to skip (accessibility,
-    // slow connection, etc.). Otherwise: if they haven't seen it, play it.
     var optOut = params.get('no-intro') === '1';
-    if (force) seen = false;
-    if (!seen && !optOut) {
+    if (!optOut) {
       document.documentElement.classList.add('intro-pending');
     }
   } catch(e) {}
