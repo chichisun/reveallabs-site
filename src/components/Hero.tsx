@@ -31,7 +31,7 @@ export function Hero() {
       </header>
 
       <div className="hero-inner">
-        <div className="eyebrow">For independent restaurants</div>
+        <div className="eyebrow"><span>For independent restaurants</span></div>
         <h1 id="hero-title">
           Find the money your restaurant is leaving on the table.
         </h1>
