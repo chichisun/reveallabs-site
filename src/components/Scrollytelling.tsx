@@ -6,7 +6,7 @@ const BEATS = [
   {
     kind: "voice" as const,
     heading: "A RESTAURANT IS LOUD",
-    body: "Employees, customers, problems. Something is always pulling your attention.",
+    body: "Something's always breaking. Someone always needs you. You're always busy.",
   },
   {
     kind: "voice" as const,
@@ -15,7 +15,7 @@ const BEATS = [
   },
   {
     kind: "case-study" as const,
-    body: "Real Data. Real Restaurants. Every Month.",
+    body: "Real Data. Real Restaurants.",
   },
 ];
 
