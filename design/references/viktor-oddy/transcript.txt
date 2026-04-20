@@ -1,0 +1,169 @@
+ cloud design just came out and this is literally the best thing that happened to designers.
+ As you can see, you can build these animated websites all totally using cloud now without
+ going to anything extra. All these animated sizes you can see here were designed inside of cloud
+ and I will share with you the whole process of how you can find inspiration, how you can turn
+ those inspiration into actual live websites that are pretty fast, have no issues and you can sell
+ them for multiple thousands of dollars as I did here because I'm going to share with you the tips
+ and tricks on how to land your first clients using Twitter. This is by far the best way to get
+ a lot of attention to your post especially if you're designing or building something with AI that
+ is visual and by following this tutorial you can learn how to build visually stunning websites
+ that will get a lot of attention on social media and as you can see all of these my posts
+ average on around 50,000 likes some of them are 600 likes and just by following these tricks
+ you can do the same and you can land your clients, charge multiple thousands of dollars so without
+ further ado let's get into building. To get started just go to cloud.ai/design and here you can choose
+ any of the type of designs that you're looking for whether it's prototypes, slide deck from template
+ and I'm going to start check other and I'm going to say website, click create and here you can
+ basically describe what you want it to build like you would do with lovable I don't really want to
+ start from scratch so I'm just going to go to motion size.ai and I'm going to select a one of the
+ pre-built typography type of sets I'm just going to copy this one and I'm going to paste this one
+ here and I'm going to say build a sound but do not add any of the video elements I'm going to replace
+ that later and let's just send that and see what it comes back with and this is what we've got as
+ the first result let's just replace the video background and for the video I'm going to generate
+ it using nano banana 2 so just go directly to nano banana 2 and for the prompt I've used this one
+ but you can get directly this video just go to motion sides and click at the backgrounds here and
+ you can get it for free just copy the URL and you can paste the same video that I'll be using
+ but after generating the image what I'm going to do is just use siddance 2.0 to create a animation
+ from it so I'm just gonna download by the way not affiliated with anything in this video I'm just
+ sharing the tools that I use you can go directly to siddance and for the prompt I use create video
+ animation like these but without any text element no camera movement no extra zooms and this is the
+ result that I received and yeah you can get it for free at motion sides that backgrounds and here
+ you basically have this video that I can now copy the URL off just copy open in the new background
+ let's copy this go back to our website and I'm going to say replace the video background to be
+ this one and let's just send that and see what it comes back with and here we have our result I
+ wanted to add some UI elements similar to what I have here in the thumbnail so basically some liquid
+ glass UI elements so it's not too boring the hero section so all I have to do is just take a
+ screenshot what you can do is just go to dribble and type UI elements so just like this UI landing
+ just to give AI some inspiration so it kind of knows what your reference and it's not just
+ pulling stuff out of its head so once you're here or you can just type website design
+ and find some of the some of the UI elements there for example just like this would work
+ if I zoom in and I can just take a screenshot like of these two elements
+ go back to our code and just upload both of these and I'm going to say add these two UI elements
+ under the text in our hero section so they should be positioned somewhat nicely around our
+ under our content and they should not be in this color they should be using the same liquid glass
+ that we use already for the navbar and for the buttons and the text should be obviously white
+ so let's just send that and see what it comes back with and here we have our cards which looks
+ perfectly in these exiles that we need now let's build the rest of the site but first let's preview
+ the mobile version to see how it looks like so I'm just going to click inspect here so I'm not sure
+ how to open the mobile version on and as you can see mobile version looks as well great now let's
+ get into building the rest of the website and here let's just go to dribble and look for some of the
+ other inspiration for our next sections so here I can again can just look randomly at any of the
+ designs here so one of the designs that I like would be for example this one and I can scroll
+ down to see what kind of sections they have so just basically scrolling through they don't really
+ have a lot of sections so let's look for something else just scroll through and find something that
+ you like so I found this image on Pinterest and I wanted to work with this but let's make it into
+ our style so I'm just gonna take a screenshot of this and then I'm going to go to nano banana
+ and just kind of recreate this image in the style of our bubble and for that I'm gonna just upload
+ this to here and I'm going to reference the image that I've read it generated and I'm gonna say
+ the second image first of all let's just remove the background and have just remove the text and
+ have just this image background so again just copy this whole thing take a screenshot of this whole
+ thing so it's not cropped pacing to nano banana and for the prompt it would be really simple all
+ you have to type is something like create me an image like this in 8k remove any text buttons any
+ logos just want the exact same background same positioning as well no zoom in or zoom outs and
+ let's say just want the exact image and for the background I want it to be on a black background
+ on a plain black remove the text buttons any cards rig tangles etc so basically it just
+ remove everything and I'm going to select two options and 16 by 9 by 9 aspect ratio of 4k
+ and nano banana 2 and now let's just generate and see what it comes back with that we later
+ can start making it in the same styles as this one so this is what we received as you can see
+ it looks pretty close to the original now we need to turn this into it looks something like this
+ so again I'm going to reference both of the images first I'm going to reference this one
+ basically just upload two images to nano banana if you're using nano banana directly
+ which I would recommend because this website is paid and it's very expensive so okay first we need
+ to say something like create me a second image should be in the same style as the first image
+ so the background should be the same the textures should be the same and basically it should look
+ similarly but still keep the same composition as the second image and let's just generate a
+ couple of versions I'm going to try a few different prompts so the second prompt could be something
+ like create me an image the second image but in the same styles as the first image
+ so as you can see the second prompt is pretty straightforward simple you can try a few different
+ options to see whichever does the best results and I can say the third one create me a second
+ image but the background should be as the first image and the color should be as the first image
+ as well basically copy the styles of the first image and apply it to the second image
+ but keep it close as the second image because I like it and let's just set it and see all the
+ variations that we get back so these are a couple of images that we received as you can see they look
+ a little bit closer than the original the color is more similar to what we need etc
+ so now let's just animate this image I'm gonna click animate and I'm going to say create animation
+ no camera movement
+ and I'm going to choose clean 3.0 you can go to directly clean website and I'm going to choose 12
+ seconds and I'm going to click generate and see what it comes back with but also for another
+ option I wanted to expand this image so let's just get into our figma file set into here
+ and in figma I can just expand this image up and down to kind of have more background if you're
+ using paid version of figma which I highly recommend all of you get it gives you a lot of AI features
+ I know figma stocks is going down unfortunately but I believe that this will be right back up
+ not a financial advisor so let's just wait and see what it comes back with so once we expanded this
+ image now let's just download this figma uses by the way nanobanana 2 for image duration
+ so I'm going to say background go back to our video tab and here I'm just going to close this
+ and upload our new video here our new image let's just upload that and for the prompt try something
+ simple simpler animate this and let's just send that and see what it comes back with and here is
+ the result that we received as you can see we have this beautiful animations that is constantly looping
+ let's now add it to our website and for this I'm just going to open this in new tab and I'm going to
+ take a new link if you're using any other service just download the video and go to website like
+ marks.com for video hosting and then just upload the video and get a link from there I'm going to
+ use this thing directly and now let's build our section itself so let's get back to the original
+ reference that we had and let's I like this layout so let's just actually build that again I'm going
+ to take a screenshot to send it to the AI and AI can understand the screenshots but in order to
+ make it simpler for the AI I'm going to get rid of all the elements here using nanobanana so just
+ upload this image to nanobanana and for the prompt use something like this so create me an image like
+ this in 8k same layout of text remove the background just keep the text at any cards and icons on a
+ plain black background and here I can choose this 5 and 4 and let's just send and see what it comes
+ back with here is the result that we received let's just copy this image I'm going to copy this I'm
+ going to go to back to our cloud design I'm going to paste this and I'm going to say build out this
+ section exactly as it is under our hero section build out this next section also I'm going to say
+ import google material icons and where you see those green icons let's place google materials
+ some random icons but make them white I don't want any green colors for the cards background
+ let's use the same liquid glass that we already use in our now bar in our buttons etc and for the
+ phones let's use the same phones that we'll write established so basically the same styles just
+ layout as in the image also for the second section let's have this video as the background and I'm
+ going to go and get the generated video that we just got and I'm going to open this I'm going to
+ open it in the new tab and let's just copy the link and paste this link here let's just send that
+ and see what it comes back with and this is the result that we've got as you can see it looks pretty
+ cool in terms of animations in terms of card like layout icons everything looks great and this way
+ you can build the rest of the website I think we can now post it on social media and I'll share
+ with you the tip that will get you a lot of views on twitter and I've used this personally for my
+ account to constantly get a lot of views on my posts and constantly go viral you can see some
+ of these posts get 25,000 views some of them got 300,000 so just by creating stuff like this and
+ sharing on social media where you created with AI can bring you a lot of likes and also you can type
+ me so I always every day check if someone reposted someone shared their design and if they do I
+ will just repost it to my profile and you'll get first access and first views for your posts just
+ make sure that the design is good and original not just copy of my design so as you can see just
+ like this if someone creates something using my prompts I'll always take a look at this and share
+ it on my profile so let's now share with you the tips and tricks so first you need to record or
+ you create it with screen studio screen studio basically allows you to have this beautiful how
+ hower effects and the smoothness of the videos that you can see in these youtube videos since I'm
+ recording it with that but I'm going to record it with clean shot because I'm currently recording
+ with a screen studio so just select like this and let's just mold this thing up the bottom here
+ so I'll click record the screen drag it over it and click record just go through however on some
+ elements so the user can see that this is live upside scroll down to the next section and show
+ some animation here and now just click save the next step I'm going to go to shots that's so
+ not affiliated with them but I just like the animations that they have seems like my subscription
+ here ended here what I like is I can choose the templates here I can click animate it and I
+ particularly like this one it will not make or break your design it might improve it just by
+ around 10% so if you want that 10% boost you'll want to use this one and I'm just going to expand this
+ oops for the background you can choose one or off their backgrounds that they already have they
+ have like tons of pre-built animated backgrounds like this and stuff they have also a lot of these
+ backgrounds but since we already created a lot of similar backgrounds in Hixfield I'm just going to
+ take exactly that so let's find something that I think would fit the style like this one I can
+ just download this of course this is a little bit heavy so I'm just going to drag it into figma
+ it's going to resize it and I'm going to resize it a little bit more let's just export this as
+ JPEG I'm going to name it okay video and let's just select custom background so I'm going to choose
+ image here and just drag it straight to our file like this and here we have our animated image
+ and video let's just select full HD and export this and before posting you want to
+ check what our trending so just go to explore tab and see what are the top trends so you can see
+ Google launches flow of music which is not related but anthropic launches cloud cloud opus 4.7 and also
+ they launched cloud design so you can mention all of those two stuff you can also even quote their
+ post like this to get some additional views but I'm just going to mention cloud opus 4.7 and cloud
+ design so just click post here and as you can see I already did something similar so just clip on
+ post and let's say cloud cloud design plus first plus cling 3.0 since this is what we use
+ let's make sure we we type clean correctly yep and now we can just upload our video that we just
+ exported not this one we can click download here
+ and let's just upload this and you can also tag me say things for create prompts or tutorials
+ whatever you prefer will say if you can type something more then you have higher chances of
+ being reposted and then just paste this and send it and just do it every day this way you can grow
+ your portfolio you can build your brand and you can find clients through here and once you post it
+ you can under that include your call to action so never put call to action inside of here
+ just put your call to action in here just say book a call with me and paste a link to your site
+ this way you can get clients and you can earn a lot of money selling these AI websites after
+ this dawn there's a lot of ways you can export this so just clicks export and you can export this
+ as a code so then you can open it in anti-gravity you can do whatever you want with it and as you can
+ see even we have a lot of animation and stuff the size of this is very low because all of this
+ is hosted not locally so i don't see any issues with the speed of these websites that i'm building
+ or any anything like that so yeah this was it for this tutorial let me know if you liked it and
+ what you want to see in the next one thank you for watching
