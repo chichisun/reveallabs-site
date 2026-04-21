@@ -73,6 +73,10 @@ type GlyphSpec = {
   ch: string;
   accent: boolean;
   opticalScale: number;
+  // Optional per-icon stroke-width override. Some Lucide icons (Wheat
+  // especially) have dense overlapping paths that read visually thicker
+  // than others at the default stroke width.
+  strokeWidth?: number;
 };
 
 // Per-icon visual-weight normalizers. Lucide icons fill their 24-unit
@@ -83,13 +87,13 @@ type GlyphSpec = {
 // of 1.6-1.9 here doesn't break the mobile row fit — only changes how
 // the icon looks inside its 36px container.
 const GLYPHS: GlyphSpec[] = [
-  { Icon: ChefHat, ch: "r", accent: false, opticalScale: 1.6 },
+  { Icon: ChefHat, ch: "r", accent: false, opticalScale: 1.15 },
   { Icon: Utensils, ch: "e", accent: false, opticalScale: 1.0 },
   { Icon: UtensilsCrossed, ch: "v", accent: false, opticalScale: 1.05 },
   { Icon: CookingPot, ch: "e", accent: false, opticalScale: 1.0 },
   { Icon: Egg, ch: "a", accent: false, opticalScale: 1.15 },
-  { Icon: Wheat, ch: "l", accent: false, opticalScale: 1.9 },
-  { Icon: Flame, ch: ".", accent: true, opticalScale: 1.95 },
+  { Icon: Wheat, ch: "l", accent: false, opticalScale: 1.2, strokeWidth: 1.35 },
+  { Icon: Flame, ch: ".", accent: true, opticalScale: 1.2 },
 ];
 
 // Measure each letter's width at the INTRO LETTER'S current font-size
@@ -130,17 +134,52 @@ const T = {
   lockStart: 0.85,
   lockDur: 1.1,
   lockStagger: 0.16,
-  dockStart: 2.1,
+  // Dock waits until after the last glyph (Flame → ".") finishes morphing
+  // at T.lockStart + 6*T.lockStagger + T.lockDur ≈ 2.91s. A small buffer
+  // lets the formed word breathe for a beat before flying to the nav.
+  dockStart: 3.0,
   dockDur: 1.15,
-  heroStart: 2.2,
-  total: 3.35,
+  heroStart: 3.1,
+  total: 4.25,
 };
 
 type FlyTo = { dx: number; dy: number; scale: number };
 
+// Compute per-letter center X offsets (from wordmark left edge) at the
+// wordmark's computed font. Returns cumulative center-x for each of
+// "r","e","v","e","a","l",".".
+//
+// We render the full string in-context with each letter wrapped in its
+// own <span> and measure each span's rect. Measuring letters in isolation
+// and summing introduces cumulative letter-spacing error (~1-2px across
+// 7 letters); in-context measurement matches the actual rendered layout
+// of the nav wordmark 1:1.
+function measureNavLetterCenters(navWordmark: HTMLElement): number[] {
+  const chars = ["r", "e", "v", "e", "a", "l", "."];
+  const cs = getComputedStyle(navWordmark);
+  const probe = document.createElement("span");
+  probe.style.cssText = `
+    position:absolute; visibility:hidden; white-space:pre; top:-9999px;
+    font-family:${cs.fontFamily};
+    font-size:${cs.fontSize};
+    font-weight:${cs.fontWeight};
+    letter-spacing:${cs.letterSpacing};
+  `;
+  probe.innerHTML = chars.map((c) => `<span>${c}</span>`).join("");
+  document.body.appendChild(probe);
+  const probeLeft = probe.getBoundingClientRect().left;
+  const centers: number[] = [];
+  probe.querySelectorAll("span").forEach((s) => {
+    const r = s.getBoundingClientRect();
+    centers.push((r.left + r.right) / 2 - probeLeft);
+  });
+  document.body.removeChild(probe);
+  return centers;
+}
+
 function IntroOverlay({ onDone }: { onDone: () => void }) {
   const rowRef = useRef<HTMLDivElement | null>(null);
-  const [flyTo, setFlyTo] = useState<FlyTo | null>(null);
+  const [flyTos, setFlyTos] = useState<FlyTo[] | null>(null);
   const [widths, setWidths] = useState<number[] | null>(null);
   const [overlayGone, setOverlayGone] = useState(false);
 
@@ -154,7 +193,6 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
         raf = window.requestAnimationFrame(measure);
         return;
       }
-      const rr = row.getBoundingClientRect();
       const rt = target.getBoundingClientRect();
       const targetFS = parseFloat(getComputedStyle(target).fontSize) || 24;
       // Use the actual intro-letter font-size (72px desktop, smaller on
@@ -163,11 +201,35 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
       const introFS =
         parseFloat(getComputedStyle(introLetter).fontSize) || 72;
       const scale = targetFS / introFS;
-      const rowCx = rr.left + rr.width / 2;
-      const rowCy = rr.top + rr.height / 2;
-      const tgtCx = rt.left + rt.width / 2;
-      const tgtCy = rt.top + rt.height / 2;
-      setFlyTo({ dx: tgtCx - rowCx, dy: tgtCy - rowCy, scale });
+
+      // Each intro glyph flies to its OWN target — the exact slot its
+      // letter will occupy inside the docked wordmark. This means the
+      // letters don't translate as a row and collapse at the end; they
+      // converge directly to their final positions, appearing to pull
+      // into the word from wherever they happen to be standing.
+      // Measure the OUTER .intro-glyph-flight wrapper, not .intro-glyph.
+      // The inner .intro-glyph has an `initial={{ y: 26 }}` arrive offset
+      // applied at mount time, so its rect is 26px low when we measure.
+      // The outer wrapper is not transformed at t≈0, so its rect equals
+      // the resting layout position of the glyph — which is what we need
+      // for the dock target math.
+      const glyphEls = row.querySelectorAll(".intro-glyph-flight");
+      const navCenters = measureNavLetterCenters(target);
+      const navCy = rt.top + rt.height / 2;
+
+      const perGlyph: FlyTo[] = [];
+      glyphEls.forEach((el, i) => {
+        const gr = (el as HTMLElement).getBoundingClientRect();
+        const glyphCx = gr.left + gr.width / 2;
+        const glyphCy = gr.top + gr.height / 2;
+        const targetCx = rt.left + navCenters[i];
+        perGlyph.push({
+          dx: targetCx - glyphCx,
+          dy: navCy - glyphCy,
+          scale,
+        });
+      });
+      setFlyTos(perGlyph);
       setWidths(measureLetterWidths(introFS));
     };
     raf = window.requestAnimationFrame(measure);
@@ -225,7 +287,7 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0 } }}
-          style={{ pointerEvents: flyTo ? "none" : "auto" }}
+          style={{ pointerEvents: flyTos ? "none" : "auto" }}
         >
           <motion.div
             className="intro-scrim"
@@ -243,46 +305,15 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
           <motion.div
             ref={rowRef}
             className="intro-row"
-            initial={{ scale: 1, x: 0, y: 0, gap: "36px", opacity: 1 }}
+            initial={{ opacity: 1 }}
             animate={
-              flyTo
-                ? {
-                    scale: flyTo.scale,
-                    x: flyTo.dx,
-                    y: flyTo.dy,
-                    gap: "0px",
-                    opacity: [1, 1, 0],
-                  }
+              flyTos
+                ? { opacity: [1, 1, 0] }
                 : {}
             }
             transition={
-              flyTo
+              flyTos
                 ? {
-                    scale: {
-                      duration: T.dockDur,
-                      delay: T.dockStart,
-                      ease: [0.23, 1, 0.32, 1] as const,
-                    },
-                    x: {
-                      duration: T.dockDur,
-                      delay: T.dockStart,
-                      ease: [0.23, 1, 0.32, 1] as const,
-                    },
-                    y: {
-                      duration: T.dockDur,
-                      delay: T.dockStart,
-                      ease: [0.23, 1, 0.32, 1] as const,
-                    },
-                    gap: {
-                      duration: Math.max(
-                        0.3,
-                        T.dockStart +
-                          T.dockDur -
-                          (T.lockStart + 6 * T.lockStagger + T.lockDur),
-                      ),
-                      delay: T.lockStart + 6 * T.lockStagger + T.lockDur,
-                      ease: [0.23, 1, 0.32, 1] as const,
-                    },
                     opacity: {
                       duration: 0.12,
                       delay: handoffT,
@@ -298,7 +329,7 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
                 key={i}
                 index={i}
                 {...g}
-                compactWidth={widths ? widths[i] : null}
+                flyTo={flyTos ? flyTos[i] : null}
               />
             ))}
           </motion.div>
@@ -327,28 +358,15 @@ function Glyph({
   Icon,
   ch,
   accent,
-  compactWidth,
   opticalScale = 1,
-}: GlyphSpec & { index: number; compactWidth: number | null }) {
+  strokeWidth,
+  flyTo,
+}: GlyphSpec & {
+  index: number;
+  flyTo: FlyTo | null;
+}) {
   const arriveDelay = T.arriveStart + index * T.arriveStagger;
   const lockDelay = T.lockStart + index * T.lockStagger;
-
-  const wrapArrive = {
-    opacity: [0, 1],
-    y: [26, 0],
-    scale: [0.9, 1],
-    transition: {
-      duration: T.arriveDur,
-      delay: arriveDelay,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  };
-
-  const compactDelay = Math.max(T.dockStart, lockDelay + T.lockDur);
-  const compactDur = Math.max(
-    0.25,
-    T.dockStart + T.dockDur - compactDelay,
-  );
 
   const [breathing, setBreathing] = useState(false);
   const [tumbling, setTumbling] = useState(false);
@@ -356,61 +374,87 @@ function Glyph({
   useEffect(() => {
     const breatheAt = (arriveDelay + T.arriveDur * 0.6) * 1000;
     const tumbleAt = lockDelay * 1000;
+    // Stop the breathe oscillation just before the dock fires so the
+    // glyph isn't ±3px off-center while flying to its final slot.
+    const stopBreatheAt = (T.dockStart - 0.05) * 1000;
     const t1 = window.setTimeout(() => setBreathing(true), breatheAt);
     const t2 = window.setTimeout(() => setTumbling(true), tumbleAt);
+    const t3 = window.setTimeout(() => setBreathing(false), stopBreatheAt);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
+      window.clearTimeout(t3);
     };
   }, [arriveDelay, lockDelay]);
 
   const glowDelay = accent ? `${T.lockDur * 0.65}s` : "0s";
 
+  // Two-layer motion: an outer flight wrapper handles the per-glyph dock
+  // (x/y/scale to the letter's final nav slot), and the inner glyph
+  // handles the initial arrive entrance. Each letter plots its own path
+  // to its target — so when the dock fires, letters converge directly on
+  // their final positions instead of flying as a row that collapses at
+  // the end.
   return (
     <motion.div
-      className="intro-glyph"
-      initial={{ opacity: 0, y: 26, scale: 0.9 }}
+      className="intro-glyph-flight"
+      style={{ display: "inline-block" }}
+      initial={{ x: 0, y: 0, scale: 1 }}
       animate={
-        compactWidth
-          ? { ...wrapArrive, width: `${compactWidth}px` }
-          : wrapArrive
+        flyTo
+          ? { x: flyTo.dx, y: flyTo.dy, scale: flyTo.scale }
+          : { x: 0, y: 0, scale: 1 }
       }
       transition={
-        compactWidth
+        flyTo
           ? {
-              width: {
-                duration: compactDur,
-                delay: compactDelay,
-                ease: [0.23, 1, 0.32, 1] as const,
-              },
+              duration: T.dockDur,
+              delay: T.dockStart,
+              ease: [0.23, 1, 0.32, 1] as const,
             }
           : undefined
       }
     >
-      <div className={`intro-breathe${breathing ? " is-breathing" : ""}`}>
-        <div
-          className={`intro-tumbler${accent ? " is-accent" : ""}${
-            tumbling ? " is-tumbling" : ""
-          }`}
-          style={
-            {
-              "--tumble-dur": `${T.lockDur}s`,
-              "--glow-delay": glowDelay,
-            } as React.CSSProperties
-          }
-        >
-          <div className="intro-content intro-icon">
-            <Icon
-              stroke="currentColor"
-              style={{
-                transform: `scale(${opticalScale})`,
-                transformOrigin: "center",
-              }}
-            />
+      <motion.div
+        className="intro-glyph"
+        initial={{ opacity: 0, y: 26, scale: 0.9 }}
+        animate={{
+          opacity: [0, 1],
+          y: [26, 0],
+          scale: [0.9, 1],
+        }}
+        transition={{
+          duration: T.arriveDur,
+          delay: arriveDelay,
+          ease: [0.22, 1, 0.36, 1] as const,
+        }}
+      >
+        <div className={`intro-breathe${breathing ? " is-breathing" : ""}`}>
+          <div
+            className={`intro-tumbler${accent ? " is-accent" : ""}${
+              tumbling ? " is-tumbling" : ""
+            }`}
+            style={
+              {
+                "--tumble-dur": `${T.lockDur}s`,
+                "--glow-delay": glowDelay,
+              } as React.CSSProperties
+            }
+          >
+            <div className="intro-content intro-icon">
+              <Icon
+                stroke="currentColor"
+                {...(strokeWidth !== undefined ? { strokeWidth } : {})}
+                style={{
+                  transform: `scale(${opticalScale})`,
+                  transformOrigin: "center",
+                }}
+              />
+            </div>
+            <div className="intro-content intro-letter">{ch}</div>
           </div>
-          <div className="intro-content intro-letter">{ch}</div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
