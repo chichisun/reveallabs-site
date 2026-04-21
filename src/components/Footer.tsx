@@ -15,7 +15,7 @@ export function Footer() {
           <a href="/privacy">Privacy</a>
           <a href="mailto:chayadol@reveallabs.co">Contact</a>
           <a
-            href="https://www.linkedin.com"
+            href="https://www.linkedin.com/company/reveallabs"
             target="_blank"
             rel="noopener noreferrer"
           >

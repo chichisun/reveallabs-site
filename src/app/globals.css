@@ -151,13 +151,13 @@ body {
   position: relative;
   display: inline-block;
   font-family: var(--font-space-mono), ui-monospace, monospace;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 3.4px;
   text-transform: uppercase;
   color: var(--green-500);
   line-height: 1;
-  padding: 9px 16px 8px;
+  padding: 11px 20px 10px;
   border-radius: 999px;
   background:
     linear-gradient(160deg,
@@ -836,7 +836,7 @@ html[data-theme="dark"] .eyebrow {
 @media (max-width: 560px) {
   .hero h1 { font-size: 40px; letter-spacing: -1.4px; }
   .hero-sub { font-size: 16px; }
-  .eyebrow { font-size: 11px; letter-spacing: 2.2px; padding: 7px 13px 6px; }
+  .eyebrow { font-size: 12px; letter-spacing: 2.4px; padding: 8px 14px 7px; }
   .mobile-beat .beat-voice { font-size: 54px; letter-spacing: -2px; }
   .mobile-beat .beat-primary { font-size: 72px; letter-spacing: -3px; }
   .mobile-beat .beat-secondary { font-size: 54px; letter-spacing: -2px; }
