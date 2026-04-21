@@ -36,8 +36,8 @@ export function Hero() {
           Find the money your restaurant is leaving on the table.
         </h1>
         <p className="hero-sub">
-          We give you specific moves every month based on your restaurant. You
-          run it. We watch the data.
+          We give you specific moves every month to better understand and grow
+          your restaurant. You run it as we track it.
         </p>
         <div className="hero-ctas">
           <WaitlistTrigger>Join the waitlist</WaitlistTrigger>
