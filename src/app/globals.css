@@ -131,15 +131,37 @@ body {
 
 .wordmark {
   font-family: var(--font-space-grotesk), sans-serif;
-  font-size: 24px;
+  font-size: 36px;
   font-weight: 700;
-  letter-spacing: -1px;
+  letter-spacing: -1.4px;
   color: var(--charcoal);
   line-height: 1;
   user-select: none;
   text-decoration: none;
 }
-.wordmark .dot { color: var(--green-700); }
+.wordmark .dot {
+  color: var(--green-700);
+  text-shadow: 0 0 6px rgba(95, 149, 104, 0.35),
+    0 0 12px rgba(95, 149, 104, 0.18);
+  animation: dot-pulse 2.4s ease-in-out infinite alternate;
+  will-change: text-shadow, color;
+}
+@keyframes dot-pulse {
+  0% {
+    text-shadow: 0 0 4px rgba(95, 149, 104, 0.25),
+      0 0 10px rgba(95, 149, 104, 0.12);
+    color: var(--green-700);
+  }
+  100% {
+    text-shadow: 0 0 14px rgba(139, 175, 143, 0.75),
+      0 0 28px rgba(139, 175, 143, 0.4),
+      0 0 42px rgba(139, 175, 143, 0.18);
+    color: var(--green-500);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wordmark .dot { animation: none; }
+}
 
 /* Hero eyebrow — sits over the video+cream-wash background. Keep the
    brand green but bump weight + size + a cream halo so it pops against
@@ -323,8 +345,15 @@ html[data-theme="dark"] .eyebrow {
   left: 0;
   right: 0;
   z-index: 10;
-  padding: 24px 0;
+  padding: 24px 32px;
   background: transparent;
+}
+/* Override .container's centered max-width inside the nav so the wordmark
+   anchors to the viewport's top-left corner, not the centered grid edge. */
+.nav .container {
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 .nav-inner {
   display: flex;
@@ -378,7 +407,7 @@ html[data-theme="dark"] .eyebrow {
 .hero-inner {
   position: relative;
   z-index: 3;
-  max-width: 900px;
+  max-width: 1100px;
   width: 100%;
   text-align: center;
   display: flex;
@@ -387,22 +416,22 @@ html[data-theme="dark"] .eyebrow {
 }
 .hero h1 {
   font-family: var(--font-space-grotesk), sans-serif;
-  font-size: 72px;
+  font-size: 84px;
   font-weight: 700;
-  letter-spacing: -2.8px;
+  letter-spacing: -3.2px;
   line-height: 1.02;
   color: var(--charcoal);
-  max-width: 860px;
-  margin-top: 24px;
+  max-width: 960px;
+  margin-top: 28px;
   text-wrap: balance;
 }
 .hero-sub {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   color: var(--charcoal);
-  line-height: 1.6;
-  max-width: 560px;
-  margin-top: 24px;
+  line-height: 1.55;
+  max-width: 620px;
+  margin-top: 28px;
   text-wrap: balance;
 }
 .hero-ctas {
@@ -410,8 +439,19 @@ html[data-theme="dark"] .eyebrow {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-top: 36px;
+  margin-top: 44px;
   flex-wrap: wrap;
+}
+.hero .btn {
+  padding: 18px 36px;
+  font-size: 17px;
+  letter-spacing: -0.4px;
+}
+@media (min-width: 1440px) {
+  .hero h1 { font-size: 96px; letter-spacing: -3.6px; max-width: 1040px; }
+  .hero-sub { font-size: 22px; max-width: 660px; }
+  .hero-inner { max-width: 1160px; }
+  .hero .btn { padding: 20px 40px; font-size: 18px; }
 }
 
 /* ── Scrollytelling ── */
@@ -541,6 +581,147 @@ html[data-theme="dark"] .eyebrow {
 .mobile-beat { display: none; }
 
 /* ── Final CTA ── */
+/* ── What We Do (cinematic masthead: big lede + body column) ── */
+.what-we-do {
+  margin: -120px 0 112px;
+  padding: 0 100px;
+}
+.what-we-do-inner {
+  width: 100%;
+}
+/* SCROLL-DRIVEN ANIMATION COMBO:
+   - Each lede line wipes L→R as you scroll past it (clip-path)
+   - Green rule draws after both lines complete
+   - Body paragraphs each wipe as they enter view
+   - Native scroll-timeline where supported; IntersectionObserver fallback */
+.what-we-do-lede {
+  position: relative;
+}
+.what-we-do-lede .lede-line {
+  display: block;
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+}
+.what-we-do-lede::after {
+  content: "";
+  display: block;
+  width: 160px;
+  height: 2px;
+  background: var(--green-700);
+  margin-top: 32px;
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
+.what-we-do-body {
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+}
+
+/* Modern browsers: each element animates over a long scroll range so the
+   reveal continues throughout the user's scroll past it — completing only
+   as the section settles into its natural reading position. */
+@supports (animation-timeline: view()) {
+  .what-we-do-lede .lede-line:nth-child(1) {
+    animation: wipe-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 18%;
+  }
+  .what-we-do-lede .lede-line:nth-child(2) {
+    animation: wipe-in linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 25%;
+  }
+  .what-we-do-lede::after {
+    animation: rule-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 15% cover 32%;
+  }
+  .what-we-do-body:nth-of-type(1) {
+    animation: wipe-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 28%;
+  }
+  .what-we-do-body:nth-of-type(2) {
+    animation: wipe-in linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 35%;
+  }
+}
+@keyframes wipe-in {
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes rule-draw {
+  to { transform: scaleX(1); }
+}
+
+/* Fallback for browsers without scroll-timeline support */
+@supports not (animation-timeline: view()) {
+  .what-we-do-lede .lede-line {
+    transition: clip-path 900ms cubic-bezier(0.77, 0, 0.18, 1);
+  }
+  .what-we-do-body {
+    transition: clip-path 800ms cubic-bezier(0.77, 0, 0.18, 1);
+  }
+  .what-we-do-lede::after {
+    transition: transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .what-we-do.is-visible .lede-line:nth-child(1) { clip-path: inset(0 0 0 0); }
+  .what-we-do.is-visible .lede-line:nth-child(2) {
+    clip-path: inset(0 0 0 0);
+    transition-delay: 220ms;
+  }
+  .what-we-do.is-visible .what-we-do-lede::after {
+    transform: scaleX(1);
+    transition-delay: 420ms;
+  }
+  .what-we-do.is-visible .what-we-do-body:nth-of-type(1) {
+    clip-path: inset(0 0 0 0);
+    transition-delay: 580ms;
+  }
+  .what-we-do.is-visible .what-we-do-body:nth-of-type(2) {
+    clip-path: inset(0 0 0 0);
+    transition-delay: 720ms;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .what-we-do-lede .lede-line,
+  .what-we-do-lede::after,
+  .what-we-do-body {
+    clip-path: none !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+.what-we-do-lede {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -2.4px;
+  line-height: 1.02;
+  color: var(--charcoal);
+  margin: 0 0 88px;
+  text-wrap: balance;
+  text-align: left;
+}
+.what-we-do-body-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+}
+.what-we-do-body {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--charcoal-soft);
+  margin: 0;
+}
+.what-we-do-body .dot {
+  color: var(--green-700);
+}
+
 .final-cta {
   margin: 96px 100px 48px;
 }
@@ -820,8 +1001,15 @@ html[data-theme="dark"] .eyebrow {
 
 /* ── Responsive hero + CTA + footer ── */
 @media (max-width: 900px) {
+  .nav { padding: 20px 20px; }
+  .nav .wordmark { font-size: 30px; letter-spacing: -1.2px; }
   .hero { padding: 96px 20px 72px; min-height: 88vh; }
   .hero h1 { font-size: 48px; letter-spacing: -1.8px; }
+  .what-we-do { margin: 0 0 80px; padding: 0 60px; }
+  .what-we-do-lede { font-size: 44px; letter-spacing: -1.6px; margin-bottom: 40px; }
+  .what-we-do-lede br { display: none; }
+  .what-we-do-body-wrap { grid-template-columns: 1fr; gap: 24px; }
+  .what-we-do-body { font-size: 20px; max-width: none; }
   .final-cta { margin: 72px 60px 48px; }
   .final-cta-inner { padding: 72px 40px; }
   .final-cta h2 { font-size: 36px; letter-spacing: -1.5px; }
@@ -841,6 +1029,8 @@ html[data-theme="dark"] .eyebrow {
   .mobile-beat .beat-primary { font-size: 72px; letter-spacing: -3px; }
   .mobile-beat .beat-secondary { font-size: 54px; letter-spacing: -2px; }
   .scrolly-block p { font-size: 20px; }
+  .what-we-do { margin: 0 0 56px; padding: 0 24px; }
+  .what-we-do-lede { font-size: 34px; letter-spacing: -1.2px; margin-bottom: 32px; }
   .final-cta { margin: 56px 24px 32px; }
   .final-cta-inner { padding: 56px 28px; }
   .final-cta h2 { font-size: 32px; letter-spacing: -1.2px; }
