@@ -1122,24 +1122,36 @@ html.intro-pending .site-footer { visibility: hidden; }
 .intro-tumbler.is-tumbling {
   animation: intro-tumble var(--tumble-dur, 0.85s) cubic-bezier(0.37, 0, 0.63, 1) both;
 }
+/* Smooth crossfade between icon and letter. A hard cut at 50% pops on
+   most frames because the tumble doesn't fully hide the card face at
+   the midpoint. A 40–60% eased crossfade dissolves cleanly. */
+/* Wider, continuous crossfade — the icon begins fading immediately and
+   the letter begins fading in early, overlapping through the midpoint.
+   Eliminates the "swap" pop; reads as a true dissolve. */
 @keyframes intro-icon-fade {
-  0%, 49.9% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+  0%   { opacity: 1; }
+  30%  { opacity: 1; }
+  65%  { opacity: 0; }
+  100% { opacity: 0; }
 }
 @keyframes intro-letter-fade {
-  0%, 49.9% { opacity: 0; }
-  50%, 100% { opacity: 1; }
+  0%   { opacity: 0; }
+  35%  { opacity: 0; }
+  70%  { opacity: 1; }
+  100% { opacity: 1; }
 }
+/* Continuous scale — no held plateau. The letter grows smoothly from
+   start to finish so there's no discrete "it appeared" moment. */
 @keyframes intro-letter-grow {
-  0%, 50% { transform: scale(0.72); }
-  100%    { transform: scale(1); }
+  0%   { transform: scale(0.85); }
+  100% { transform: scale(1); }
 }
 .intro-tumbler.is-tumbling .intro-icon {
-  animation: intro-icon-fade var(--tumble-dur, 0.85s) linear both;
+  animation: intro-icon-fade var(--tumble-dur, 0.85s) cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 .intro-tumbler.is-tumbling .intro-letter {
   animation:
-    intro-letter-fade var(--tumble-dur, 0.85s) linear both,
+    intro-letter-fade var(--tumble-dur, 0.85s) cubic-bezier(0.4, 0, 0.2, 1) both,
     intro-letter-grow var(--tumble-dur, 0.85s) cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes intro-glow {
