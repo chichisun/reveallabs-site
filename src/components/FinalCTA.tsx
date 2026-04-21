@@ -21,7 +21,9 @@ export function FinalCTA() {
             </p>
             <WaitlistTrigger>Join the waitlist</WaitlistTrigger>
             <p className="final-cta-closing">
-              We built this for our parents&apos; restaurant first.
+              Started it because my parents own a restaurant. Watched them run
+              on instinct for 20 years while the answers sat in their POS.
+              Building the tool I wish they&apos;d had.
             </p>
           </div>
           <div

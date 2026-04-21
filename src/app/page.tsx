@@ -1,5 +1,6 @@
 import { Hero } from "../components/Hero";
 import { Scrollytelling } from "../components/Scrollytelling";
+import { WhatWeDo } from "../components/WhatWeDo";
 import { FinalCTA } from "../components/FinalCTA";
 import { Footer } from "../components/Footer";
 import { Intro } from "../components/Intro";
@@ -15,6 +16,7 @@ export default function Home() {
       <ThemeToggle />
       <Hero />
       <Scrollytelling />
+      <WhatWeDo />
       <FinalCTA />
       <Footer />
       <WaitlistDialog />

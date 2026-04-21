@@ -22,8 +22,8 @@ const ICON = {
   cornerRadius: 34,
   fontSize: 134,
   letterTopOffset: -4,
-  dotSize: 26,
-  dotMarginLeft: 4,
+  dotSize: 18,
+  dotMarginLeft: 2,
   dotMarginBottom: 26,
 } as const;
 
