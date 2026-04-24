@@ -11,15 +11,6 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div className="flex flex-1 flex-col">
-      <header className="px-8 py-8">
-        <Link
-          href="/"
-          className="font-sans text-xl font-bold tracking-tight text-charcoal"
-        >
-          reveal<span className="text-green-700">.</span>
-        </Link>
-      </header>
-
       <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col gap-6 px-8 py-16">
         <h1 className="text-4xl font-semibold tracking-tight text-charcoal">
           Privacy

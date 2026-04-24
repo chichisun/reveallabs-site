@@ -22,14 +22,6 @@ export function Hero() {
       </video>
       <div className="hero-wash" aria-hidden="true" />
 
-      <header className="nav">
-        <div className="container nav-inner">
-          <a href="#" className="wordmark">
-            reveal<span className="dot">.</span>
-          </a>
-        </div>
-      </header>
-
       <div className="hero-inner">
         <div className="eyebrow"><span>For independent restaurants</span></div>
         <h1 id="hero-title">

@@ -7,6 +7,7 @@ import {
   SITE_DESCRIPTION,
   SITE_NAME,
 } from "../lib/site-config";
+import { Nav } from "../components/Nav";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -82,6 +83,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body className="min-h-screen flex flex-col">
+        <Nav />
         {children}
         <Analytics />
       </body>
