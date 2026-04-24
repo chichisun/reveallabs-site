@@ -49,3 +49,7 @@ next-env.d.ts
 /.playwright-mcp/
 /verify-page.png
 .env*.local
+
+# Playwright MCP screenshots (ad-hoc, not part of site)
+our-story-*.png
+verify-page.png
