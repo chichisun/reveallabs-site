@@ -436,9 +436,12 @@ html[data-theme="dark"] .eyebrow {
 
 /* Over hero video on home: cream text with a stronger shadow for
    legibility against the dark wash. No pill — CTA button is the only
-   pill. Slightly bolder + full opacity so it reads at a glance. */
+   pill. Slightly bolder + full opacity so it reads at a glance.
+   NOTE: use literal cream, not var(--cream). The video is dark in
+   both themes, so the text must always be light — var(--cream) would
+   flip to near-black in dark mode. Same convention as .fc-stat. */
 .nav--home .nav-link {
-  color: var(--cream);
+  color: #F2F1ED;
   opacity: 1;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55),
     0 0 12px rgba(0, 0, 0, 0.35);
@@ -455,7 +458,7 @@ html[data-theme="dark"] .eyebrow {
   margin-right: 56px;
 }
 .nav--home .wordmark {
-  color: var(--cream);
+  color: #F2F1ED;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 .nav--home .wordmark .dot {
