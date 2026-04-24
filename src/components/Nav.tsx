@@ -29,9 +29,11 @@ export function Nav() {
             </Link>
           </nav>
         </div>
-        <WaitlistTrigger className="btn btn-primary btn-pulse nav-cta">
-          Join the waitlist
-        </WaitlistTrigger>
+        {!isHome && (
+          <WaitlistTrigger className="btn btn-primary btn-pulse nav-cta">
+            Join the waitlist
+          </WaitlistTrigger>
+        )}
       </div>
     </header>
   );
