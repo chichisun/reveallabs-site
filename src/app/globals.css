@@ -361,6 +361,33 @@ html[data-theme="dark"] .eyebrow {
   justify-content: space-between;
   gap: 24px;
 }
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  opacity: 0.75;
+}
+.nav-link:hover { opacity: 1; }
+.nav-link.is-current {
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+/* On non-home routes, nav sits on page background */
+.nav--solid {
+  position: sticky;
+  background: var(--cream);
+  border-bottom: 1px solid var(--stroke);
+}
 
 /* ── Hero ── */
 .hero {
