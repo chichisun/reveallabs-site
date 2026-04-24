@@ -1684,38 +1684,72 @@ html[data-theme="dark"] .waitlist-card::before {
   align-items: center;
   padding: 40px 0;
 }
-/* Staggered fade-in: photo + year + copy each arrive on their own beat */
+/* ── Reveal choreography ─────────────────────────────────────
+   Editorial clip-path reveals instead of fade+translate.
+   - Photo: mask opens top-to-bottom, like a shade lifting on a
+     darkroom print.
+   - Year: each digit slides up from behind its own mask, one after
+     another (typewriter-feel without the kitsch).
+   - Copy: mask opens top-to-bottom, naturally paired with reading. */
 .story-beat-photo,
-.story-beat-year,
 .story-beat-copy {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.9s ease, transform 0.9s ease;
-}
-/* When re-entering from above (scrolling up through a beat already
-   scrolled past), suppress all transitions for one frame so the beat
-   snaps visible without replaying its entry animation. */
-.story-beat.no-anim,
-.story-beat.no-anim .story-beat-photo,
-.story-beat.no-anim .story-beat-year,
-.story-beat.no-anim .story-beat-copy,
-.story-beat.no-anim .story-beat-photo img {
-  transition: none !important;
+  clip-path: inset(0 0 100% 0);
+  -webkit-clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    -webkit-clip-path 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .story-beat.is-visible .story-beat-photo {
-  opacity: 1;
-  transform: none;
-  transition-delay: 100ms;
-}
-.story-beat.is-visible .story-beat-year {
-  opacity: 1;
-  transform: none;
+  clip-path: inset(0 0 0 0);
+  -webkit-clip-path: inset(0 0 0 0);
   transition-delay: 0ms;
 }
 .story-beat.is-visible .story-beat-copy {
-  opacity: 1;
-  transform: none;
+  clip-path: inset(0 0 0 0);
+  -webkit-clip-path: inset(0 0 0 0);
+  transition: clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.4s,
+    -webkit-clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+}
+
+/* Year: overflow-hidden mask per digit + inner span that slides up. */
+.story-beat-year {
+  display: inline-flex;
+  line-height: 1;
+}
+.year-digit {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1;
+}
+.year-digit-inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.story-beat.is-visible .year-digit-inner {
+  transform: translateY(0);
+}
+/* Stagger: each digit arrives ~80ms after the previous one,
+   starting ~180ms after the photo mask begins opening. */
+.story-beat.is-visible .year-digit:nth-child(1) .year-digit-inner {
+  transition-delay: 180ms;
+}
+.story-beat.is-visible .year-digit:nth-child(2) .year-digit-inner {
   transition-delay: 260ms;
+}
+.story-beat.is-visible .year-digit:nth-child(3) .year-digit-inner {
+  transition-delay: 340ms;
+}
+.story-beat.is-visible .year-digit:nth-child(4) .year-digit-inner {
+  transition-delay: 420ms;
+}
+
+/* Snap-visible on scroll-up re-entry (no animation replay) */
+.story-beat.no-anim,
+.story-beat.no-anim .story-beat-photo,
+.story-beat.no-anim .story-beat-copy,
+.story-beat.no-anim .year-digit-inner,
+.story-beat.no-anim .story-beat-photo img {
+  transition: none !important;
 }
 
 .story-beat-photo {
@@ -1911,9 +1945,12 @@ html[data-theme="dark"] .waitlist-card::before {
 /* Reduced-motion fallback */
 @media (prefers-reduced-motion: reduce) {
   .story-beat-photo,
-  .story-beat-year,
   .story-beat-copy {
-    opacity: 1 !important;
+    clip-path: inset(0 0 0 0) !important;
+    -webkit-clip-path: inset(0 0 0 0) !important;
+    transition: none !important;
+  }
+  .year-digit-inner {
     transform: none !important;
     transition: none !important;
   }

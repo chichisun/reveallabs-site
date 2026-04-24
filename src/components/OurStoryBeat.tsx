@@ -34,7 +34,13 @@ export const OurStoryBeat = forwardRef<HTMLElement, BeatProps>(
           </div>
         </div>
         <div className="story-beat-text">
-          <div className="story-beat-year">{year}</div>
+          <div className="story-beat-year" aria-label={year}>
+            {year.split("").map((ch, i) => (
+              <span key={i} className="year-digit" aria-hidden="true">
+                <span className="year-digit-inner">{ch}</span>
+              </span>
+            ))}
+          </div>
           <p className="story-beat-copy">{copy}</p>
         </div>
       </article>
