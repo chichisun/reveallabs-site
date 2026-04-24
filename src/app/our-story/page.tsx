@@ -11,11 +11,13 @@ export const metadata: Metadata = {
 export default function OurStoryPage() {
   return (
     <>
-      <main className="our-story-main">
-        <header className="our-story-header">
+      <header className="our-story-header">
+        <div className="our-story-header-inner">
           <h1 className="our-story-heading">Our Story</h1>
           <p className="our-story-lede">Three generations, one kitchen.</p>
-        </header>
+        </div>
+      </header>
+      <main className="our-story-main">
         <OurStory />
       </main>
       <Footer />

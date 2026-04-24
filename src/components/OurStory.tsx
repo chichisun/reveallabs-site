@@ -109,9 +109,15 @@ export function OurStory() {
       ticking = false;
       const rect = section.getBoundingClientRect();
       const viewH = window.innerHeight;
-      const total = rect.height + viewH;
-      const traveled = viewH - rect.top;
-      const p = Math.max(0, Math.min(1, traveled / total));
+      // Progress tracks viewport-center through the section, but
+      // normalized so progress = 1 when the LAST beat is centered
+      // (not when the entire section has left the viewport).
+      const half = viewH * 0.5;
+      const travelable = Math.max(1, rect.height - viewH);
+      const p = Math.max(
+        0,
+        Math.min(1, (half - rect.top) / travelable),
+      );
       document.documentElement.style.setProperty(
         "--story-progress",
         String(p),
