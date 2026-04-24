@@ -1765,3 +1765,46 @@ html[data-theme="dark"] .waitlist-card::before {
   opacity: 1;
   color: var(--charcoal);
 }
+
+/* Mobile: stack beats, hide sticky spine */
+@media (max-width: 768px) {
+  .story {
+    display: block;
+    gap: 0;
+  }
+  .timeline-spine {
+    display: none;
+  }
+  .story-beat {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 48px 0;
+  }
+  .story-beat:nth-child(odd),
+  .story-beat:nth-child(even) {
+    grid-template-areas:
+      "photo"
+      "text";
+  }
+  .story-beat-year {
+    font-size: clamp(44px, 12vw, 72px);
+    margin-bottom: 12px;
+  }
+  .story-beat-copy {
+    font-size: 16px;
+  }
+}
+
+/* Reduced-motion fallback (belt-and-suspenders alongside JS branch) */
+@media (prefers-reduced-motion: reduce) {
+  .story-beat {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .timeline-spine-fill,
+  .timeline-dot-mark,
+  .timeline-dot-label {
+    transition: none;
+  }
+}
