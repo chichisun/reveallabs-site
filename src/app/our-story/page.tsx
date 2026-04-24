@@ -18,7 +18,9 @@ export default function OurStoryPage() {
         </div>
       </header>
       <main className="our-story-main">
-        <OurStory />
+        <div className="our-story-main-inner">
+          <OurStory />
+        </div>
       </main>
       <Footer />
     </>

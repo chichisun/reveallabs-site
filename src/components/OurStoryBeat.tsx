@@ -22,25 +22,18 @@ export const OurStoryBeat = forwardRef<HTMLElement, BeatProps>(
         className={`story-beat story-beat--${grade}`}
         data-beat={index}
       >
-        <div className="beat-bg">
+        <div className="story-beat-photo">
           <Image
             src={photo}
             alt={alt}
             fill
-            sizes="100vw"
+            sizes="(min-width: 900px) 500px, 100vw"
             priority={index === 0}
-            className="beat-photo"
           />
-          <div className="beat-scrim" aria-hidden="true" />
         </div>
-        <div className="beat-content">
-          <div className="beat-year" aria-hidden="true">
-            {year}
-          </div>
-          <p className="beat-copy">
-            <span className="sr-only">{year}. </span>
-            {copy}
-          </p>
+        <div className="story-beat-text">
+          <div className="story-beat-year">{year}</div>
+          <p className="story-beat-copy">{copy}</p>
         </div>
       </article>
     );
