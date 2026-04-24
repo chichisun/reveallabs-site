@@ -77,9 +77,14 @@ export function OurStory() {
       return;
     }
 
-    // Two-way reveal: add `is-visible` on entry, remove on exit.
-    // Active spine dot = highest index currently intersecting.
-    const visible = new Set<number>();
+    // Two-class system:
+    //   .is-visible — permanent once set. Drives the one-shot entry
+    //                 animations (staggered fade-in + Ken Burns). Not
+    //                 removed on scroll-up so content doesn't re-pop.
+    //   .is-current — only while the beat is actively intersecting.
+    //                 Drives direction-aware effects like the 2026
+    //                 color bloom (saturates on enter, reverts on exit).
+    const current = new Set<number>();
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -87,17 +92,17 @@ export function OurStory() {
             (entry.target as HTMLElement).dataset.beat ?? "0",
           );
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            visible.add(idx);
+            entry.target.classList.add("is-visible", "is-current");
+            current.add(idx);
           } else {
-            entry.target.classList.remove("is-visible");
-            visible.delete(idx);
+            entry.target.classList.remove("is-current");
+            current.delete(idx);
           }
         });
-        if (visible.size === 0) {
+        if (current.size === 0) {
           setActiveIndex(0);
         } else {
-          setActiveIndex(Math.max(...visible));
+          setActiveIndex(Math.max(...current));
         }
       },
       { threshold: 0.35, rootMargin: "0px 0px -10% 0px" },

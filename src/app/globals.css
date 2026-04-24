@@ -1736,12 +1736,13 @@ html[data-theme="dark"] .waitlist-card::before {
   filter: grayscale(100%) contrast(1.05);
 }
 /* Color unveil: the 2026 beat (color grade) starts grayscale and
-   saturates to full color as it enters view. Emotional arc:
+   saturates to full color while it's the current beat. Reverts when
+   you scroll past it (both up and down). Emotional arc:
    past = memory (B&W) → present = alive (color). */
 .story-beat--color .story-beat-photo img {
   filter: grayscale(100%) contrast(1.05);
 }
-.story-beat--color.is-visible .story-beat-photo img {
+.story-beat--color.is-current .story-beat-photo img {
   filter: grayscale(0%) contrast(1);
 }
 .story-beat-year {
