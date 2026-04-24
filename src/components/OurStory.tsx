@@ -109,9 +109,8 @@ export function OurStory() {
       ticking = false;
       const rect = section.getBoundingClientRect();
       const viewH = window.innerHeight;
-      // Progress tracks viewport-center through the section, but
-      // normalized so progress = 1 when the LAST beat is centered
-      // (not when the entire section has left the viewport).
+      // Spine progress: normalized so it reaches 100% when the last
+      // beat is centered, not when the section has left the viewport.
       const half = viewH * 0.5;
       const travelable = Math.max(1, rect.height - viewH);
       const p = Math.max(
@@ -122,6 +121,28 @@ export function OurStory() {
         "--story-progress",
         String(p),
       );
+
+      // Per-beat parallax: each photo drifts a little slower than its
+      // surrounding text as the beat scrolls through the viewport.
+      // Offset range: -28px (entering from below) → +28px (leaving at top).
+      beatRefs.current.forEach((el) => {
+        if (!el) return;
+        const parallaxTarget = el.querySelector<HTMLElement>(
+          ".story-beat-photo-parallax",
+        );
+        if (!parallaxTarget) return;
+        const br = el.getBoundingClientRect();
+        const center = br.top + br.height * 0.5;
+        // Normalized position of beat-center vs viewport-center: -1 (above) → 1 (below)
+        const norm = Math.max(
+          -1,
+          Math.min(1, (center - half) / (viewH * 0.5 + br.height * 0.5)),
+        );
+        parallaxTarget.style.setProperty(
+          "--parallax-y",
+          `${norm * -28}px`,
+        );
+      });
     };
 
     const onScroll = () => {

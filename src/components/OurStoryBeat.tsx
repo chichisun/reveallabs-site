@@ -23,13 +23,15 @@ export const OurStoryBeat = forwardRef<HTMLElement, BeatProps>(
         data-beat={index}
       >
         <div className="story-beat-photo">
-          <Image
-            src={photo}
-            alt={alt}
-            fill
-            sizes="(min-width: 900px) 500px, 100vw"
-            priority={index === 0}
-          />
+          <div className="story-beat-photo-parallax">
+            <Image
+              src={photo}
+              alt={alt}
+              fill
+              sizes="(min-width: 900px) 500px, 100vw"
+              priority={index === 0}
+            />
+          </div>
         </div>
         <div className="story-beat-text">
           <div className="story-beat-year">{year}</div>

@@ -1683,14 +1683,31 @@ html[data-theme="dark"] .waitlist-card::before {
   gap: 64px;
   align-items: center;
   padding: 40px 0;
+}
+/* Staggered fade-in: photo + year + copy each arrive on their own beat */
+.story-beat-photo,
+.story-beat-year,
+.story-beat-copy {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(20px);
   transition: opacity 0.9s ease, transform 0.9s ease;
 }
-.story-beat.is-visible {
+.story-beat.is-visible .story-beat-photo {
   opacity: 1;
   transform: none;
+  transition-delay: 100ms;
 }
+.story-beat.is-visible .story-beat-year {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0ms;
+}
+.story-beat.is-visible .story-beat-copy {
+  opacity: 1;
+  transform: none;
+  transition-delay: 260ms;
+}
+
 .story-beat-photo {
   position: relative;
   aspect-ratio: 4 / 3;
@@ -1698,18 +1715,34 @@ html[data-theme="dark"] .waitlist-card::before {
   border-radius: 6px;
   background: var(--cream-lifted);
 }
+/* Inner wrapper: parallax translate (driven by scroll, instant updates) */
+.story-beat-photo-parallax {
+  position: absolute;
+  inset: 0;
+  transform: translateY(var(--parallax-y, 0px));
+  will-change: transform;
+}
 .story-beat-photo img {
   object-fit: cover;
   transform: scale(1.02);
-  transition: transform 1s ease-out;
+  transition: transform 1s ease-out, filter 1.8s ease-out;
 }
 .story-beat.is-visible .story-beat-photo img {
-  /* Subtle Ken Burns drift while the beat is in view */
-  transform: scale(1.08);
-  transition: transform 12s linear;
+  /* Ken Burns drift while the beat is in view */
+  transform: scale(1.1);
+  transition: transform 14s linear, filter 1.8s ease-out;
 }
 .story-beat--bw .story-beat-photo img {
   filter: grayscale(100%) contrast(1.05);
+}
+/* Color unveil: the 2026 beat (color grade) starts grayscale and
+   saturates to full color as it enters view. Emotional arc:
+   past = memory (B&W) → present = alive (color). */
+.story-beat--color .story-beat-photo img {
+  filter: grayscale(100%) contrast(1.05);
+}
+.story-beat--color.is-visible .story-beat-photo img {
+  filter: grayscale(0%) contrast(1);
 }
 .story-beat-year {
   font-family: var(--font-sans);
@@ -1800,6 +1833,21 @@ html[data-theme="dark"] .waitlist-card::before {
   background: var(--charcoal);
   border-color: var(--charcoal);
   transform: scale(1.3);
+  animation: dot-pulse 0.65s ease-out;
+}
+@keyframes dot-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(46, 46, 46, 0.45);
+  }
+  60% {
+    transform: scale(1.7);
+    box-shadow: 0 0 0 10px rgba(46, 46, 46, 0);
+  }
+  100% {
+    transform: scale(1.3);
+    box-shadow: 0 0 0 0 rgba(46, 46, 46, 0);
+  }
 }
 .timeline-dot-label {
   font-family: var(--font-mono);
@@ -1851,19 +1899,28 @@ html[data-theme="dark"] .waitlist-card::before {
 
 /* Reduced-motion fallback */
 @media (prefers-reduced-motion: reduce) {
-  .story-beat {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .story-beat-photo,
+  .story-beat-year,
+  .story-beat-copy {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .story-beat-photo-parallax {
+    transform: none !important;
   }
   .story-beat-photo img,
   .story-beat.is-visible .story-beat-photo img {
     transform: none !important;
     transition: none !important;
   }
+  .story-beat--color .story-beat-photo img {
+    filter: grayscale(0%) contrast(1) !important;
+  }
   .timeline-spine-fill,
   .timeline-dot-mark,
   .timeline-dot-label {
     transition: none !important;
+    animation: none !important;
   }
 }
