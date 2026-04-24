@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { OurStoryBeat, type BeatGrade } from "./OurStoryBeat";
 import { TimelineSpine } from "./TimelineSpine";
 
@@ -56,13 +56,90 @@ const BEATS: Beat[] = [
 ];
 
 export function OurStory() {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const beatRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Scroll + IntersectionObserver motion lands in Task 9.
+  useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReduced) {
+      beatRefs.current.forEach((el) => el?.classList.add("is-visible"));
+      setActiveIndex(BEATS.length - 1);
+      document.documentElement.style.setProperty("--story-progress", "1");
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      beatRefs.current.forEach((el) => el?.classList.add("is-visible"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          const idx = Number(
+            (entry.target as HTMLElement).dataset.beat ?? "0",
+          );
+          setActiveIndex((prev) => Math.max(prev, idx));
+        });
+      },
+      { threshold: 0.35, rootMargin: "0px 0px -10% 0px" },
+    );
+
+    beatRefs.current.forEach((el) => el && io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (prefersReduced) return;
+
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const rect = section.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const total = rect.height + viewH;
+      const traveled = viewH - rect.top;
+      const p = Math.max(0, Math.min(1, traveled / total));
+      document.documentElement.style.setProperty(
+        "--story-progress",
+        String(p),
+      );
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    update();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
 
   return (
-    <section className="story" aria-label="Reveal's origin story, 1970 to today">
+    <section
+      ref={sectionRef}
+      className="story"
+      aria-label="Reveal's origin story, 1970 to today"
+    >
       <TimelineSpine
         years={BEATS.map((b) => b.year)}
         activeIndex={activeIndex}
