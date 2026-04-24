@@ -451,10 +451,11 @@ html[data-theme="dark"] .eyebrow {
 .nav--home .nav-link:hover {
   opacity: 0.8;
 }
-/* Push the CTA left of the fixed theme toggle on home. The green
-   glass pill works identically on both hero video and cream bg,
-   so no per-theme override is needed any more. */
-.nav--home .nav-cta {
+/* Push the CTA left of the fixed theme toggle — needed on every
+   route since the toggle is top-right on all pages. The green glass
+   pill works identically on both hero video and cream bg, so no
+   per-theme override is needed any more. */
+.nav-cta {
   margin-right: 56px;
 }
 .nav--home .wordmark {
