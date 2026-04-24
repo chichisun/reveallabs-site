@@ -77,25 +77,49 @@ export function OurStory() {
       return;
     }
 
-    // Two-class system:
-    //   .is-visible — permanent once set. Drives the one-shot entry
-    //                 animations (staggered fade-in + Ken Burns). Not
-    //                 removed on scroll-up so content doesn't re-pop.
-    //   .is-current — only while the beat is actively intersecting.
-    //                 Drives direction-aware effects like the 2026
-    //                 color bloom (saturates on enter, reverts on exit).
+    // Direction-aware reveal:
+    //   - Beat enters from below (scroll-down): play full stagger animation.
+    //   - Beat re-enters from above (scroll-up through a beat already
+    //     scrolled past): snap to visible, skip animation.
+    //   - Beat exits top (scrolled past going down): stays is-visible so
+    //     it doesn't re-animate unless you later scroll up past it.
+    //   - Beat exits bottom (scrolled past going up): is-visible removed
+    //     so the next downward entry re-plays the animation.
+    //   - is-current toggles with intersection — drives the 2026 color bloom.
     const current = new Set<number>();
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const idx = Number(
-            (entry.target as HTMLElement).dataset.beat ?? "0",
-          );
+          const el = entry.target as HTMLElement;
+          const idx = Number(el.dataset.beat ?? "0");
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible", "is-current");
+            const prev = el.dataset.state === "above" ? "above" : "below";
+            if (prev === "below") {
+              // Entering from below → animate in.
+              el.classList.remove("no-anim");
+              // Reflow so re-adding is-visible restarts the transitions.
+              void el.offsetWidth;
+              el.classList.add("is-visible", "is-current");
+            } else {
+              // Re-entering from above while scrolling up → snap, no anim.
+              el.classList.add("no-anim", "is-visible", "is-current");
+              requestAnimationFrame(() => el.classList.remove("no-anim"));
+            }
             current.add(idx);
           } else {
-            entry.target.classList.remove("is-current");
+            const rect = entry.boundingClientRect;
+            const viewH = window.innerHeight;
+            const beatMid = rect.top + rect.height * 0.5;
+            if (beatMid < viewH * 0.5) {
+              // Exited above viewport center → scrolled past going down.
+              el.dataset.state = "above";
+              el.classList.remove("is-current");
+              // Keep is-visible so scrolling back up doesn't make it vanish.
+            } else {
+              // Exited below viewport center → scrolled past going up.
+              el.dataset.state = "below";
+              el.classList.remove("is-visible", "is-current");
+            }
             current.delete(idx);
           }
         });

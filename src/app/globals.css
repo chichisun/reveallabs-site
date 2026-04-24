@@ -1692,6 +1692,16 @@ html[data-theme="dark"] .waitlist-card::before {
   transform: translateY(20px);
   transition: opacity 0.9s ease, transform 0.9s ease;
 }
+/* When re-entering from above (scrolling up through a beat already
+   scrolled past), suppress all transitions for one frame so the beat
+   snaps visible without replaying its entry animation. */
+.story-beat.no-anim,
+.story-beat.no-anim .story-beat-photo,
+.story-beat.no-anim .story-beat-year,
+.story-beat.no-anim .story-beat-copy,
+.story-beat.no-anim .story-beat-photo img {
+  transition: none !important;
+}
 .story-beat.is-visible .story-beat-photo {
   opacity: 1;
   transform: none;
@@ -1799,7 +1809,7 @@ html[data-theme="dark"] .waitlist-card::before {
   top: 0;
   left: 0;
   right: 0;
-  background: var(--charcoal);
+  background: var(--green-700);
   height: calc(var(--story-progress, 0) * 100%);
   transition: height 0.14s linear;
 }
@@ -1831,23 +1841,23 @@ html[data-theme="dark"] .waitlist-card::before {
     transform 0.3s ease;
 }
 .timeline-dot.is-active .timeline-dot-mark {
-  background: var(--charcoal);
-  border-color: var(--charcoal);
+  background: var(--green-700);
+  border-color: var(--green-700);
   transform: scale(1.3);
-  animation: dot-pulse 0.65s ease-out;
+  animation: timeline-dot-pulse 0.65s ease-out;
 }
-@keyframes dot-pulse {
+@keyframes timeline-dot-pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(46, 46, 46, 0.45);
+    box-shadow: 0 0 0 0 rgba(53, 94, 59, 0.45);
   }
   60% {
     transform: scale(1.7);
-    box-shadow: 0 0 0 10px rgba(46, 46, 46, 0);
+    box-shadow: 0 0 0 10px rgba(53, 94, 59, 0);
   }
   100% {
     transform: scale(1.3);
-    box-shadow: 0 0 0 0 rgba(46, 46, 46, 0);
+    box-shadow: 0 0 0 0 rgba(53, 94, 59, 0);
   }
 }
 .timeline-dot-label {
@@ -1860,7 +1870,7 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 .timeline-dot.is-active .timeline-dot-label {
   opacity: 1;
-  color: var(--charcoal);
+  color: var(--green-700);
 }
 
 /* Mobile: stack beats, hide sticky spine */
