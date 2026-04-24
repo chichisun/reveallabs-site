@@ -463,30 +463,22 @@ export function Intro() {
   const [show, setShow] = useState<boolean | null>(null);
 
   useEffect(() => {
+    // The boot script in layout.tsx owns the session logic (it sets
+    // `intro-pending` on the <html> only on first arrival at /, and
+    // marks the session seen on every page load). This component just
+    // mirrors that decision — if the class is present, play; if not,
+    // stay hidden. That way client-side nav back to / later in the
+    // session simply doesn't see the class and skips the animation.
     const params = new URLSearchParams(window.location.search);
     const optOut = params.get("no-intro") === "1";
-    const forceReplay = params.get("intro") === "1";
-    let seen = false;
-    try {
-      seen = sessionStorage.getItem("reveal_intro_seen") === "1";
-    } catch {
-      /* ignore */
-    }
-    // Skip intro if opted out, or already seen this session
-    // (unless explicitly replayed via ?intro=1).
-    if (optOut || (seen && !forceReplay)) {
+    const pending = document.documentElement.classList.contains(
+      "intro-pending",
+    );
+    if (optOut || !pending) {
       document.documentElement.classList.remove("intro-pending");
       setShow(false);
     } else {
       setShow(true);
-      // Set the flag immediately, not on completion, so navigating away
-      // mid-intro (or clicking the wordmark before it finishes) still
-      // prevents a replay on return.
-      try {
-        sessionStorage.setItem("reveal_intro_seen", "1");
-      } catch {
-        /* ignore */
-      }
     }
   }, []);
 

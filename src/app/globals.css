@@ -397,52 +397,40 @@ html[data-theme="dark"] .eyebrow {
   letter-spacing: -0.1px;
 }
 
-/* Ocean ripple — two continuously-flowing rings, one half a cycle
-   offset from the other, so at any given moment a wave is already
-   expanding outward while the next begins. Linear timing = constant
-   speed, like surface waves travelling on water. One ring is a
-   soft box-shadow glow, the other a thin outline ring — both radiate
-   outward and fade. The staggered pair removes the "one ring then
-   pause" pulse feel entirely. */
+/* Surface shimmer — a bright diagonal slick sweeps across the glass
+   face, staying CONTAINED within the button. No outer rings, no
+   radiating glow. Feels like light catching a liquid surface as it
+   flows around and over the edges. */
 .btn-pulse {
-  outline: 1px solid transparent;
-  animation:
-    cta-ripple-a 4s linear infinite,
-    cta-ripple-b 4s linear infinite;
-  animation-delay: 0s, -2s;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
 }
-@keyframes cta-ripple-a {
-  0% {
-    box-shadow:
-      inset 0 1px 0.5px rgba(255, 255, 255, 0.55),
-      inset 0 -8px 16px -8px rgba(180, 220, 180, 0.35),
-      inset 0 -1px 0 rgba(20, 40, 24, 0.25),
-      0 6px 28px rgba(53, 94, 59, 0.22),
-      0 1px 2px rgba(30, 53, 34, 0.14),
-      0 0 0 0 rgba(95, 149, 104, 0.35);
-  }
-  100% {
-    box-shadow:
-      inset 0 1px 0.5px rgba(255, 255, 255, 0.55),
-      inset 0 -8px 16px -8px rgba(180, 220, 180, 0.35),
-      inset 0 -1px 0 rgba(20, 40, 24, 0.25),
-      0 6px 28px rgba(53, 94, 59, 0.22),
-      0 1px 2px rgba(30, 53, 34, 0.14),
-      0 0 0 24px rgba(95, 149, 104, 0);
-  }
+.btn-pulse::before {
+  /* Overrides btn-primary::before — the highlight layer becomes a
+     moving shimmer instead of a static sheen. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 62%
+  );
+  background-size: 220% 100%;
+  mix-blend-mode: screen;
+  animation: cta-shimmer 3.6s linear infinite;
+  z-index: 1;
 }
-@keyframes cta-ripple-b {
-  0% {
-    outline-color: rgba(95, 149, 104, 0.28);
-    outline-offset: 0;
-  }
-  100% {
-    outline-color: rgba(95, 149, 104, 0);
-    outline-offset: 24px;
-  }
+@keyframes cta-shimmer {
+  0% { background-position: 220% 0; }
+  100% { background-position: -120% 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn-pulse { animation: none; outline: none; }
+  .btn-pulse::before { animation: none; background: none; }
 }
 
 /* Over hero video on home: cream text with a stronger shadow for

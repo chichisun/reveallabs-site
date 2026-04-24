@@ -57,10 +57,13 @@ const bootScript = `
     }
     document.documentElement.dataset.theme = t;
 
-    // Intro plays once per session on home. Opt-out via ?no-intro=1,
-    // force replay via ?intro=1 (or the IntroReplay button). Once seen,
-    // client-side nav back to / won't replay because Intro.tsx bails out
-    // when sessionStorage 'reveal_intro_seen' is set.
+    // Intro plays on FIRST arrival in a tab session, only if the
+    // user's first landing is /. If the first landing is any other
+    // route (/our-story, /privacy), the intro is marked already-seen
+    // so that clicking the wordmark back to / later in this session
+    // doesn't play the animation.
+    //
+    // ?no-intro=1 opts out, ?intro=1 forces a replay.
     var params = new URLSearchParams(window.location.search);
     var optOut = params.get('no-intro') === '1';
     var forceReplay = params.get('intro') === '1';
@@ -70,6 +73,9 @@ const bootScript = `
     if (!optOut && isHome && (!seen || forceReplay)) {
       document.documentElement.classList.add('intro-pending');
     }
+    // Mark the session seen on EVERY page load so any client-side
+    // navigation back to / later in this session skips the intro.
+    try { sessionStorage.setItem('reveal_intro_seen', '1'); } catch(e) {}
   } catch(e) {}
 })();
 `.trim();
