@@ -382,11 +382,36 @@ html[data-theme="dark"] .eyebrow {
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
 }
-/* Over hero video on home: cream text with a soft shadow for legibility
-   against the dark wash. No pill, no background — just the link. */
-.nav--home .nav-links {
-  margin-right: 56px;
+/* Nav CTA pill — Marketeam-style: solid charcoal on any background.
+   Visible on the dark hero video AND on the cream interior pages. */
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--charcoal);
+  border: 1px solid var(--charcoal);
+  padding: 10px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
+.nav-cta:hover {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(53, 94, 59, 0.25);
+}
+.nav-cta:focus-visible {
+  outline: 2px solid var(--green-700);
+  outline-offset: 3px;
+}
+
+/* Over hero video on home: cream text with a soft shadow for legibility
+   against the dark wash. No pill on the "Our Story" link itself —
+   the CTA button is the only pill. */
 .nav--home .nav-link {
   color: var(--cream);
   opacity: 0.9;
@@ -396,6 +421,21 @@ html[data-theme="dark"] .eyebrow {
 }
 .nav--home .nav-link:hover {
   opacity: 1;
+}
+/* On home the nav sits OVER the hero video — invert the pill so it
+   pops: cream body with charcoal text. Also make room for the
+   fixed-position theme toggle on the far right. */
+.nav--home .nav-cta {
+  background: var(--cream);
+  color: var(--charcoal);
+  border-color: var(--cream);
+  margin-right: 56px;
+}
+.nav--home .nav-cta:hover {
+  background: var(--green-400);
+  border-color: var(--green-400);
+  color: var(--charcoal);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 .nav--home .wordmark {
   color: var(--cream);

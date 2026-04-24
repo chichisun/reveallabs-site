@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { WaitlistTrigger } from "./WaitlistTrigger";
 
 export function Nav() {
   const pathname = usePathname();
@@ -26,6 +27,7 @@ export function Nav() {
             Our Story
           </Link>
         </nav>
+        <WaitlistTrigger className="nav-cta">Join the waitlist</WaitlistTrigger>
       </div>
     </header>
   );
