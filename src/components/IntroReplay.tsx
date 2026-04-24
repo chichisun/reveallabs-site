@@ -5,7 +5,7 @@ import { useCallback } from "react";
 export function IntroReplay() {
   const onReplay = useCallback(() => {
     try {
-      localStorage.removeItem("reveal_intro_seen");
+      sessionStorage.removeItem("reveal_intro_seen");
     } catch {}
     const url = new URL(window.location.href);
     url.searchParams.set("intro", "1");

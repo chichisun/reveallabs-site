@@ -57,12 +57,17 @@ const bootScript = `
     }
     document.documentElement.dataset.theme = t;
 
-    // Intro plays on home only. Explicit opt-out via ?no-intro=1 for
-    // anyone who wants to skip (accessibility, slow connection, etc.).
+    // Intro plays once per session on home. Opt-out via ?no-intro=1,
+    // force replay via ?intro=1 (or the IntroReplay button). Once seen,
+    // client-side nav back to / won't replay because Intro.tsx bails out
+    // when sessionStorage 'reveal_intro_seen' is set.
     var params = new URLSearchParams(window.location.search);
     var optOut = params.get('no-intro') === '1';
+    var forceReplay = params.get('intro') === '1';
     var isHome = window.location.pathname === '/';
-    if (!optOut && isHome) {
+    var seen = false;
+    try { seen = sessionStorage.getItem('reveal_intro_seen') === '1'; } catch(e) {}
+    if (!optOut && isHome && (!seen || forceReplay)) {
       document.documentElement.classList.add('intro-pending');
     }
   } catch(e) {}

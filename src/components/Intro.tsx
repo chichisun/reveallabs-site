@@ -465,7 +465,16 @@ export function Intro() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const optOut = params.get("no-intro") === "1";
-    if (optOut) {
+    const forceReplay = params.get("intro") === "1";
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("reveal_intro_seen") === "1";
+    } catch {
+      /* ignore */
+    }
+    // Skip intro if opted out, or already seen this session
+    // (unless explicitly replayed via ?intro=1).
+    if (optOut || (seen && !forceReplay)) {
       document.documentElement.classList.remove("intro-pending");
       setShow(false);
     } else {
@@ -475,6 +484,11 @@ export function Intro() {
 
   const handleDone = () => {
     setShow(false);
+    try {
+      sessionStorage.setItem("reveal_intro_seen", "1");
+    } catch {
+      /* ignore */
+    }
     const btn = document.getElementById("introReplay");
     if (btn) btn.classList.add("is-ready");
   };
