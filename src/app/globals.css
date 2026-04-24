@@ -1623,3 +1623,58 @@ html[data-theme="dark"] .waitlist-card::before {
   .our-story-main { padding: 100px 20px 60px; }
   .our-story-header { margin-bottom: 40px; }
 }
+
+/* ── Our Story beat (photo + year + copy) ── */
+.story-beat {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 80px 0;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.story-beat.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.story-beat-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--cream-lifted);
+}
+.story-beat-photo img {
+  object-fit: cover;
+}
+.story-beat--bw .story-beat-photo img {
+  filter: grayscale(100%) contrast(1.05);
+}
+.story-beat-year {
+  font-family: var(--font-sans);
+  font-size: clamp(56px, 9vw, 120px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--charcoal);
+  margin-bottom: 20px;
+}
+.story-beat-copy {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--charcoal);
+  max-width: 52ch;
+  margin: 0;
+}
+/* Alternate photo side for visual rhythm */
+.story-beat:nth-child(odd) {
+  grid-template-areas: "photo text";
+}
+.story-beat:nth-child(even) {
+  grid-template-areas: "text photo";
+}
+.story-beat-photo { grid-area: photo; }
+.story-beat-text { grid-area: text; }
