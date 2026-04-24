@@ -1678,3 +1678,75 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 .story-beat-photo { grid-area: photo; }
 .story-beat-text { grid-area: text; }
+
+/* ── Timeline spine ── */
+.timeline-spine {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60vh;
+  width: 140px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+.timeline-spine-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--stroke);
+}
+.timeline-spine-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--charcoal);
+  height: calc(var(--story-progress, 0) * 100%);
+  transition: height 0.12s linear;
+}
+.timeline-spine-dots {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.timeline-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.timeline-dot-mark {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1px solid var(--stroke);
+  flex-shrink: 0;
+  margin-left: calc(50% - 4.5px);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.timeline-dot.is-active .timeline-dot-mark {
+  background: var(--charcoal);
+  border-color: var(--charcoal);
+  transform: scale(1.3);
+}
+.timeline-dot-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  opacity: 0.55;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+.timeline-dot.is-active .timeline-dot-label {
+  opacity: 1;
+  color: var(--charcoal);
+}
