@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Footer } from "../../components/Footer";
+import { OurStory } from "../../components/OurStory";
 
 export const metadata: Metadata = {
   title: "Our Story — reveal.",
@@ -15,7 +16,7 @@ export default function OurStoryPage() {
           <h1 className="our-story-heading">Our Story</h1>
           <p className="our-story-lede">Three generations, one kitchen.</p>
         </header>
-        {/* OurStory timeline lands in Task 8 */}
+        <OurStory />
       </main>
       <Footer />
     </>
