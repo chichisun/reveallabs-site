@@ -32,7 +32,9 @@ export function Hero() {
           your restaurant. You run it as we track it.
         </p>
         <div className="hero-ctas">
-          <WaitlistTrigger>Join the waitlist</WaitlistTrigger>
+          <WaitlistTrigger className="btn btn-primary btn-pulse">
+            Join the waitlist
+          </WaitlistTrigger>
         </div>
       </div>
     </section>
