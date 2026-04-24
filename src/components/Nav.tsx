@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WaitlistTrigger } from "./WaitlistTrigger";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Nav() {
   const pathname = usePathname();
@@ -35,6 +36,7 @@ export function Nav() {
           </WaitlistTrigger>
         )}
       </div>
+      <ThemeToggle />
     </header>
   );
 }

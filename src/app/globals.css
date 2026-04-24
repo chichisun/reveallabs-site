@@ -27,6 +27,7 @@
 }
 
 :root {
+  color-scheme: light dark;
   --cream: #F2F1ED;
   --cream-lifted: #FCFBFA;
   --charcoal: #2E2E2E;

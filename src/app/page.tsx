@@ -6,14 +6,12 @@ import { Footer } from "../components/Footer";
 import { Intro } from "../components/Intro";
 import { IntroReplay } from "../components/IntroReplay";
 import { WaitlistDialog } from "../components/WaitlistDialog";
-import { ThemeToggle } from "../components/ThemeToggle";
 
 export default function Home() {
   return (
     <>
       <Intro />
       <IntroReplay />
-      <ThemeToggle />
       <Hero />
       <Scrollytelling />
       <WhatWeDo />
