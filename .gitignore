@@ -9,47 +9,38 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-
 # testing
 /coverage
-
 # next.js
 /.next/
 /out/
-
 # production
 /build
-
 # misc
 .DS_Store
 *.pem
-
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-
 # env files (can opt-in for committing if needed)
 .env*
-
 # vercel
 .vercel
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
 # design scratch (large binaries or throwaway exports — not the final deliverables)
 /design/video-clips/
 /design/claude-design-exports/
 /design/video-final/
-
 # session artifacts — Playwright MCP + one-off verification screenshots
 /.playwright-mcp/
 /verify-page.png
 .env*.local
-
 # Playwright MCP screenshots (ad-hoc, not part of site)
 our-story-*.png
 verify-page.png
+privacy-*.png
+privacy-reloaded.png
