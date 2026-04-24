@@ -77,16 +77,28 @@ export function OurStory() {
       return;
     }
 
+    // Two-way reveal: add `is-visible` on entry, remove on exit.
+    // Active spine dot = highest index currently intersecting.
+    const visible = new Set<number>();
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-visible");
           const idx = Number(
             (entry.target as HTMLElement).dataset.beat ?? "0",
           );
-          setActiveIndex((prev) => Math.max(prev, idx));
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            visible.add(idx);
+          } else {
+            entry.target.classList.remove("is-visible");
+            visible.delete(idx);
+          }
         });
+        if (visible.size === 0) {
+          setActiveIndex(0);
+        } else {
+          setActiveIndex(Math.max(...visible));
+        }
       },
       { threshold: 0.35, rootMargin: "0px 0px -10% 0px" },
     );
