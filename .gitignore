@@ -53,3 +53,13 @@ reverted-*.png
 anim-*.png
 green-*.png
 reveal-*.png
+beat-*.png
+crop-editor*.png
+photos-*.png
+# iPhone Live Photo originals — kept on disk so we can re-crop from source,
+# but not shipped with the site.
+public/*.HEIC
+public/*.MOV
+public/IMG_*.JPG
+public/4ADC5215*.JPG
+public/FullSizeRender*

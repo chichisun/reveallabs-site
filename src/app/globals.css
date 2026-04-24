@@ -1759,6 +1759,21 @@ html[data-theme="dark"] .waitlist-card::before {
   border-radius: 6px;
   background: var(--cream-lifted);
 }
+/* Per-beat crop focal points — positions dialed in via the in-page
+   crop editor (`?crop=1`) and copied into CSS from its "Copy CSS"
+   button. Re-run the editor any time real photos are swapped. */
+.story-beat[data-beat="0"] .story-beat-photo img {
+  object-position: 55% 32.2%;
+}
+.story-beat[data-beat="1"] .story-beat-photo img {
+  object-position: 49.6% 57.6%;
+}
+.story-beat[data-beat="2"] .story-beat-photo img {
+  object-position: 47.5% 0%;
+}
+.story-beat[data-beat="4"] .story-beat-photo img {
+  object-position: 47% 42.7%;
+}
 /* Inner wrapper: parallax translate (driven by scroll, instant updates) */
 .story-beat-photo-parallax {
   position: absolute;
