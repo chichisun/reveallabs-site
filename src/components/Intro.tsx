@@ -479,6 +479,14 @@ export function Intro() {
       setShow(false);
     } else {
       setShow(true);
+      // Set the flag immediately, not on completion, so navigating away
+      // mid-intro (or clicking the wordmark before it finishes) still
+      // prevents a replay on return.
+      try {
+        sessionStorage.setItem("reveal_intro_seen", "1");
+      } catch {
+        /* ignore */
+      }
     }
   }, []);
 
