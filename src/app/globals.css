@@ -361,6 +361,112 @@ html[data-theme="dark"] .eyebrow {
   justify-content: space-between;
   gap: 24px;
 }
+/* Left cluster: wordmark + primary links sit together, like the
+   Marketeam reference. */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  opacity: 0.75;
+}
+.nav-link:hover { opacity: 1; }
+.nav-link.is-current {
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+/* Nav CTA — reuses the green liquid glass .btn-primary look at a
+   smaller footprint so it reads as a sibling of the hero CTA. */
+.nav-cta {
+  padding: 10px 20px;
+  font-size: 13px;
+  letter-spacing: -0.1px;
+}
+
+/* Surface shimmer — a bright diagonal slick sweeps across the glass
+   face, staying CONTAINED within the button. No outer rings, no
+   radiating glow. Feels like light catching a liquid surface as it
+   flows around and over the edges. */
+.btn-pulse {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.btn-pulse::before {
+  /* Overrides btn-primary::before — the highlight layer becomes a
+     moving shimmer instead of a static sheen. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 62%
+  );
+  background-size: 220% 100%;
+  mix-blend-mode: screen;
+  animation: cta-shimmer 3.6s linear infinite;
+  z-index: 1;
+}
+@keyframes cta-shimmer {
+  0% { background-position: 220% 0; }
+  100% { background-position: -120% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-pulse::before { animation: none; background: none; }
+}
+
+/* Over hero video on home: cream text with a stronger shadow for
+   legibility against the dark wash. No pill — CTA button is the only
+   pill. Slightly bolder + full opacity so it reads at a glance. */
+.nav--home .nav-link {
+  color: var(--cream);
+  opacity: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55),
+    0 0 12px rgba(0, 0, 0, 0.35);
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+.nav--home .nav-link:hover {
+  opacity: 0.8;
+}
+/* Push the CTA left of the fixed theme toggle on home. The green
+   glass pill works identically on both hero video and cream bg,
+   so no per-theme override is needed any more. */
+.nav--home .nav-cta {
+  margin-right: 56px;
+}
+.nav--home .wordmark {
+  color: var(--cream);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.nav--home .wordmark .dot {
+  color: var(--green-400);
+}
+
+/* On non-home routes, nav sits on page background */
+.nav--solid {
+  position: sticky;
+  background: var(--cream);
+  border-bottom: 1px solid var(--stroke);
+}
 
 /* ── Hero ── */
 .hero {
@@ -1562,5 +1668,366 @@ html[data-theme="dark"] .waitlist-card::before {
     width: 24px;
     height: 24px;
     stroke-width: 3;
+  }
+}
+
+/* ── Our Story page ─────────────────────────────────────────── */
+.our-story-header {
+  padding: 140px 24px 48px;
+  flex-shrink: 0;
+}
+.our-story-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.our-story-heading {
+  font-family: var(--font-sans);
+  font-size: clamp(48px, 8vw, 112px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  margin: 0 0 12px;
+  color: var(--charcoal);
+}
+.our-story-lede {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+.our-story-main {
+  padding: 0 24px 80px;
+  width: 100%;
+  flex-shrink: 0;
+}
+.our-story-main-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.story {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  position: relative;
+}
+.story-beats {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* ── Our Story beat (photo card + year + copy) ───────────────── */
+.story-beat {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 40px 0;
+}
+/* ── Reveal choreography ─────────────────────────────────────
+   Editorial clip-path reveals instead of fade+translate.
+   - Photo: mask opens top-to-bottom, like a shade lifting on a
+     darkroom print.
+   - Year: each digit slides up from behind its own mask, one after
+     another (typewriter-feel without the kitsch).
+   - Copy: mask opens top-to-bottom, naturally paired with reading. */
+.story-beat-photo,
+.story-beat-copy {
+  clip-path: inset(0 0 100% 0);
+  -webkit-clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    -webkit-clip-path 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.story-beat.is-visible .story-beat-photo {
+  clip-path: inset(0 0 0 0);
+  -webkit-clip-path: inset(0 0 0 0);
+  transition-delay: 0ms;
+}
+.story-beat.is-visible .story-beat-copy {
+  clip-path: inset(0 0 0 0);
+  -webkit-clip-path: inset(0 0 0 0);
+  transition: clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.4s,
+    -webkit-clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+}
+
+/* Year: overflow-hidden mask per digit + inner span that slides up. */
+.story-beat-year {
+  display: inline-flex;
+  line-height: 1;
+}
+.year-digit {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1;
+}
+.year-digit-inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.story-beat.is-visible .year-digit-inner {
+  transform: translateY(0);
+}
+/* Stagger: each digit arrives ~80ms after the previous one,
+   starting ~180ms after the photo mask begins opening. */
+.story-beat.is-visible .year-digit:nth-child(1) .year-digit-inner {
+  transition-delay: 180ms;
+}
+.story-beat.is-visible .year-digit:nth-child(2) .year-digit-inner {
+  transition-delay: 260ms;
+}
+.story-beat.is-visible .year-digit:nth-child(3) .year-digit-inner {
+  transition-delay: 340ms;
+}
+.story-beat.is-visible .year-digit:nth-child(4) .year-digit-inner {
+  transition-delay: 420ms;
+}
+
+/* Snap-visible on scroll-up re-entry (no animation replay) */
+.story-beat.no-anim,
+.story-beat.no-anim .story-beat-photo,
+.story-beat.no-anim .story-beat-copy,
+.story-beat.no-anim .year-digit-inner,
+.story-beat.no-anim .story-beat-photo img {
+  transition: none !important;
+}
+
+.story-beat-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--cream-lifted);
+}
+/* Per-beat crop focal points — positions dialed in via the in-page
+   crop editor (`?crop=1`) and copied into CSS from its "Copy CSS"
+   button. Re-run the editor any time real photos are swapped. */
+.story-beat[data-beat="0"] .story-beat-photo img {
+  object-position: 55% 32.2%;
+}
+.story-beat[data-beat="1"] .story-beat-photo img {
+  object-position: 49.6% 57.6%;
+}
+.story-beat[data-beat="2"] .story-beat-photo img {
+  object-position: 47.5% 0%;
+}
+.story-beat[data-beat="4"] .story-beat-photo img {
+  object-position: 47% 42.7%;
+}
+/* Inner wrapper: parallax translate (driven by scroll, instant updates) */
+.story-beat-photo-parallax {
+  position: absolute;
+  inset: 0;
+  transform: translateY(var(--parallax-y, 0px));
+  will-change: transform;
+}
+.story-beat-photo img {
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 1s ease-out, filter 1.8s ease-out;
+}
+.story-beat.is-visible .story-beat-photo img {
+  /* Ken Burns drift while the beat is in view */
+  transform: scale(1.1);
+  transition: transform 14s linear, filter 1.8s ease-out;
+}
+.story-beat--bw .story-beat-photo img {
+  filter: grayscale(100%) contrast(1.05);
+}
+/* Color unveil: the 2026 beat (color grade) starts grayscale and
+   saturates to full color while it's the current beat. Reverts when
+   you scroll past it (both up and down). Emotional arc:
+   past = memory (B&W) → present = alive (color). */
+.story-beat--color .story-beat-photo img {
+  filter: grayscale(100%) contrast(1.05);
+}
+.story-beat--color.is-current .story-beat-photo img {
+  filter: grayscale(0%) contrast(1);
+}
+.story-beat-year {
+  font-family: var(--font-sans);
+  font-size: clamp(56px, 9vw, 120px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--charcoal);
+  margin-bottom: 20px;
+}
+.story-beat-copy {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--charcoal);
+  max-width: 52ch;
+  margin: 0;
+}
+/* Alternate photo side for visual rhythm */
+.story-beat:nth-child(odd) {
+  grid-template-areas: "photo text";
+}
+.story-beat:nth-child(even) {
+  grid-template-areas: "text photo";
+}
+.story-beat-photo {
+  grid-area: photo;
+}
+.story-beat-text {
+  grid-area: text;
+}
+
+/* ── Timeline spine — sticky left column, sits below header ──── */
+.timeline-spine {
+  position: sticky;
+  top: 120px;
+  height: 60vh;
+  width: 120px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+.timeline-spine-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--stroke);
+}
+.timeline-spine-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--green-700);
+  height: calc(var(--story-progress, 0) * 100%);
+  transition: height 0.14s linear;
+}
+.timeline-spine-dots {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.timeline-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.timeline-dot-mark {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1px solid var(--stroke);
+  flex-shrink: 0;
+  margin-left: calc(50% - 4.5px);
+  transition: background 0.3s ease, border-color 0.3s ease,
+    transform 0.3s ease;
+}
+.timeline-dot.is-active .timeline-dot-mark {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  transform: scale(1.3);
+  animation: timeline-dot-pulse 0.65s ease-out;
+}
+@keyframes timeline-dot-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(53, 94, 59, 0.45);
+  }
+  60% {
+    transform: scale(1.7);
+    box-shadow: 0 0 0 10px rgba(53, 94, 59, 0);
+  }
+  100% {
+    transform: scale(1.3);
+    box-shadow: 0 0 0 0 rgba(53, 94, 59, 0);
+  }
+}
+.timeline-dot-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  opacity: 0.55;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+.timeline-dot.is-active .timeline-dot-label {
+  opacity: 1;
+  color: var(--green-700);
+}
+
+/* Mobile: stack beats, hide sticky spine */
+@media (max-width: 768px) {
+  .our-story-main {
+    padding: 0 20px 60px;
+  }
+  .our-story-header {
+    padding: 100px 20px 32px;
+  }
+  .story {
+    display: block;
+    gap: 0;
+  }
+  .timeline-spine {
+    display: none;
+  }
+  .story-beat {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 28px 0;
+  }
+  .story-beat:nth-child(odd),
+  .story-beat:nth-child(even) {
+    grid-template-areas:
+      "photo"
+      "text";
+  }
+  .story-beat-year {
+    font-size: clamp(44px, 12vw, 72px);
+    margin-bottom: 12px;
+  }
+  .story-beat-copy {
+    font-size: 16px;
+  }
+}
+
+/* Reduced-motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .story-beat-photo,
+  .story-beat-copy {
+    clip-path: inset(0 0 0 0) !important;
+    -webkit-clip-path: inset(0 0 0 0) !important;
+    transition: none !important;
+  }
+  .year-digit-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+  .story-beat-photo-parallax {
+    transform: none !important;
+  }
+  .story-beat-photo img,
+  .story-beat.is-visible .story-beat-photo img {
+    transform: none !important;
+    transition: none !important;
+  }
+  .story-beat--color .story-beat-photo img {
+    filter: grayscale(0%) contrast(1) !important;
+  }
+  .timeline-spine-fill,
+  .timeline-dot-mark,
+  .timeline-dot-label {
+    transition: none !important;
+    animation: none !important;
   }
 }

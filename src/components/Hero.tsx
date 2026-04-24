@@ -22,14 +22,6 @@ export function Hero() {
       </video>
       <div className="hero-wash" aria-hidden="true" />
 
-      <header className="nav">
-        <div className="container nav-inner">
-          <a href="#" className="wordmark">
-            reveal<span className="dot">.</span>
-          </a>
-        </div>
-      </header>
-
       <div className="hero-inner">
         <div className="eyebrow"><span>For independent restaurants</span></div>
         <h1 id="hero-title">
@@ -40,7 +32,9 @@ export function Hero() {
           your restaurant. You run it as we track it.
         </p>
         <div className="hero-ctas">
-          <WaitlistTrigger>Join the waitlist</WaitlistTrigger>
+          <WaitlistTrigger className="btn btn-primary btn-pulse">
+            Join the waitlist
+          </WaitlistTrigger>
         </div>
       </div>
     </section>
