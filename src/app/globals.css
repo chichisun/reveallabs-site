@@ -382,6 +382,25 @@ html[data-theme="dark"] .eyebrow {
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
 }
+/* Over hero video on home: make room for fixed theme toggle (~40px + 20px),
+   and switch text to cream so it stays readable against dark hero wash */
+.nav--home .nav-links {
+  margin-right: 56px;
+}
+.nav--home .nav-link {
+  color: var(--cream);
+  opacity: 0.85;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.nav--home .nav-link:hover { opacity: 1; }
+.nav--home .wordmark {
+  color: var(--cream);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.nav--home .wordmark .dot {
+  color: var(--green-400);
+}
+
 /* On non-home routes, nav sits on page background */
 .nav--solid {
   position: sticky;

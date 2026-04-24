@@ -57,11 +57,12 @@ const bootScript = `
     }
     document.documentElement.dataset.theme = t;
 
-    // Intro plays on every visit. Explicit opt-out via ?no-intro=1 for
+    // Intro plays on home only. Explicit opt-out via ?no-intro=1 for
     // anyone who wants to skip (accessibility, slow connection, etc.).
     var params = new URLSearchParams(window.location.search);
     var optOut = params.get('no-intro') === '1';
-    if (!optOut) {
+    var isHome = window.location.pathname === '/';
+    if (!optOut && isHome) {
       document.documentElement.classList.add('intro-pending');
     }
   } catch(e) {}
