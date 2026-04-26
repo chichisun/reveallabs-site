@@ -1,10 +1,10 @@
 import { WaitlistTrigger } from "./WaitlistTrigger";
 
 const STATS = [
-  { num: "$5,931", label: "Found last month" },
-  { num: "$67,140", label: "Annualized at pace" },
-  { num: "3", label: "Specific moves" },
-  { num: "30 days", label: "To measure" },
+  { num: "100%", label: "Of your books, covered" },
+  { num: "24/7", label: "Eyes on the numbers" },
+  { num: "Every", label: "Renewal, contract, payout" },
+  { num: "2–3", label: "Moves delivered every month" },
 ] as const;
 
 export function FinalCTA() {
@@ -16,14 +16,15 @@ export function FinalCTA() {
             <div className="final-cta-eyebrow">Get started</div>
             <h2 id="final-cta-title">Want us watching your numbers?</h2>
             <p className="final-cta-sub">
-              Running a restaurant is hard. Making the decisions that keep it
-              alive is harder. Let us help with the second part.
+              There&apos;s only so much you can hold in your head. Let us
+              hold the rest.
             </p>
             <WaitlistTrigger>Join the waitlist</WaitlistTrigger>
             <p className="final-cta-closing">
-              Started it because my parents own a restaurant. Watched them run
-              on instinct for 20 years while the answers sat in their POS.
-              Building the tool I wish they&apos;d had.
+              Started it because my parents own a restaurant. Watched them
+              run on instinct for 20 years — sales in their POS, vendors in
+              their phones, renewal dates in my mom&apos;s head. Building
+              the tool I wish they&apos;d had.
             </p>
           </div>
           <div

@@ -25,11 +25,12 @@ export function Hero() {
       <div className="hero-inner">
         <div className="eyebrow"><span>For independent restaurants</span></div>
         <h1 id="hero-title">
-          Find the money your restaurant is leaving on the table.
+          We see everything. We find the moves. We hand you the tools.
         </h1>
         <p className="hero-sub">
-          We give you specific moves every month to better understand and grow
-          your restaurant. You run it as we track it.
+          Every contract you signed. Every cost you pay. Every dollar your
+          restaurant makes. Connected in one place, then turned into the
+          moves you can actually make next month.
         </p>
         <div className="hero-ctas">
           <WaitlistTrigger className="btn btn-primary btn-pulse">

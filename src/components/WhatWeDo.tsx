@@ -34,19 +34,22 @@ export function WhatWeDo() {
     >
       <div className="what-we-do-inner">
         <h2 className="what-we-do-lede" id="what-we-do-title">
-          <span className="lede-line">Revenue intelligence</span>
-          <span className="lede-line">for independent restaurants.</span>
+          <span className="lede-line">Everything connected.</span>
+          <span className="lede-line">Nothing missed.</span>
         </h2>
         <div className="what-we-do-body-wrap">
           <p className="what-we-do-body">
-            We watch your sales, find where you&apos;re losing money — bad
-            prices, slow days, high delivery fees — and send you 2 or 3 things
-            to fix each month.
+            We watch everything your restaurant runs on — every contract
+            you signed, every cost you pay, every sale you make. Vendors,
+            leases, payouts, renewals, the whole picture. For the first
+            time, your restaurant lives in one connected place.
           </p>
           <p className="what-we-do-body">
-            Most restaurants have more data than time. We read it, skip the
-            generic advice, and hand you a short list that fits your
-            restaurant.
+            Then we find the gaps and opportunities hiding in your data,
+            and build you a strategy. 2 or 3 specific moves to grow next
+            month — with everything you need to execute them. Scripts,
+            menu changes, marketing assets, tracking. Not generic advice.
+            A plan you can actually run.
           </p>
         </div>
       </div>

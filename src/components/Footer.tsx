@@ -8,7 +8,7 @@ export function Footer() {
           </div>
           <div className="footer-legal">Reveal Labs LLC — Colorado</div>
           <p className="footer-tagline">
-            Revenue intelligence for independent restaurants.
+            A second set of eyes for independent restaurants.
           </p>
         </div>
         <nav className="footer-links" aria-label="Footer">
@@ -27,7 +27,7 @@ export function Footer() {
       <div className="footer-row2">
         <div className="copy">© 2026 Reveal Labs LLC.</div>
         <div className="motto">
-          Built for restaurant owners who want clarity.
+          Built so the owner can stay focused on the food.
         </div>
       </div>
     </footer>

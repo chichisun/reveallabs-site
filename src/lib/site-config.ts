@@ -1,10 +1,10 @@
 export const SITE_URL = "https://www.reveallabs.co";
 
 export const SITE_TITLE =
-  "reveal. — We find the money your restaurant is leaving on the table";
+  "reveal. — A second set of eyes for independent restaurants";
 
 export const SITE_DESCRIPTION =
-  "Revenue intelligence for independent restaurants. We analyze your POS data and deliver 2-3 specific actions that grow revenue in 30 days.";
+  "Every contract you signed. Every cost you pay. Every dollar your restaurant makes. Reveal connects it in one place, finds the growth no one else would spot, and hands you the moves to make next month.";
 
 export const SITE_NAME = "reveal.";
 

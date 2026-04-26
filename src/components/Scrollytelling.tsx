@@ -88,10 +88,10 @@ export function Scrollytelling() {
       <>
         <div className="beat-eyebrow">Case study — Tuk Tuk Thai Grill</div>
         <div className="beat-primary">$5,931</div>
-        <div className="beat-label">Found last month</div>
+        <div className="beat-label">Found in growth moves last month</div>
         <hr className="beat-divider" />
-        <div className="beat-secondary">32%</div>
-        <div className="beat-label">Recovered in 30 days</div>
+        <div className="beat-secondary">57</div>
+        <div className="beat-label">Agreements now watched</div>
       </>
     );
   };

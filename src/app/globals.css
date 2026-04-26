@@ -50,7 +50,7 @@
   --contrast-stat: var(--green-400);
   --contrast-eyebrow: var(--green-400);
   --hero-video-brightness: 0.88;
-  --hero-wash-opacity: 0.28;
+  --hero-wash-opacity: 0.55;
   --scrim-color: rgba(30, 30, 30, 0.32);
 
   /* Eyebrow color — visible green on whatever the page bg is. Light mode
@@ -758,6 +758,16 @@ html[data-theme="dark"] .eyebrow {
     animation-timeline: view();
     animation-range: entry 5% cover 35%;
   }
+  .what-we-do-body:nth-of-type(3) {
+    animation: wipe-in linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 42%;
+  }
+  .what-we-do-body:nth-of-type(4) {
+    animation: wipe-in linear both;
+    animation-timeline: view();
+    animation-range: entry 15% cover 49%;
+  }
 }
 @keyframes wipe-in {
   to { clip-path: inset(0 0 0 0); }
@@ -793,6 +803,14 @@ html[data-theme="dark"] .eyebrow {
   .what-we-do.is-visible .what-we-do-body:nth-of-type(2) {
     clip-path: inset(0 0 0 0);
     transition-delay: 720ms;
+  }
+  .what-we-do.is-visible .what-we-do-body:nth-of-type(3) {
+    clip-path: inset(0 0 0 0);
+    transition-delay: 860ms;
+  }
+  .what-we-do.is-visible .what-we-do-body:nth-of-type(4) {
+    clip-path: inset(0 0 0 0);
+    transition-delay: 1000ms;
   }
 }
 @media (prefers-reduced-motion: reduce) {
