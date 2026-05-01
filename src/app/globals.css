@@ -2120,7 +2120,16 @@ html[data-theme="dark"] .waitlist-card::before {
   font-weight: 500;
   color: var(--charcoal);
   margin: 0;
-  max-width: 16ch;
+  max-width: 18ch;
+}
+
+.blog-page-lede {
+  font-family: var(--font-sans);
+  font-size: clamp(17px, 1.5vw, 19px);
+  line-height: 1.55;
+  color: var(--charcoal-soft);
+  margin: 24px 0 0;
+  max-width: 56ch;
 }
 
 .blog-heading-dot {
