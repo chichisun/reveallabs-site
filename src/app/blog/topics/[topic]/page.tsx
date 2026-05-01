@@ -38,22 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const FALLBACK_HEROES = [
-  "/our-story/2026-v2.jpg",
-  "/our-story/2014-v2.jpg",
-  "/our-story/2011-v2.jpg",
-  "/our-story/1998-v2.jpg",
-  "/our-story/1970-v2.jpg",
-] as const;
-
-function pickFallbackHero(slug: string): string {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash << 5) - hash + slug.charCodeAt(i);
-    hash |= 0;
-  }
-  return FALLBACK_HEROES[Math.abs(hash) % FALLBACK_HEROES.length];
-}
+// Card image resolution: explicit MDX heroImage > topic pillar illustration.
 
 export default async function BlogTopicPage({ params }: Props) {
   const { topic: topicSlug } = await params;
@@ -115,10 +100,7 @@ export default async function BlogTopicPage({ params }: Props) {
                     <div className="blog-card-image">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={
-                          post.frontmatter.heroImage ??
-                          pickFallbackHero(post.frontmatter.slug)
-                        }
+                        src={post.frontmatter.heroImage ?? topic.heroImage}
                         alt=""
                         loading="lazy"
                       />

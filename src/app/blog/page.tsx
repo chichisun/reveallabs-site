@@ -20,25 +20,16 @@ export const metadata: Metadata = {
   },
 };
 
-// Decorative placeholder images for grid cards when no heroImage is set yet.
-// Cycles through brand-aligned existing assets.
-const FALLBACK_HEROES = [
-  "/our-story/2026-v2.jpg",
-  "/our-story/2014-v2.jpg",
-  "/our-story/2011-v2.jpg",
-  "/our-story/1998-v2.jpg",
-  "/our-story/1970-v2.jpg",
-] as const;
-
-function pickFallbackHero(slug: string): string {
-  // Stable hash so each post always gets the same fallback.
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash << 5) - hash + slug.charCodeAt(i);
-    hash |= 0;
-  }
-  const idx = Math.abs(hash) % FALLBACK_HEROES.length;
-  return FALLBACK_HEROES[idx];
+/**
+ * Resolve the image URL for a post. Priority:
+ *   1. Explicit heroImage in MDX frontmatter
+ *   2. The post's topic pillar illustration (Higgsfield-generated)
+ *   3. Operations pillar as final fallback
+ */
+function resolveCardImage(post: ReturnType<typeof getAllPosts>[number]): string {
+  if (post.frontmatter.heroImage) return post.frontmatter.heroImage;
+  if (post.topicMeta) return post.topicMeta.heroImage;
+  return "/blog-pillars/operations.png";
 }
 
 export default function BlogIndexPage() {
@@ -105,10 +96,7 @@ export default function BlogIndexPage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={
-                    featured.frontmatter.heroImage ??
-                    pickFallbackHero(featured.frontmatter.slug)
-                  }
+                  src={resolveCardImage(featured)}
                   alt=""
                   loading="eager"
                 />
@@ -144,10 +132,7 @@ export default function BlogIndexPage() {
                     <div className="blog-card-image">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={
-                          post.frontmatter.heroImage ??
-                          pickFallbackHero(post.frontmatter.slug)
-                        }
+                        src={resolveCardImage(post)}
                         alt=""
                         loading="lazy"
                       />
