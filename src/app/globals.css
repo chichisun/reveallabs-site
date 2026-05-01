@@ -2134,23 +2134,32 @@ html[data-theme="dark"] .waitlist-card::before {
 .blog-topics-bar {
   background: var(--cream-lifted);
   border-bottom: 1px solid var(--stroke);
-  padding: 16px 24px;
-  /* overflow-x:auto with default overflow-y:auto was clipping the chips
-     vertically. We want horizontal scroll only — explicitly set both axes. */
-  overflow-x: auto;
-  overflow-y: visible;
-  -webkit-overflow-scrolling: touch;
-  /* Sticky removed — chips don't need to stay pinned while scrolling, and
-     the prior `top: 64px` was guessing the Nav's height (which is fixed-
-     positioned and overlays content rather than reserving space). */
+  padding: 16px 0;
+  /* Horizontal scroll lives on the inner element, NOT here — CSS spec
+     coerces overflow-y:visible → auto when overflow-x is non-visible,
+     which clips the chips vertically. Keep this outer container as a
+     simple block so chips render at full height. */
 }
 
 .blog-topics-bar-inner {
   max-width: 980px;
   margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   gap: 8px;
   flex-wrap: nowrap;
+  /* Horizontal scroll only — vertical content (the chips) renders at
+     natural height in the outer wrapper. */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Hide the horizontal scrollbar visually; users still scroll via
+     trackpad/swipe. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.blog-topics-bar-inner::-webkit-scrollbar {
+  display: none;
 }
 
 .topic-chip {
