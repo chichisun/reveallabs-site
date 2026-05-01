@@ -2138,21 +2138,21 @@ html[data-theme="dark"] .waitlist-card::before {
   background: var(--cream);
   border-bottom: 1px solid var(--stroke);
   padding: 18px 0;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
-
-.blog-topics-bar::-webkit-scrollbar { display: none; }
 
 .blog-topics-bar-inner {
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 24px;
   display: flex;
-  gap: 22px;
-  flex-wrap: nowrap;
+  /* Wrap onto a second row when topics overflow. The ban on horizontal
+     scroll: it cuts labels mid-word with no visual indicator. */
+  flex-wrap: wrap;
+  /* Larger column gap (separation between topics) than row gap (line
+     spacing when wrapped) — reads as a typographic index rather than
+     a chip toolbar. */
+  column-gap: 24px;
+  row-gap: 10px;
   align-items: center;
 }
 
