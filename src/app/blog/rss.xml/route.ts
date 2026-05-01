@@ -51,7 +51,11 @@ ${items}
 
   return new Response(xml, {
     headers: {
-      "Content-Type": "application/rss+xml; charset=utf-8",
+      // Served as application/xml (not application/rss+xml) so browsers apply
+      // the linked XSL stylesheet — Chrome routes application/rss+xml to its
+      // built-in feed viewer which ignores <?xml-stylesheet?>. Modern RSS
+      // readers detect feeds by content, not content-type, so this is safe.
+      "Content-Type": "application/xml; charset=utf-8",
       "Cache-Control": "public, max-age=3600, s-maxage=3600",
     },
   });
