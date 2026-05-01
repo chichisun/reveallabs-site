@@ -7,8 +7,10 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { Footer } from "../../../components/Footer";
 import { BlogSubscribeBlock } from "../../../components/BlogSubscribeBlock";
+import { WaitlistDialog } from "../../../components/WaitlistDialog";
 import {
   getAllPostSlugs,
+  getAllPosts,
   getPostBySlug,
   formatPublishDate,
 } from "../../../lib/blog";
@@ -53,26 +55,45 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+function issueNumberForSlug(slug: string): string {
+  const all = getAllPosts();
+  const idx = all.findIndex((p) => p.frontmatter.slug === slug);
+  if (idx < 0) return "—";
+  const n = all.length - idx;
+  return n.toString().padStart(2, "0");
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
   const { frontmatter, content, readingTimeText, topicMeta } = post;
+  const issueNum = issueNumberForSlug(frontmatter.slug);
 
   return (
     <>
       <article className="blog-article">
         <header className="blog-article-header">
           <div className="blog-article-header-inner">
-            {topicMeta && (
-              <Link
-                href={`/blog/topics/${topicMeta.slug}`}
-                className="blog-article-topic"
-              >
-                {topicMeta.label}
+            <p className="blog-article-issue">
+              <Link href="/blog" className="blog-article-issue-link">
+                Field notes
               </Link>
-            )}
+              <span className="blog-article-issue-sep" aria-hidden="true">·</span>
+              <span className="blog-article-issue-num">#{issueNum}</span>
+              {topicMeta && (
+                <>
+                  <span className="blog-article-issue-sep" aria-hidden="true">·</span>
+                  <Link
+                    href={`/blog/topics/${topicMeta.slug}`}
+                    className="blog-article-topic"
+                  >
+                    {topicMeta.label}
+                  </Link>
+                </>
+              )}
+            </p>
             <h1 className="blog-article-title">{frontmatter.title}</h1>
             <p className="blog-article-meta">
               <span>{frontmatter.author}</span>
@@ -116,7 +137,7 @@ export default async function BlogPostPage({ params }: Props) {
         <footer className="blog-article-footer">
           <div className="blog-article-footer-inner">
             <Link href="/blog" className="blog-back-link">
-              ← All posts
+              ← All field notes
             </Link>
             {topicMeta && (
               <Link
@@ -132,6 +153,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       <BlogSubscribeBlock />
       <Footer />
+      <WaitlistDialog />
     </>
   );
 }

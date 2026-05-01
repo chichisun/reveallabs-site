@@ -36,12 +36,13 @@ export async function GET() {
     .join("\n");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/rss.xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>reveal. — field notes for independent restaurants</title>
+    <title>reveal. — field notes</title>
     <link>${SITE_URL}/blog</link>
     <atom:link href="${SITE_URL}/blog/rss.xml" rel="self" type="application/rss+xml" />
-    <description>Operator-credible writing for independent restaurant owners. Vendor billing audits, food cost math, POS migrations, the boring spreadsheets that catch real money.</description>
+    <description>Audits, in public. Vendor billing patterns, food cost math, POS migrations — what one operator finds while running the books.</description>
     <language>en-us</language>
     <lastBuildDate>${buildDate}</lastBuildDate>
 ${items}

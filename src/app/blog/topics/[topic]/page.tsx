@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "../../../../components/Footer";
+import { BlogSubscribeBlock } from "../../../../components/BlogSubscribeBlock";
+import { WaitlistDialog } from "../../../../components/WaitlistDialog";
 import {
   BLOG_TOPICS,
   getTopic,
   topicSlugs,
 } from "../../../../lib/blog-topics";
 import {
+  getAllPosts,
   getPostsByTopic,
   formatPublishDate,
 } from "../../../../lib/blog";
@@ -27,11 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!topic) return { title: "Not found — reveal." };
   const url = `${SITE_URL}/blog/topics/${topic.slug}`;
   return {
-    title: `${topic.label} — Blog — reveal.`,
+    title: `${topic.label} — Field notes — reveal.`,
     description: topic.tagline,
     alternates: { canonical: url },
     openGraph: {
-      title: `${topic.label} — Blog — reveal.`,
+      title: `${topic.label} — Field notes — reveal.`,
       description: topic.tagline,
       url,
       type: "website",
@@ -45,6 +48,7 @@ export default async function BlogTopicPage({ params }: Props) {
   if (!topic) notFound();
 
   const posts = getPostsByTopic(topic.slug);
+  const allTotal = getAllPosts().length;
 
   return (
     <>
@@ -52,24 +56,26 @@ export default async function BlogTopicPage({ params }: Props) {
         <div className="blog-header-inner">
           <p className="blog-eyebrow">
             <Link href="/blog" className="blog-eyebrow-link">
-              ← Blog
+              ← Field notes
             </Link>
           </p>
-          <h1 className="blog-heading">{topic.label}</h1>
+          <h1 className="blog-heading">
+            {topic.label}<span className="blog-heading-dot">.</span>
+          </h1>
           <p className="blog-lede">{topic.tagline}</p>
         </div>
       </header>
 
       <nav className="blog-topics-bar" aria-label="Filter by topic">
         <div className="blog-topics-bar-inner">
-          <Link href="/blog" className="topic-chip">
+          <Link href="/blog" className="topic-link">
             All
           </Link>
           {BLOG_TOPICS.map((t) => (
             <Link
               key={t.slug}
               href={`/blog/topics/${t.slug}`}
-              className={`topic-chip${t.slug === topic.slug ? " is-active" : ""}`}
+              className={`topic-link${t.slug === topic.slug ? " is-active" : ""}`}
             >
               {t.label}
             </Link>
@@ -82,51 +88,59 @@ export default async function BlogTopicPage({ params }: Props) {
           {posts.length === 0 ? (
             <div className="blog-empty">
               <p>
-                No posts here yet. New articles in this topic will appear once
+                No issues here yet. New articles in this topic will appear once
                 published.
               </p>
               <p>
-                <Link href="/blog">← Back to all posts</Link>
+                <Link href="/blog">← Back to all field notes</Link>
               </p>
             </div>
           ) : (
-            <ul className="blog-card-grid">
-              {posts.map((post) => (
-                <li key={post.frontmatter.slug}>
-                  <Link
-                    href={`/blog/${post.frontmatter.slug}`}
-                    className="blog-card"
+            <ol className="blog-issue-list" aria-label={`${topic.label} issues`}>
+              {posts.map((post) => {
+                const allIdx = getAllPosts().findIndex(
+                  (p) => p.frontmatter.slug === post.frontmatter.slug,
+                );
+                const issueNum = (allTotal - allIdx).toString().padStart(2, "0");
+                return (
+                  <li
+                    key={post.frontmatter.slug}
+                    className="blog-issue blog-issue--row"
                   >
-                    {post.frontmatter.heroImage && (
-                      <div className="blog-card-image">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={post.frontmatter.heroImage}
-                          alt=""
-                          loading="lazy"
-                        />
-                      </div>
-                    )}
-                    <h3 className="blog-card-title">
-                      {post.frontmatter.title}
-                    </h3>
-                    <p className="blog-card-desc">
-                      {post.frontmatter.metaDescription}
-                    </p>
-                    <p className="blog-card-meta">
-                      {formatPublishDate(post.frontmatter.publishDate)}
-                      <span className="blog-meta-sep" aria-hidden="true">·</span>
-                      {post.readingTimeText}
-                    </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                    <aside className="blog-issue-aside">
+                      <span className="blog-issue-number">#{issueNum}</span>
+                      <span className="blog-issue-date">
+                        <time dateTime={post.frontmatter.publishDate}>
+                          {formatPublishDate(post.frontmatter.publishDate)}
+                        </time>
+                      </span>
+                    </aside>
+                    <div className="blog-issue-body">
+                      <h3 className="blog-issue-title-row">
+                        <Link href={`/blog/${post.frontmatter.slug}`}>
+                          {post.frontmatter.title}
+                        </Link>
+                      </h3>
+                      <p className="blog-issue-lede-row">
+                        {post.frontmatter.metaDescription}
+                      </p>
+                      <p className="blog-issue-meta">
+                        <span className="blog-issue-meta-time">
+                          {post.readingTimeText}
+                        </span>
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
           )}
         </div>
       </main>
 
+      <BlogSubscribeBlock />
       <Footer />
+      <WaitlistDialog />
     </>
   );
 }

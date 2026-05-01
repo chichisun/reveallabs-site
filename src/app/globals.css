@@ -2056,149 +2056,146 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 /* ============================================================================
-   Blog — added 2026-05-01
-   Match the existing site's quiet typography-first aesthetic. No
-   consumer-magazine flourish; this is operator-credible writing for
-   restaurant owners. Cream surfaces, charcoal text, green accents only on
-   topic chips and inline links.
+   Field notes (blog) — 2026-05-01 redesign
+
+   Reframed from a generic content-marketing blog into a published-audit
+   notebook. Each post is an "issue," numbered, dated, asymmetric, typographic.
+   No card grids, no hero-stat templates, no chip pills. The wordmark period
+   ("." in green) is the recurring ornament.
+
+   Light/dark theme inherits from the site's palette swap of --cream and
+   --charcoal vars. Don't add [data-theme="dark"] flips for those vars.
    ============================================================================ */
+
+/* ---- Header ---- */
 
 .blog-header {
   background: var(--cream);
-  padding: 96px 24px 48px;
+  padding: clamp(80px, 12vw, 128px) 24px clamp(40px, 6vw, 64px);
   border-bottom: 1px solid var(--stroke);
 }
 
-.blog-header-inner,
-.blog-main-inner {
-  max-width: 980px;
+.blog-header-inner {
+  max-width: 1080px;
   margin: 0 auto;
 }
 
 .blog-eyebrow {
   font-family: var(--font-mono);
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted);
-  margin: 0 0 20px;
+  color: var(--green-700);
+  margin: 0 0 28px;
+}
+
+[data-theme="dark"] .blog-eyebrow {
+  color: var(--green-300);
 }
 
 .blog-eyebrow-link {
   color: inherit;
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: color 160ms ease, border-color 160ms ease;
+  transition: border-color 160ms ease;
 }
 
 .blog-eyebrow-link:hover {
-  color: var(--green-700);
-  border-bottom-color: var(--green-700);
+  border-bottom-color: currentColor;
 }
 
 .blog-heading {
   font-family: var(--font-sans);
-  font-size: clamp(36px, 5vw, 56px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: clamp(40px, 7vw, 80px);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
   font-weight: 500;
   color: var(--charcoal);
-  margin: 0 0 24px;
-  max-width: 18ch;
+  margin: 0 0 28px;
+  max-width: 14ch;
+}
+
+.blog-heading-dot {
+  color: var(--green-700);
+}
+
+[data-theme="dark"] .blog-heading-dot {
+  color: var(--green-400);
 }
 
 .blog-lede {
   font-family: var(--font-sans);
-  font-size: clamp(17px, 1.6vw, 19px);
+  font-size: clamp(17px, 1.5vw, 19px);
   line-height: 1.55;
   color: var(--charcoal-soft);
   margin: 0;
-  max-width: 60ch;
+  max-width: 56ch;
 }
 
-/* Dark-mode overrides removed — the site's existing palette swap of
-   --cream / --charcoal / --charcoal-soft handles theme inversion via
-   var() resolution. Re-flipping inside [data-theme="dark"] caused
-   double-inversion (dark text on dark bg). */
-
-/* Topics bar */
+/* ---- Topic nav (typographic, no chip pills) ---- */
 
 .blog-topics-bar {
-  background: var(--cream-lifted);
+  background: var(--cream);
   border-bottom: 1px solid var(--stroke);
-  padding: 16px 0;
-  /* Horizontal scroll lives on the inner element, NOT here — CSS spec
-     coerces overflow-y:visible → auto when overflow-x is non-visible,
-     which clips the chips vertically. Keep this outer container as a
-     simple block so chips render at full height. */
-}
-
-.blog-topics-bar-inner {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-  /* Horizontal scroll only — vertical content (the chips) renders at
-     natural height in the outer wrapper. */
+  padding: 18px 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  /* Hide the horizontal scrollbar visually; users still scroll via
-     trackpad/swipe. */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-.blog-topics-bar-inner::-webkit-scrollbar {
-  display: none;
+.blog-topics-bar::-webkit-scrollbar { display: none; }
+
+.blog-topics-bar-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 22px;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 
-.topic-chip {
+.topic-link {
   flex-shrink: 0;
   font-family: var(--font-mono);
   font-size: 12px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   color: var(--charcoal-soft);
-  background: transparent;
-  padding: 7px 13px;
-  border: 1px solid var(--stroke);
-  border-radius: 999px;
   text-decoration: none;
   white-space: nowrap;
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 160ms ease, border-color 160ms ease;
 }
 
-.topic-chip:hover {
-  border-color: var(--green-600);
+.topic-link:hover {
+  color: var(--charcoal);
+  border-bottom-color: var(--charcoal);
+}
+
+.topic-link.is-active {
   color: var(--green-700);
+  border-bottom-color: var(--green-700);
+  font-weight: 700;
 }
 
-.topic-chip.is-active {
-  background: var(--green-700);
-  color: var(--cream);
-  border-color: var(--green-700);
-}
-
-[data-theme="dark"] .topic-chip:hover {
-  border-color: var(--green-400);
+[data-theme="dark"] .topic-link.is-active {
   color: var(--green-300);
+  border-bottom-color: var(--green-300);
 }
 
-[data-theme="dark"] .topic-chip.is-active {
-  background: var(--green-500);
-  color: var(--cream);
-  border-color: var(--green-500);
-}
-
-/* Main content */
+/* ---- Main / issues ---- */
 
 .blog-main {
   background: var(--cream);
-  padding: 56px 24px 96px;
+  padding: clamp(48px, 8vw, 96px) 24px clamp(64px, 10vw, 112px);
 }
 
-/* .blog-main background swaps automatically via --cream var. */
+.blog-main-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+}
 
 .blog-empty {
   font-family: var(--font-sans);
@@ -2214,156 +2211,139 @@ html[data-theme="dark"] .waitlist-card::before {
   max-width: 56ch;
 }
 
-/* Sections */
+/* Issue blocks. Featured = larger; row = compact list entry. */
 
-.blog-section-heading {
-  font-family: var(--font-sans);
-  font-size: clamp(20px, 2vw, 26px);
-  letter-spacing: -0.01em;
-  font-weight: 500;
-  color: var(--charcoal);
-  margin: 0;
-}
-
-/* .blog-section-heading color swaps via --charcoal var. */
-
-.blog-topic-section {
-  margin-top: 56px;
-}
-
-.blog-topic-section:first-of-type {
-  margin-top: 0;
-}
-
-.blog-topic-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  margin-bottom: 8px;
-}
-
-.blog-topic-tagline {
-  font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--muted);
-  margin: 0 0 24px;
-  max-width: 60ch;
-}
-
-.blog-section-link {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--green-700);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 160ms ease;
-}
-
-.blog-section-link:hover {
-  border-bottom-color: var(--green-700);
-}
-
-[data-theme="dark"] .blog-section-link {
-  color: var(--green-300);
-}
-
-[data-theme="dark"] .blog-section-link:hover {
-  border-bottom-color: var(--green-300);
-}
-
-/* Featured card */
-
-.blog-featured {
-  margin-bottom: 56px;
-}
-
-.blog-featured-card {
+.blog-issue {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: 220px 1fr;
   gap: 32px;
-  margin-top: 16px;
-  padding: 24px;
-  border: 1px solid var(--stroke);
-  border-radius: 12px;
-  background: var(--cream-lifted);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 200ms ease, transform 200ms ease;
+  padding: clamp(28px, 4vw, 48px) 0;
+  border-top: 1px solid var(--stroke);
 }
 
-/* When the featured post has no hero image yet, collapse to a single column
-   so the text fills the whole card cleanly instead of leaving a void where
-   the image would have been. */
-.blog-featured-card--text-only {
-  grid-template-columns: 1fr;
-  padding: 32px 28px;
+.blog-issue:first-child,
+.blog-issue--featured {
+  border-top: none;
 }
 
-.blog-featured-card:hover {
-  border-color: var(--green-600);
-  transform: translateY(-2px);
+.blog-issue--featured {
+  padding-top: 8px;
+  padding-bottom: clamp(48px, 6vw, 72px);
 }
 
-[data-theme="dark"] .blog-featured-card:hover {
-  border-color: var(--green-400);
-}
-
-.blog-featured-image {
-  border-radius: 8px;
-  overflow: hidden;
-  aspect-ratio: 16 / 10;
-  background: var(--green-50);
-}
-
-.blog-featured-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.blog-featured-body {
+.blog-issue-aside {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-.blog-card-topic {
+  gap: 8px;
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-size: 12px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--green-700);
-  margin-bottom: 12px;
+  color: var(--muted);
 }
 
-[data-theme="dark"] .blog-card-topic {
+.blog-issue-number {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--green-700);
+  font-weight: 700;
+}
+
+[data-theme="dark"] .blog-issue-number {
   color: var(--green-300);
 }
 
-.blog-featured-title {
+.blog-issue-date {
+  /* mono date in muted */
+}
+
+.blog-issue-topic {
+  display: inline-block;
+  width: fit-content;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.blog-issue-topic:hover {
+  color: var(--charcoal);
+  border-bottom-color: var(--charcoal);
+}
+
+.blog-issue-body {
+  min-width: 0; /* allow wrap inside grid track */
+}
+
+/* Featured title is large; row title is compact. */
+
+.blog-issue-title {
   font-family: var(--font-sans);
-  font-size: clamp(22px, 2.6vw, 32px);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  color: var(--charcoal);
+  margin: 0 0 20px;
+}
+
+.blog-issue-title a {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 280ms ease;
+}
+
+.blog-issue-title a:hover {
+  background-size: 100% 1px;
+}
+
+.blog-issue-title-row {
+  font-family: var(--font-sans);
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.2;
+  letter-spacing: -0.012em;
   font-weight: 500;
   color: var(--charcoal);
   margin: 0 0 12px;
 }
 
-.blog-featured-desc {
+.blog-issue-title-row a {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 280ms ease;
+}
+
+.blog-issue-title-row a:hover {
+  background-size: 100% 1px;
+}
+
+.blog-issue-lede {
+  font-family: var(--font-sans);
+  font-size: clamp(16px, 1.4vw, 18px);
+  line-height: 1.55;
+  color: var(--charcoal-soft);
+  margin: 0 0 24px;
+  max-width: 56ch;
+}
+
+.blog-issue-lede-row {
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.55;
   color: var(--charcoal-soft);
-  margin: 0 0 16px;
-  max-width: 50ch;
+  margin: 0 0 14px;
+  max-width: 56ch;
 }
 
-.blog-card-meta {
+.blog-issue-meta {
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.04em;
@@ -2371,145 +2351,156 @@ html[data-theme="dark"] .waitlist-card::before {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.blog-meta-sep {
+.blog-issue-meta-sep {
   color: var(--light);
 }
 
-/* Card grid */
+.blog-issue-meta-time {
+  /* mono reading-time */
+}
 
-.blog-card-grid {
+.blog-issue-cta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--green-700);
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: color 160ms ease;
+}
+
+.blog-issue-cta:hover {
+  color: var(--green-800);
+}
+
+[data-theme="dark"] .blog-issue-cta {
+  color: var(--green-300);
+}
+
+[data-theme="dark"] .blog-issue-cta:hover {
+  color: var(--green-200);
+}
+
+.blog-issue-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
 }
 
-.blog-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 20px;
-  border: 1px solid var(--stroke);
-  border-radius: 10px;
-  background: var(--cream-lifted);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 200ms ease, transform 200ms ease;
-  height: 100%;
+@media (max-width: 720px) {
+  .blog-issue {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .blog-issue-aside {
+    flex-direction: row;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .blog-issue-aside > * + * {
+    border-left: none;
+  }
+  .blog-issue-topic {
+    font-size: 11px;
+  }
 }
 
-.blog-card:hover {
-  border-color: var(--green-600);
-  transform: translateY(-2px);
-}
-
-[data-theme="dark"] .blog-card:hover {
-  border-color: var(--green-400);
-}
-
-.blog-card-image {
-  border-radius: 6px;
-  overflow: hidden;
-  aspect-ratio: 16 / 10;
-  background: var(--green-50);
-  margin-bottom: 4px;
-}
-
-.blog-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.blog-card-title {
-  font-family: var(--font-sans);
-  font-size: 18px;
-  line-height: 1.25;
-  font-weight: 500;
-  letter-spacing: -0.005em;
-  color: var(--charcoal);
-  margin: 0;
-}
-
-.blog-card-desc {
-  font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--charcoal-soft);
-  margin: 0;
-  flex: 1;
-}
-
-/* Article (single post) */
+/* ---- Article (single post) ---- */
 
 .blog-article {
   background: var(--cream);
 }
 
 .blog-article-header {
-  padding: 96px 24px 32px;
+  padding: clamp(80px, 12vw, 128px) 24px 32px;
   border-bottom: 1px solid var(--stroke);
 }
 
 .blog-article-header-inner {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
 }
 
-.blog-article-topic {
-  display: inline-block;
+.blog-article-issue {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.blog-article-issue-link {
   color: var(--green-700);
-  margin-bottom: 20px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.blog-article-issue-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+[data-theme="dark"] .blog-article-issue-link {
+  color: var(--green-300);
+}
+
+.blog-article-issue-num {
+  color: var(--charcoal-soft);
+}
+
+.blog-article-issue-sep {
+  color: var(--light);
+}
+
+.blog-article-topic {
+  color: var(--charcoal-soft);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 160ms ease;
 }
 
 .blog-article-topic:hover {
-  border-bottom-color: var(--green-700);
-}
-
-[data-theme="dark"] .blog-article-topic {
-  color: var(--green-300);
-}
-
-[data-theme="dark"] .blog-article-topic:hover {
-  border-bottom-color: var(--green-300);
+  border-bottom-color: currentColor;
 }
 
 .blog-article-title {
   font-family: var(--font-sans);
-  font-size: clamp(32px, 4.5vw, 48px);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: clamp(34px, 5.5vw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.024em;
   font-weight: 500;
   color: var(--charcoal);
-  margin: 0 0 24px;
+  margin: 0 0 28px;
+  max-width: 22ch;
 }
-
-/* .blog-article-title color swaps via --charcoal var. */
 
 .blog-article-meta {
   font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
   margin: 0;
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.blog-meta-sep {
+  color: var(--light);
 }
 
 .blog-article-hero {
@@ -2521,26 +2512,33 @@ html[data-theme="dark"] .waitlist-card::before {
 .blog-article-hero img {
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: 8px;
   display: block;
 }
 
-/* Prose — operator-readable typography */
+/* ---- Prose ---- */
 
 .blog-article-prose {
-  max-width: 720px;
-  margin: 56px auto 0;
-  padding: 0 24px 96px;
+  max-width: 680px;
+  margin: clamp(40px, 6vw, 72px) auto 0;
+  padding: 0 24px clamp(64px, 10vw, 112px);
   font-family: var(--font-sans);
   font-size: 18px;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--charcoal);
 }
 
-/* .blog-article-prose color swaps via --charcoal var. */
-
 .blog-article-prose > * + * {
   margin-top: 1.2em;
+}
+
+/* Lede treatment: first paragraph after the H1 is larger and lifted. */
+.blog-article-prose > p:first-child {
+  font-size: clamp(19px, 1.8vw, 22px);
+  line-height: 1.55;
+  color: var(--charcoal);
+  margin-bottom: 1.6em;
+  font-weight: 400;
 }
 
 .blog-article-prose h1 {
@@ -2550,27 +2548,33 @@ html[data-theme="dark"] .waitlist-card::before {
 .blog-article-prose h2 {
   font-size: clamp(22px, 2.4vw, 28px);
   line-height: 1.2;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
   font-weight: 600;
   margin-top: 2em;
   margin-bottom: 0.5em;
   color: var(--charcoal);
 }
 
-/* .blog-article-prose h2 color swaps via --charcoal var. */
+.blog-article-prose h2::before {
+  content: "·";
+  color: var(--green-700);
+  margin-right: 0.4em;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .blog-article-prose h2::before {
+  color: var(--green-400);
+}
 
 .blog-article-prose h3 {
-  font-size: clamp(18px, 1.8vw, 22px);
+  font-size: clamp(18px, 1.7vw, 21px);
   line-height: 1.3;
   font-weight: 600;
   margin-top: 1.6em;
   margin-bottom: 0.4em;
 }
 
-/* Auto-link headings via rehype-autolink-headings wrap the H2/H3 text in
-   an <a>. Without this, .blog-article-prose a wins on specificity and
-   colors them green with underlines. Match the parent prose specificity
-   to neutralize the link styling. */
+/* Auto-link headings — neutralize the prose-link style. */
 .blog-article-prose .blog-heading-anchor,
 .blog-article-prose a.blog-heading-anchor {
   color: inherit;
@@ -2613,7 +2617,7 @@ html[data-theme="dark"] .waitlist-card::before {
 
 .blog-article-prose ul,
 .blog-article-prose ol {
-  padding-left: 1.5em;
+  padding-left: 1.4em;
   margin: 1.2em 0;
 }
 
@@ -2623,30 +2627,39 @@ html[data-theme="dark"] .waitlist-card::before {
 
 .blog-article-prose blockquote {
   margin: 1.6em 0;
-  padding: 14px 20px;
-  border-left: 3px solid var(--green-600);
-  background: var(--green-50);
-  font-style: italic;
-  color: var(--charcoal-soft);
+  padding: 16px 22px;
+  border-left: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 1.4;
+  font-style: normal;
+  color: var(--charcoal);
+  letter-spacing: -0.005em;
+  position: relative;
 }
 
-[data-theme="dark"] .blog-article-prose blockquote {
-  /* Override the green-50 light tint with a darker green wash so the
-     quote block reads correctly against the dark page background. */
-  background: rgba(95, 149, 104, 0.12);
+.blog-article-prose blockquote::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  color: var(--green-700);
+  font-size: 1.6em;
+  line-height: 1;
+}
+
+[data-theme="dark"] .blog-article-prose blockquote::before {
+  color: var(--green-400);
 }
 
 .blog-article-prose code {
   font-family: var(--font-mono);
   font-size: 0.92em;
-  background: var(--green-50);
+  background: var(--cream-lifted);
   padding: 1px 6px;
   border-radius: 4px;
-}
-
-[data-theme="dark"] .blog-article-prose code {
-  /* Override green-50 with a subtle dark wash for readable inline code. */
-  background: rgba(95, 149, 104, 0.15);
+  border: 1px solid var(--stroke);
 }
 
 .blog-article-prose pre {
@@ -2663,6 +2676,7 @@ html[data-theme="dark"] .waitlist-card::before {
   background: transparent;
   padding: 0;
   color: inherit;
+  border: none;
 }
 
 .blog-article-prose table {
@@ -2701,7 +2715,7 @@ html[data-theme="dark"] .waitlist-card::before {
   margin: 2.4em 0;
 }
 
-/* Article footer */
+/* ---- Article footer ---- */
 
 .blog-article-footer {
   border-top: 1px solid var(--stroke);
@@ -2709,7 +2723,7 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 .blog-article-footer-inner {
-  max-width: 720px;
+  max-width: 680px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -2719,8 +2733,9 @@ html[data-theme="dark"] .waitlist-card::before {
 
 .blog-back-link {
   font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--green-700);
   text-decoration: none;
   border-bottom: 1px solid transparent;
@@ -2739,61 +2754,50 @@ html[data-theme="dark"] .waitlist-card::before {
   border-bottom-color: var(--green-300);
 }
 
-@media (max-width: 700px) {
-  .blog-featured-card {
-    grid-template-columns: 1fr;
-  }
-  .blog-card-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Blog subscribe block — added 2026-05-01.
-   Quiet, end-of-article CTA that reuses the waitlist motion (no separate
-   newsletter list yet). RSS link for the operators who roll their own. */
+/* ---- Subscribe block ---- */
 
 .blog-subscribe {
-  background: var(--green-50);
+  background: var(--cream-lifted);
   border-top: 1px solid var(--stroke);
-  padding: 64px 24px;
+  padding: clamp(56px, 8vw, 96px) 24px;
 }
 
 [data-theme="dark"] .blog-subscribe {
-  /* green-50 light tint isn't right against the dark page background;
-     use a deeper green wash that still separates this section. */
-  background: rgba(95, 149, 104, 0.08);
+  background: rgba(95, 149, 104, 0.06);
 }
 
 .blog-subscribe-inner {
-  max-width: 720px;
+  max-width: 680px;
   margin: 0 auto;
-  text-align: center;
+  text-align: left;
 }
 
 .blog-subscribe-eyebrow {
   font-family: var(--font-mono);
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--green-700);
-  margin: 0 0 16px;
+  margin: 0 0 20px;
 }
 
 [data-theme="dark"] .blog-subscribe-eyebrow {
   color: var(--green-300);
 }
 
+.blog-subscribe-dot {
+  /* re-use the wordmark period treatment */
+}
+
 .blog-subscribe-heading {
   font-family: var(--font-sans);
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: clamp(24px, 3.2vw, 36px);
   line-height: 1.15;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   font-weight: 500;
   color: var(--charcoal);
-  margin: 0 0 12px;
-  max-width: 22ch;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 0 16px;
+  max-width: 24ch;
 }
 
 .blog-subscribe-lede {
@@ -2801,26 +2805,26 @@ html[data-theme="dark"] .waitlist-card::before {
   font-size: 16px;
   line-height: 1.55;
   color: var(--charcoal-soft);
-  margin: 0 auto 24px;
-  max-width: 50ch;
+  margin: 0 0 28px;
+  max-width: 52ch;
 }
 
 .blog-subscribe-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
 .blog-subscribe-cta {
-  /* Inherits .btn .btn-primary; this slot keeps it consistent at the bottom of articles. */
+  /* Inherits .btn .btn-primary */
 }
 
 .blog-subscribe-rss {
   font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--charcoal-soft);
   text-decoration: none;
   border-bottom: 1px solid transparent;

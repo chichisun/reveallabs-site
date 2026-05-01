@@ -2,61 +2,62 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "../../components/Footer";
 import { BlogSubscribeBlock } from "../../components/BlogSubscribeBlock";
+import { WaitlistDialog } from "../../components/WaitlistDialog";
 import { BLOG_TOPICS } from "../../lib/blog-topics";
-import {
-  getAllPosts,
-  getPostsGroupedByTopic,
-  formatPublishDate,
-} from "../../lib/blog";
+import { getAllPosts, formatPublishDate } from "../../lib/blog";
 import { SITE_URL } from "../../lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Blog — reveal.",
+  title: "Field notes — reveal.",
   description:
-    "Operator-credible writing for independent restaurant owners. Vendor billing audits, food cost math, POS migrations, the boring spreadsheets that catch real money.",
-  alternates: {
-    canonical: `${SITE_URL}/blog`,
-  },
+    "Audits in public. Vendor billing patterns, food cost math, POS migrations — what one operator finds while running the books.",
+  alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
-    title: "Blog — reveal.",
-    description:
-      "Operator-credible writing for independent restaurant owners.",
+    title: "Field notes — reveal.",
+    description: "Audits in public — what one operator finds while running the books.",
     url: `${SITE_URL}/blog`,
     type: "website",
   },
 };
 
+function issueNumber(index: number, total: number): string {
+  // Newest is highest issue number, counting up from #01.
+  const n = total - index;
+  return n.toString().padStart(2, "0");
+}
+
 export default function BlogIndexPage() {
   const allPosts = getAllPosts();
-  const grouped = getPostsGroupedByTopic();
-  const featured = allPosts[0]; // newest published
+  const total = allPosts.length;
+  const featured = allPosts[0];
+  const rest = allPosts.slice(1);
 
   return (
     <>
       <header className="blog-header">
         <div className="blog-header-inner">
-          <p className="blog-eyebrow">Blog</p>
+          <p className="blog-eyebrow">Field notes</p>
           <h1 className="blog-heading">
-            Field notes for independent restaurants.
+            Audits, in public<span className="blog-heading-dot">.</span>
           </h1>
           <p className="blog-lede">
-            Vendor billing audits. Food cost math. POS migrations. The boring
-            spreadsheets that catch real money. Written by an operator, for
-            operators.
+            Vendor billing patterns, food cost math, POS migrations — what one
+            operator finds while running the books at Tuk Tuk in Denver, written
+            up for anyone running their own.
           </p>
         </div>
       </header>
 
       <nav className="blog-topics-bar" aria-label="Filter by topic">
         <div className="blog-topics-bar-inner">
-          <Link href="/blog" className="topic-chip is-active">
+          <Link href="/blog" className="topic-link is-active">
             All
           </Link>
           {BLOG_TOPICS.map((topic) => (
             <Link
               key={topic.slug}
               href={`/blog/topics/${topic.slug}`}
-              className="topic-chip"
+              className="topic-link"
             >
               {topic.label}
             </Link>
@@ -66,118 +67,109 @@ export default function BlogIndexPage() {
 
       <main className="blog-main">
         <div className="blog-main-inner">
-          {allPosts.length === 0 && (
+          {total === 0 && (
             <div className="blog-empty">
               <p>
-                The blog goes live with the first published article. The pipeline
-                drafts blog posts every Friday — once one is reviewed and
-                published, it&apos;ll appear here.
+                The first issue lands Friday. Drafts in the pipeline cover
+                vendor billing audits and POS migrations — see you then.
               </p>
             </div>
           )}
 
           {featured && (
-            <section className="blog-featured" aria-labelledby="featured-heading">
-              <h2 id="featured-heading" className="blog-section-heading">
-                Latest
-              </h2>
-              <Link
-                href={`/blog/${featured.frontmatter.slug}`}
-                className={`blog-featured-card${featured.frontmatter.heroImage ? "" : " blog-featured-card--text-only"}`}
-              >
-                {featured.frontmatter.heroImage && (
-                  <div className="blog-featured-image">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={featured.frontmatter.heroImage}
-                      alt=""
-                      loading="eager"
-                    />
-                  </div>
-                )}
-                <div className="blog-featured-body">
-                  {featured.topicMeta && (
-                    <span className="blog-card-topic">
-                      {featured.topicMeta.label}
-                    </span>
-                  )}
-                  <h3 className="blog-featured-title">
-                    {featured.frontmatter.title}
-                  </h3>
-                  <p className="blog-featured-desc">
-                    {featured.frontmatter.metaDescription}
-                  </p>
-                  <p className="blog-card-meta">
+            <article className="blog-issue blog-issue--featured" aria-labelledby="issue-featured">
+              <aside className="blog-issue-aside">
+                <span className="blog-issue-number">
+                  #{issueNumber(0, total)}
+                </span>
+                <span className="blog-issue-date">
+                  <time dateTime={featured.frontmatter.publishDate}>
                     {formatPublishDate(featured.frontmatter.publishDate)}
-                    <span className="blog-meta-sep" aria-hidden="true">·</span>
-                    {featured.readingTimeText}
-                  </p>
-                </div>
-              </Link>
-            </section>
-          )}
-
-          {grouped.map(({ topic, posts }) => (
-            <section
-              key={topic.slug}
-              className="blog-topic-section"
-              aria-labelledby={`topic-${topic.slug}`}
-            >
-              <div className="blog-topic-header">
-                <h2 id={`topic-${topic.slug}`} className="blog-section-heading">
-                  {topic.label}
-                </h2>
-                {posts.length > 3 && (
+                  </time>
+                </span>
+                {featured.topicMeta && (
                   <Link
-                    href={`/blog/topics/${topic.slug}`}
-                    className="blog-section-link"
+                    href={`/blog/topics/${featured.topicMeta.slug}`}
+                    className="blog-issue-topic"
                   >
-                    See all {posts.length}
+                    {featured.topicMeta.label}
                   </Link>
                 )}
+              </aside>
+              <div className="blog-issue-body">
+                <h2 id="issue-featured" className="blog-issue-title">
+                  <Link href={`/blog/${featured.frontmatter.slug}`}>
+                    {featured.frontmatter.title}
+                  </Link>
+                </h2>
+                <p className="blog-issue-lede">
+                  {featured.frontmatter.metaDescription}
+                </p>
+                <p className="blog-issue-meta">
+                  <Link
+                    href={`/blog/${featured.frontmatter.slug}`}
+                    className="blog-issue-cta"
+                  >
+                    Read it →
+                  </Link>
+                  <span className="blog-issue-meta-sep" aria-hidden="true">
+                    ·
+                  </span>
+                  <span className="blog-issue-meta-time">
+                    {featured.readingTimeText}
+                  </span>
+                </p>
               </div>
-              <p className="blog-topic-tagline">{topic.tagline}</p>
-              <ul className="blog-card-grid">
-                {posts.slice(0, 3).map((post) => (
-                  <li key={post.frontmatter.slug}>
-                    <Link
-                      href={`/blog/${post.frontmatter.slug}`}
-                      className="blog-card"
-                    >
-                      {post.frontmatter.heroImage && (
-                        <div className="blog-card-image">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={post.frontmatter.heroImage}
-                            alt=""
-                            loading="lazy"
-                          />
-                        </div>
-                      )}
-                      <h3 className="blog-card-title">
-                        {post.frontmatter.title}
-                      </h3>
-                      <p className="blog-card-desc">
-                        {post.frontmatter.metaDescription}
-                      </p>
-                      <p className="blog-card-meta">
+            </article>
+          )}
+
+          {rest.length > 0 && (
+            <ol className="blog-issue-list" aria-label="Earlier issues">
+              {rest.map((post, idx) => (
+                <li key={post.frontmatter.slug} className="blog-issue blog-issue--row">
+                  <aside className="blog-issue-aside">
+                    <span className="blog-issue-number">
+                      #{issueNumber(idx + 1, total)}
+                    </span>
+                    <span className="blog-issue-date">
+                      <time dateTime={post.frontmatter.publishDate}>
                         {formatPublishDate(post.frontmatter.publishDate)}
-                        <span className="blog-meta-sep" aria-hidden="true">
-                          ·
-                        </span>
+                      </time>
+                    </span>
+                    {post.topicMeta && (
+                      <Link
+                        href={`/blog/topics/${post.topicMeta.slug}`}
+                        className="blog-issue-topic"
+                      >
+                        {post.topicMeta.label}
+                      </Link>
+                    )}
+                  </aside>
+                  <div className="blog-issue-body">
+                    <h3 className="blog-issue-title-row">
+                      <Link href={`/blog/${post.frontmatter.slug}`}>
+                        {post.frontmatter.title}
+                      </Link>
+                    </h3>
+                    <p className="blog-issue-lede-row">
+                      {post.frontmatter.metaDescription}
+                    </p>
+                    <p className="blog-issue-meta">
+                      <span className="blog-issue-meta-time">
                         {post.readingTimeText}
-                      </p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+                      </span>
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
         </div>
       </main>
 
       <BlogSubscribeBlock />
       <Footer />
+      <WaitlistDialog />
     </>
   );
 }
