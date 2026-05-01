@@ -2532,8 +2532,9 @@ html[data-theme="dark"] .waitlist-card::before {
   margin-top: 1.2em;
 }
 
-/* Lede treatment: first paragraph after the H1 is larger and lifted. */
-.blog-article-prose > p:first-child {
+/* Lede treatment: the first paragraph is larger and lifted. Uses
+   :first-of-type because H1 is the actual :first-child (display:none). */
+.blog-article-prose > p:first-of-type {
   font-size: clamp(19px, 1.8vw, 22px);
   line-height: 1.55;
   color: var(--charcoal);
