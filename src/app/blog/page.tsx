@@ -36,6 +36,8 @@ function resolveCardImage(post: ReturnType<typeof getAllPosts>[number]): string 
 export default function BlogIndexPage() {
   const allPosts = getAllPosts();
   const total = allPosts.length;
+  const featured = allPosts[0];
+  const rest = allPosts.slice(1);
 
   return (
     <>
@@ -63,6 +65,57 @@ export default function BlogIndexPage() {
             </div>
           )}
 
+          {featured && (
+            <section
+              className="blog-featured blog-featured--image-left"
+              aria-labelledby="featured-heading"
+            >
+              <Link
+                href={`/blog/${featured.frontmatter.slug}`}
+                className="blog-featured-image"
+                aria-hidden="true"
+                tabIndex={-1}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={resolveCardImage(featured)} alt="" loading="eager" />
+              </Link>
+              <div className="blog-featured-text">
+                {featured.topicMeta && (
+                  <Link
+                    href={`/blog/topics/${featured.topicMeta.slug}`}
+                    className="blog-featured-eyebrow"
+                  >
+                    Most recent · {featured.topicMeta.label}
+                  </Link>
+                )}
+                <h2 id="featured-heading" className="blog-featured-title">
+                  <Link href={`/blog/${featured.frontmatter.slug}`}>
+                    {featured.frontmatter.title}
+                  </Link>
+                </h2>
+                <p className="blog-featured-time">{featured.readingTimeText}</p>
+                <div className="blog-featured-byline">
+                  <span className="blog-featured-author">
+                    {featured.frontmatter.author}
+                  </span>
+                  <span className="blog-featured-sep" aria-hidden="true">·</span>
+                  <time dateTime={featured.frontmatter.publishDate}>
+                    {formatPublishDate(featured.frontmatter.publishDate)}
+                  </time>
+                </div>
+                <p className="blog-featured-lede">
+                  {featured.frontmatter.metaDescription}
+                </p>
+                <Link
+                  href={`/blog/${featured.frontmatter.slug}`}
+                  className="blog-featured-cta"
+                >
+                  Read it →
+                </Link>
+              </div>
+            </section>
+          )}
+
           <nav className="blog-topics-bar" aria-label="Filter by topic">
             <div className="blog-topics-bar-inner">
               <Link href="/blog" className="topic-link is-active">
@@ -80,9 +133,9 @@ export default function BlogIndexPage() {
             </div>
           </nav>
 
-          {allPosts.length > 0 && (
-            <ul className="blog-card-grid" aria-label="Issues">
-              {allPosts.map((post) => (
+          {rest.length > 0 && (
+            <ul className="blog-card-grid" aria-label="Earlier issues">
+              {rest.map((post) => (
                 <li key={post.frontmatter.slug}>
                   <Link
                     href={`/blog/${post.frontmatter.slug}`}
