@@ -20,10 +20,25 @@ export const metadata: Metadata = {
   },
 };
 
-function issueNumber(index: number, total: number): string {
-  // Newest is highest issue number, counting up from #01.
-  const n = total - index;
-  return n.toString().padStart(2, "0");
+// Decorative placeholder images for grid cards when no heroImage is set yet.
+// Cycles through brand-aligned existing assets.
+const FALLBACK_HEROES = [
+  "/our-story/2026-v2.jpg",
+  "/our-story/2014-v2.jpg",
+  "/our-story/2011-v2.jpg",
+  "/our-story/1998-v2.jpg",
+  "/our-story/1970-v2.jpg",
+] as const;
+
+function pickFallbackHero(slug: string): string {
+  // Stable hash so each post always gets the same fallback.
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    hash = (hash << 5) - hash + slug.charCodeAt(i);
+    hash |= 0;
+  }
+  const idx = Math.abs(hash) % FALLBACK_HEROES.length;
+  return FALLBACK_HEROES[idx];
 }
 
 export default function BlogIndexPage() {
@@ -34,39 +49,15 @@ export default function BlogIndexPage() {
 
   return (
     <>
-      <header className="blog-header">
-        <div className="blog-header-inner">
-          <p className="blog-eyebrow">Field notes</p>
-          <h1 className="blog-heading">
-            Audits, in public<span className="blog-heading-dot">.</span>
-          </h1>
-          <p className="blog-lede">
-            Vendor billing patterns, food cost math, POS migrations — what one
-            operator finds while running the books at Tuk Tuk in Denver, written
-            up for anyone running their own.
-          </p>
-        </div>
-      </header>
+      <main className="blog-page">
+        <div className="blog-page-inner">
+          <header className="blog-page-header">
+            <p className="blog-eyebrow">Field notes</p>
+            <h1 className="blog-page-heading">
+              Audits, in public<span className="blog-heading-dot">.</span>
+            </h1>
+          </header>
 
-      <nav className="blog-topics-bar" aria-label="Filter by topic">
-        <div className="blog-topics-bar-inner">
-          <Link href="/blog" className="topic-link is-active">
-            All
-          </Link>
-          {BLOG_TOPICS.map((topic) => (
-            <Link
-              key={topic.slug}
-              href={`/blog/topics/${topic.slug}`}
-              className="topic-link"
-            >
-              {topic.label}
-            </Link>
-          ))}
-        </div>
-      </nav>
-
-      <main className="blog-main">
-        <div className="blog-main-inner">
           {total === 0 && (
             <div className="blog-empty">
               <p>
@@ -77,92 +68,109 @@ export default function BlogIndexPage() {
           )}
 
           {featured && (
-            <article className="blog-issue blog-issue--featured" aria-labelledby="issue-featured">
-              <aside className="blog-issue-aside">
-                <span className="blog-issue-number">
-                  #{issueNumber(0, total)}
-                </span>
-                <span className="blog-issue-date">
-                  <time dateTime={featured.frontmatter.publishDate}>
-                    {formatPublishDate(featured.frontmatter.publishDate)}
-                  </time>
-                </span>
+            <section
+              className="blog-featured"
+              aria-labelledby="featured-heading"
+            >
+              <div className="blog-featured-text">
                 {featured.topicMeta && (
                   <Link
                     href={`/blog/topics/${featured.topicMeta.slug}`}
-                    className="blog-issue-topic"
+                    className="blog-featured-eyebrow"
                   >
-                    {featured.topicMeta.label}
+                    Most recent · {featured.topicMeta.label}
                   </Link>
                 )}
-              </aside>
-              <div className="blog-issue-body">
-                <h2 id="issue-featured" className="blog-issue-title">
+                <h2 id="featured-heading" className="blog-featured-title">
                   <Link href={`/blog/${featured.frontmatter.slug}`}>
                     {featured.frontmatter.title}
                   </Link>
                 </h2>
-                <p className="blog-issue-lede">
-                  {featured.frontmatter.metaDescription}
-                </p>
-                <p className="blog-issue-meta">
-                  <Link
-                    href={`/blog/${featured.frontmatter.slug}`}
-                    className="blog-issue-cta"
-                  >
-                    Read it →
-                  </Link>
-                  <span className="blog-issue-meta-sep" aria-hidden="true">
-                    ·
+                <p className="blog-featured-time">{featured.readingTimeText}</p>
+                <div className="blog-featured-byline">
+                  <span className="blog-featured-author">
+                    {featured.frontmatter.author}
                   </span>
-                  <span className="blog-issue-meta-time">
-                    {featured.readingTimeText}
-                  </span>
-                </p>
+                  <span className="blog-featured-sep" aria-hidden="true">·</span>
+                  <time dateTime={featured.frontmatter.publishDate}>
+                    {formatPublishDate(featured.frontmatter.publishDate)}
+                  </time>
+                </div>
               </div>
-            </article>
+              <Link
+                href={`/blog/${featured.frontmatter.slug}`}
+                className="blog-featured-image"
+                aria-hidden="true"
+                tabIndex={-1}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={
+                    featured.frontmatter.heroImage ??
+                    pickFallbackHero(featured.frontmatter.slug)
+                  }
+                  alt=""
+                  loading="eager"
+                />
+              </Link>
+            </section>
           )}
 
+          <nav className="blog-topics-bar" aria-label="Filter by topic">
+            <div className="blog-topics-bar-inner">
+              <Link href="/blog" className="topic-link is-active">
+                All
+              </Link>
+              {BLOG_TOPICS.map((topic) => (
+                <Link
+                  key={topic.slug}
+                  href={`/blog/topics/${topic.slug}`}
+                  className="topic-link"
+                >
+                  {topic.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
+
           {rest.length > 0 && (
-            <ol className="blog-issue-list" aria-label="Earlier issues">
-              {rest.map((post, idx) => (
-                <li key={post.frontmatter.slug} className="blog-issue blog-issue--row">
-                  <aside className="blog-issue-aside">
-                    <span className="blog-issue-number">
-                      #{issueNumber(idx + 1, total)}
-                    </span>
-                    <span className="blog-issue-date">
+            <ul className="blog-card-grid" aria-label="Earlier issues">
+              {rest.map((post) => (
+                <li key={post.frontmatter.slug}>
+                  <Link
+                    href={`/blog/${post.frontmatter.slug}`}
+                    className="blog-card"
+                  >
+                    <div className="blog-card-image">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={
+                          post.frontmatter.heroImage ??
+                          pickFallbackHero(post.frontmatter.slug)
+                        }
+                        alt=""
+                        loading="lazy"
+                      />
+                    </div>
+                    {post.topicMeta && (
+                      <p className="blog-card-eyebrow">
+                        {post.topicMeta.label}
+                      </p>
+                    )}
+                    <h3 className="blog-card-title">
+                      {post.frontmatter.title}
+                    </h3>
+                    <p className="blog-card-meta">
                       <time dateTime={post.frontmatter.publishDate}>
                         {formatPublishDate(post.frontmatter.publishDate)}
                       </time>
-                    </span>
-                    {post.topicMeta && (
-                      <Link
-                        href={`/blog/topics/${post.topicMeta.slug}`}
-                        className="blog-issue-topic"
-                      >
-                        {post.topicMeta.label}
-                      </Link>
-                    )}
-                  </aside>
-                  <div className="blog-issue-body">
-                    <h3 className="blog-issue-title-row">
-                      <Link href={`/blog/${post.frontmatter.slug}`}>
-                        {post.frontmatter.title}
-                      </Link>
-                    </h3>
-                    <p className="blog-issue-lede-row">
-                      {post.frontmatter.metaDescription}
+                      <span className="blog-meta-sep" aria-hidden="true">·</span>
+                      {post.readingTimeText}
                     </p>
-                    <p className="blog-issue-meta">
-                      <span className="blog-issue-meta-time">
-                        {post.readingTimeText}
-                      </span>
-                    </p>
-                  </div>
+                  </Link>
                 </li>
               ))}
-            </ol>
+            </ul>
           )}
         </div>
       </main>

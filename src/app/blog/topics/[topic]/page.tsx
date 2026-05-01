@@ -9,11 +9,7 @@ import {
   getTopic,
   topicSlugs,
 } from "../../../../lib/blog-topics";
-import {
-  getAllPosts,
-  getPostsByTopic,
-  formatPublishDate,
-} from "../../../../lib/blog";
+import { getPostsByTopic, formatPublishDate } from "../../../../lib/blog";
 import { SITE_URL } from "../../../../lib/site-config";
 
 type Props = {
@@ -42,49 +38,62 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const FALLBACK_HEROES = [
+  "/our-story/2026-v2.jpg",
+  "/our-story/2014-v2.jpg",
+  "/our-story/2011-v2.jpg",
+  "/our-story/1998-v2.jpg",
+  "/our-story/1970-v2.jpg",
+] as const;
+
+function pickFallbackHero(slug: string): string {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    hash = (hash << 5) - hash + slug.charCodeAt(i);
+    hash |= 0;
+  }
+  return FALLBACK_HEROES[Math.abs(hash) % FALLBACK_HEROES.length];
+}
+
 export default async function BlogTopicPage({ params }: Props) {
   const { topic: topicSlug } = await params;
   const topic = getTopic(topicSlug);
   if (!topic) notFound();
 
   const posts = getPostsByTopic(topic.slug);
-  const allTotal = getAllPosts().length;
 
   return (
     <>
-      <header className="blog-header">
-        <div className="blog-header-inner">
-          <p className="blog-eyebrow">
-            <Link href="/blog" className="blog-eyebrow-link">
-              ← Field notes
-            </Link>
-          </p>
-          <h1 className="blog-heading">
-            {topic.label}<span className="blog-heading-dot">.</span>
-          </h1>
-          <p className="blog-lede">{topic.tagline}</p>
-        </div>
-      </header>
+      <main className="blog-page">
+        <div className="blog-page-inner">
+          <header className="blog-page-header">
+            <p className="blog-eyebrow">
+              <Link href="/blog" className="blog-eyebrow-link">
+                ← Field notes
+              </Link>
+            </p>
+            <h1 className="blog-page-heading">
+              {topic.label}<span className="blog-heading-dot">.</span>
+            </h1>
+          </header>
 
-      <nav className="blog-topics-bar" aria-label="Filter by topic">
-        <div className="blog-topics-bar-inner">
-          <Link href="/blog" className="topic-link">
-            All
-          </Link>
-          {BLOG_TOPICS.map((t) => (
-            <Link
-              key={t.slug}
-              href={`/blog/topics/${t.slug}`}
-              className={`topic-link${t.slug === topic.slug ? " is-active" : ""}`}
-            >
-              {t.label}
-            </Link>
-          ))}
-        </div>
-      </nav>
+          <nav className="blog-topics-bar" aria-label="Filter by topic">
+            <div className="blog-topics-bar-inner">
+              <Link href="/blog" className="topic-link">
+                All
+              </Link>
+              {BLOG_TOPICS.map((t) => (
+                <Link
+                  key={t.slug}
+                  href={`/blog/topics/${t.slug}`}
+                  className={`topic-link${t.slug === topic.slug ? " is-active" : ""}`}
+                >
+                  {t.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
 
-      <main className="blog-main">
-        <div className="blog-main-inner">
           {posts.length === 0 ? (
             <div className="blog-empty">
               <p>
@@ -96,44 +105,39 @@ export default async function BlogTopicPage({ params }: Props) {
               </p>
             </div>
           ) : (
-            <ol className="blog-issue-list" aria-label={`${topic.label} issues`}>
-              {posts.map((post) => {
-                const allIdx = getAllPosts().findIndex(
-                  (p) => p.frontmatter.slug === post.frontmatter.slug,
-                );
-                const issueNum = (allTotal - allIdx).toString().padStart(2, "0");
-                return (
-                  <li
-                    key={post.frontmatter.slug}
-                    className="blog-issue blog-issue--row"
+            <ul className="blog-card-grid" aria-label={`${topic.label} issues`}>
+              {posts.map((post) => (
+                <li key={post.frontmatter.slug}>
+                  <Link
+                    href={`/blog/${post.frontmatter.slug}`}
+                    className="blog-card"
                   >
-                    <aside className="blog-issue-aside">
-                      <span className="blog-issue-number">#{issueNum}</span>
-                      <span className="blog-issue-date">
-                        <time dateTime={post.frontmatter.publishDate}>
-                          {formatPublishDate(post.frontmatter.publishDate)}
-                        </time>
-                      </span>
-                    </aside>
-                    <div className="blog-issue-body">
-                      <h3 className="blog-issue-title-row">
-                        <Link href={`/blog/${post.frontmatter.slug}`}>
-                          {post.frontmatter.title}
-                        </Link>
-                      </h3>
-                      <p className="blog-issue-lede-row">
-                        {post.frontmatter.metaDescription}
-                      </p>
-                      <p className="blog-issue-meta">
-                        <span className="blog-issue-meta-time">
-                          {post.readingTimeText}
-                        </span>
-                      </p>
+                    <div className="blog-card-image">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={
+                          post.frontmatter.heroImage ??
+                          pickFallbackHero(post.frontmatter.slug)
+                        }
+                        alt=""
+                        loading="lazy"
+                      />
                     </div>
-                  </li>
-                );
-              })}
-            </ol>
+                    <p className="blog-card-eyebrow">{topic.label}</p>
+                    <h3 className="blog-card-title">
+                      {post.frontmatter.title}
+                    </h3>
+                    <p className="blog-card-meta">
+                      <time dateTime={post.frontmatter.publishDate}>
+                        {formatPublishDate(post.frontmatter.publishDate)}
+                      </time>
+                      <span className="blog-meta-sep" aria-hidden="true">·</span>
+                      {post.readingTimeText}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </main>

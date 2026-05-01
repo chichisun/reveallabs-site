@@ -53,7 +53,7 @@ Stage today: pre-launch waitlist. Founder-led. The site converts visitors into w
 **Tone:**
 - **Knowledgeable older-brother.** Synthesizes industry chaos for owners who don't have time. Not lecturing. Not founder-thought-leadership.
 - **Stratechery-for-restaurants but more accessible.** Insightful, specific, no MBA jargon.
-- **Operator-credible.** The founder (Kase Sundarapura) actually runs Tuk Tuk in Denver, CO. Reveal pages can reference this directly when relevant — not gratuitously.
+- **Operator-credible.** The founder (Chayadol Sundarapura, "Kase" informally) actually runs Tuk Tuk in Denver, CO. Reveal pages can reference this directly when relevant — not gratuitously. Author bylines and formal attributions use "Chayadol Sundarapura"; first-person voice / casual mentions use "Kase".
 - **Tight.** Every word earns its place. 180–220 word target on long-form social posts; 1500–2500 on blog articles. No throat-clearing, no filler, no preamble.
 
 ## Strategic principles for this site

@@ -2056,28 +2056,35 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 /* ============================================================================
-   Field notes (blog) — 2026-05-01 redesign
+   Field notes (blog) — 2026-05-01 v2 redesign
 
-   Reframed from a generic content-marketing blog into a published-audit
-   notebook. Each post is an "issue," numbered, dated, asymmetric, typographic.
-   No card grids, no hero-stat templates, no chip pills. The wordmark period
-   ("." in green) is the recurring ornament.
+   Calyra/Beautify-inspired editorial layout:
+     - Featured: large title on the LEFT, rounded image on the RIGHT
+     - Topic nav as plain underline-on-active text links (no chip pills)
+     - Earlier issues: 3-column card grid, rounded image-on-top, eyebrow,
+       title, date+reading-time meta
+     - Article page: pill back-button, meta row (category | date | read),
+       huge display title, full-width rounded hero image below
 
-   Light/dark theme inherits from the site's palette swap of --cream and
-   --charcoal vars. Don't add [data-theme="dark"] flips for those vars.
+   Translated to Reveal's brand: cream/charcoal/green-700 palette,
+   Space Grotesk display + body, Space Mono eyebrows, the wordmark
+   green-period as a recurring ornament.
    ============================================================================ */
 
-/* ---- Header ---- */
+/* ---- Page container ---- */
 
-.blog-header {
+.blog-page {
   background: var(--cream);
-  padding: clamp(80px, 12vw, 128px) 24px clamp(40px, 6vw, 64px);
-  border-bottom: 1px solid var(--stroke);
+  padding: clamp(48px, 8vw, 96px) clamp(20px, 4vw, 56px) clamp(64px, 10vw, 112px);
 }
 
-.blog-header-inner {
-  max-width: 1080px;
+.blog-page-inner {
+  max-width: 1200px;
   margin: 0 auto;
+}
+
+.blog-page-header {
+  margin-bottom: clamp(40px, 6vw, 64px);
 }
 
 .blog-eyebrow {
@@ -2086,7 +2093,8 @@ html[data-theme="dark"] .waitlist-card::before {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--green-700);
-  margin: 0 0 28px;
+  margin: 0 0 18px;
+  font-weight: 700;
 }
 
 [data-theme="dark"] .blog-eyebrow {
@@ -2104,15 +2112,15 @@ html[data-theme="dark"] .waitlist-card::before {
   border-bottom-color: currentColor;
 }
 
-.blog-heading {
+.blog-page-heading {
   font-family: var(--font-sans);
-  font-size: clamp(40px, 7vw, 80px);
+  font-size: clamp(40px, 6.5vw, 72px);
   line-height: 0.98;
   letter-spacing: -0.025em;
   font-weight: 500;
   color: var(--charcoal);
-  margin: 0 0 28px;
-  max-width: 14ch;
+  margin: 0;
+  max-width: 16ch;
 }
 
 .blog-heading-dot {
@@ -2121,80 +2129,6 @@ html[data-theme="dark"] .waitlist-card::before {
 
 [data-theme="dark"] .blog-heading-dot {
   color: var(--green-400);
-}
-
-.blog-lede {
-  font-family: var(--font-sans);
-  font-size: clamp(17px, 1.5vw, 19px);
-  line-height: 1.55;
-  color: var(--charcoal-soft);
-  margin: 0;
-  max-width: 56ch;
-}
-
-/* ---- Topic nav (typographic, no chip pills) ---- */
-
-.blog-topics-bar {
-  background: var(--cream);
-  border-bottom: 1px solid var(--stroke);
-  padding: 18px 0;
-}
-
-.blog-topics-bar-inner {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  /* Wrap onto a second row when topics overflow. The ban on horizontal
-     scroll: it cuts labels mid-word with no visual indicator. */
-  flex-wrap: wrap;
-  /* Larger column gap (separation between topics) than row gap (line
-     spacing when wrapped) — reads as a typographic index rather than
-     a chip toolbar. */
-  column-gap: 24px;
-  row-gap: 10px;
-  align-items: center;
-}
-
-.topic-link {
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  color: var(--charcoal-soft);
-  text-decoration: none;
-  white-space: nowrap;
-  padding: 4px 0;
-  border-bottom: 1px solid transparent;
-  transition: color 160ms ease, border-color 160ms ease;
-}
-
-.topic-link:hover {
-  color: var(--charcoal);
-  border-bottom-color: var(--charcoal);
-}
-
-.topic-link.is-active {
-  color: var(--green-700);
-  border-bottom-color: var(--green-700);
-  font-weight: 700;
-}
-
-[data-theme="dark"] .topic-link.is-active {
-  color: var(--green-300);
-  border-bottom-color: var(--green-300);
-}
-
-/* ---- Main / issues ---- */
-
-.blog-main {
-  background: var(--cream);
-  padding: clamp(48px, 8vw, 96px) 24px clamp(64px, 10vw, 112px);
-}
-
-.blog-main-inner {
-  max-width: 1080px;
-  margin: 0 auto;
 }
 
 .blog-empty {
@@ -2211,291 +2145,268 @@ html[data-theme="dark"] .waitlist-card::before {
   max-width: 56ch;
 }
 
-/* Issue blocks. Featured = larger; row = compact list entry. */
+/* ---- Featured (title-left, image-right) ---- */
 
-.blog-issue {
+.blog-featured {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 32px;
-  padding: clamp(28px, 4vw, 48px) 0;
-  border-top: 1px solid var(--stroke);
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+  margin-bottom: clamp(56px, 9vw, 112px);
 }
 
-.blog-issue:first-child,
-.blog-issue--featured {
-  border-top: none;
-}
-
-.blog-issue--featured {
-  padding-top: 8px;
-  padding-bottom: clamp(48px, 6vw, 72px);
-}
-
-.blog-issue-aside {
+.blog-featured-text {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 18px;
+}
+
+.blog-featured-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green-700);
+  font-weight: 700;
+  text-decoration: none;
+  margin: 0;
+  border-bottom: 1px solid transparent;
+  align-self: flex-start;
+  padding-bottom: 1px;
+  transition: border-color 160ms ease;
+}
+
+.blog-featured-eyebrow:hover {
+  border-bottom-color: var(--green-700);
+}
+
+[data-theme="dark"] .blog-featured-eyebrow {
+  color: var(--green-300);
+}
+
+[data-theme="dark"] .blog-featured-eyebrow:hover {
+  border-bottom-color: var(--green-300);
+}
+
+.blog-featured-title {
+  font-family: var(--font-sans);
+  font-size: clamp(32px, 5.5vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  color: var(--charcoal);
+  margin: 0;
+  max-width: 16ch;
+}
+
+.blog-featured-title a {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 320ms ease;
+}
+
+.blog-featured-title a:hover {
+  background-size: 100% 1px;
+}
+
+.blog-featured-time {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 0;
+}
+
+.blog-featured-byline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--charcoal-soft);
+  padding-top: 8px;
 }
 
-.blog-issue-number {
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  color: var(--green-700);
+.blog-featured-author {
   font-weight: 700;
+  color: var(--charcoal);
 }
 
-[data-theme="dark"] .blog-issue-number {
-  color: var(--green-300);
+.blog-featured-sep {
+  color: var(--light);
 }
 
-.blog-issue-date {
-  /* mono date in muted */
+.blog-featured-image {
+  display: block;
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--cream-lifted);
+  position: relative;
 }
 
-.blog-issue-topic {
-  display: inline-block;
-  width: fit-content;
+.blog-featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 600ms ease;
+}
+
+.blog-featured-image:hover img {
+  transform: scale(1.02);
+}
+
+@media (max-width: 800px) {
+  .blog-featured {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 64px;
+  }
+  .blog-featured-title {
+    font-size: clamp(32px, 9vw, 44px);
+  }
+  .blog-featured-image {
+    aspect-ratio: 16 / 10;
+    order: -1; /* image on top in stacked mobile view */
+  }
+}
+
+/* ---- Topic nav (plain text links, no chip pills) ---- */
+
+.blog-topics-bar {
+  border-top: 1px solid var(--stroke);
+  border-bottom: 1px solid var(--stroke);
+  padding: 18px 0;
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+
+.blog-topics-bar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 28px;
+  row-gap: 12px;
+  align-items: center;
+}
+
+.topic-link {
+  flex-shrink: 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
   color: var(--charcoal-soft);
   text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 0;
   border-bottom: 1px solid transparent;
   transition: color 160ms ease, border-color 160ms ease;
 }
 
-.blog-issue-topic:hover {
+.topic-link:hover {
   color: var(--charcoal);
   border-bottom-color: var(--charcoal);
 }
 
-.blog-issue-body {
-  min-width: 0; /* allow wrap inside grid track */
-}
-
-/* Featured title is large; row title is compact. */
-
-.blog-issue-title {
-  font-family: var(--font-sans);
-  font-size: clamp(28px, 3.5vw, 44px);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  font-weight: 500;
-  color: var(--charcoal);
-  margin: 0 0 20px;
-}
-
-.blog-issue-title a {
-  color: inherit;
-  text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 280ms ease;
-}
-
-.blog-issue-title a:hover {
-  background-size: 100% 1px;
-}
-
-.blog-issue-title-row {
-  font-family: var(--font-sans);
-  font-size: clamp(20px, 2.2vw, 26px);
-  line-height: 1.2;
-  letter-spacing: -0.012em;
-  font-weight: 500;
-  color: var(--charcoal);
-  margin: 0 0 12px;
-}
-
-.blog-issue-title-row a {
-  color: inherit;
-  text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 280ms ease;
-}
-
-.blog-issue-title-row a:hover {
-  background-size: 100% 1px;
-}
-
-.blog-issue-lede {
-  font-family: var(--font-sans);
-  font-size: clamp(16px, 1.4vw, 18px);
-  line-height: 1.55;
-  color: var(--charcoal-soft);
-  margin: 0 0 24px;
-  max-width: 56ch;
-}
-
-.blog-issue-lede-row {
-  font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--charcoal-soft);
-  margin: 0 0 14px;
-  max-width: 56ch;
-}
-
-.blog-issue-meta {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.blog-issue-meta-sep {
-  color: var(--light);
-}
-
-.blog-issue-meta-time {
-  /* mono reading-time */
-}
-
-.blog-issue-cta {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+.topic-link.is-active {
   color: var(--green-700);
-  text-decoration: none;
-  font-weight: 700;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 1px;
-  transition: color 160ms ease;
+  border-bottom-color: var(--green-700);
+  font-weight: 600;
 }
 
-.blog-issue-cta:hover {
-  color: var(--green-800);
-}
-
-[data-theme="dark"] .blog-issue-cta {
+[data-theme="dark"] .topic-link.is-active {
   color: var(--green-300);
+  border-bottom-color: var(--green-300);
 }
 
-[data-theme="dark"] .blog-issue-cta:hover {
-  color: var(--green-200);
-}
+/* ---- Card grid (3 columns, image-on-top) ---- */
 
-.blog-issue-list {
+.blog-card-grid {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: clamp(28px, 4vw, 48px) clamp(24px, 3vw, 36px);
 }
 
-@media (max-width: 720px) {
-  .blog-issue {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-  .blog-issue-aside {
-    flex-direction: row;
-    gap: 14px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .blog-issue-aside > * + * {
-    border-left: none;
-  }
-  .blog-issue-topic {
-    font-size: 11px;
-  }
-}
-
-/* ---- Article (single post) ---- */
-
-.blog-article {
-  background: var(--cream);
-}
-
-.blog-article-header {
-  padding: clamp(80px, 12vw, 128px) 24px 32px;
-  border-bottom: 1px solid var(--stroke);
-}
-
-.blog-article-header-inner {
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-.blog-article-issue {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0 0 28px;
+.blog-card {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.blog-article-issue-link {
-  color: var(--green-700);
+  flex-direction: column;
+  gap: 14px;
   text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.blog-card-image {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--cream-lifted);
+  margin: 0 0 4px;
+}
+
+.blog-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 600ms ease;
+}
+
+.blog-card:hover .blog-card-image img {
+  transform: scale(1.03);
+}
+
+.blog-card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green-700);
   font-weight: 700;
+  margin: 0;
 }
 
-.blog-article-issue-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-[data-theme="dark"] .blog-article-issue-link {
+[data-theme="dark"] .blog-card-eyebrow {
   color: var(--green-300);
 }
 
-.blog-article-issue-num {
-  color: var(--charcoal-soft);
-}
-
-.blog-article-issue-sep {
-  color: var(--light);
-}
-
-.blog-article-topic {
-  color: var(--charcoal-soft);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 160ms ease;
-}
-
-.blog-article-topic:hover {
-  border-bottom-color: currentColor;
-}
-
-.blog-article-title {
+.blog-card-title {
   font-family: var(--font-sans);
-  font-size: clamp(34px, 5.5vw, 56px);
-  line-height: 1.04;
-  letter-spacing: -0.024em;
+  font-size: clamp(20px, 1.9vw, 24px);
+  line-height: 1.18;
+  letter-spacing: -0.012em;
   font-weight: 500;
   color: var(--charcoal);
-  margin: 0 0 28px;
-  max-width: 22ch;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.blog-article-meta {
+.blog-card:hover .blog-card-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.blog-card-meta {
   font-family: var(--font-mono);
   font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--muted);
-  margin: 0;
+  margin: 4px 0 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -2503,25 +2414,135 @@ html[data-theme="dark"] .waitlist-card::before {
   color: var(--light);
 }
 
+/* ---- Article (single post) — Beautify-inspired ---- */
+
+.blog-article {
+  background: var(--cream);
+}
+
+.blog-article-top {
+  padding: clamp(40px, 6vw, 72px) clamp(20px, 4vw, 56px) 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.blog-article-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  text-decoration: none;
+  background: var(--cream-lifted);
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  padding: 10px 18px;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.blog-article-back:hover {
+  border-color: var(--green-700);
+  color: var(--green-700);
+}
+
+[data-theme="dark"] .blog-article-back:hover {
+  border-color: var(--green-400);
+  color: var(--green-300);
+}
+
+.blog-article-back-arrow {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.blog-article-meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  margin: clamp(48px, 8vw, 96px) auto clamp(24px, 3vw, 36px);
+  max-width: 1200px;
+  padding: 0 clamp(20px, 4vw, 56px);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.blog-article-meta-row .meta-left  { text-align: left; }
+.blog-article-meta-row .meta-mid   { text-align: center; }
+.blog-article-meta-row .meta-right { text-align: right; }
+
+.blog-article-meta-row a {
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.blog-article-meta-row a:hover {
+  color: var(--green-700);
+  border-bottom-color: var(--green-700);
+}
+
+[data-theme="dark"] .blog-article-meta-row a:hover {
+  color: var(--green-300);
+  border-bottom-color: var(--green-300);
+}
+
+@media (max-width: 700px) {
+  .blog-article-meta-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .blog-article-meta-row .meta-left,
+  .blog-article-meta-row .meta-mid,
+  .blog-article-meta-row .meta-right {
+    text-align: left;
+  }
+}
+
+.blog-article-title-block {
+  max-width: 1200px;
+  margin: 0 auto clamp(40px, 6vw, 72px);
+  padding: 0 clamp(20px, 4vw, 56px);
+}
+
+.blog-article-title {
+  font-family: var(--font-sans);
+  font-size: clamp(40px, 7vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.028em;
+  font-weight: 500;
+  color: var(--charcoal);
+  margin: 0;
+  max-width: 18ch;
+}
+
 .blog-article-hero {
-  max-width: 1080px;
-  margin: 32px auto 0;
-  padding: 0 24px;
+  max-width: 1200px;
+  margin: 0 auto clamp(48px, 7vw, 80px);
+  padding: 0 clamp(20px, 4vw, 56px);
 }
 
 .blog-article-hero img {
   width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 18px;
   display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
 /* ---- Prose ---- */
 
 .blog-article-prose {
-  max-width: 680px;
-  margin: clamp(40px, 6vw, 72px) auto 0;
-  padding: 0 24px clamp(64px, 10vw, 112px);
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px) clamp(64px, 10vw, 112px);
   font-family: var(--font-sans);
   font-size: 18px;
   line-height: 1.7;
@@ -2532,8 +2553,6 @@ html[data-theme="dark"] .waitlist-card::before {
   margin-top: 1.2em;
 }
 
-/* Lede treatment: the first paragraph is larger and lifted. Uses
-   :first-of-type because H1 is the actual :first-child (display:none). */
 .blog-article-prose > p:first-of-type {
   font-size: clamp(19px, 1.8vw, 22px);
   line-height: 1.55;
@@ -2543,7 +2562,7 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 .blog-article-prose h1 {
-  display: none; /* H1 is in the article header above */
+  display: none;
 }
 
 .blog-article-prose h2 {
@@ -2575,7 +2594,6 @@ html[data-theme="dark"] .waitlist-card::before {
   margin-bottom: 0.4em;
 }
 
-/* Auto-link headings — neutralize the prose-link style. */
 .blog-article-prose .blog-heading-anchor,
 .blog-article-prose a.blog-heading-anchor {
   color: inherit;
@@ -2585,7 +2603,6 @@ html[data-theme="dark"] .waitlist-card::before {
 .blog-article-prose .blog-heading-anchor:hover,
 .blog-article-prose a.blog-heading-anchor:hover {
   color: var(--green-700);
-  text-decoration: none;
 }
 
 [data-theme="dark"] .blog-article-prose .blog-heading-anchor:hover {
@@ -2629,12 +2646,10 @@ html[data-theme="dark"] .waitlist-card::before {
 .blog-article-prose blockquote {
   margin: 1.6em 0;
   padding: 16px 22px;
-  border-left: none;
   background: transparent;
   font-family: var(--font-sans);
   font-size: clamp(20px, 2vw, 24px);
   line-height: 1.4;
-  font-style: normal;
   color: var(--charcoal);
   letter-spacing: -0.005em;
   position: relative;
@@ -2716,16 +2731,16 @@ html[data-theme="dark"] .waitlist-card::before {
   margin: 2.4em 0;
 }
 
-/* ---- Article footer ---- */
+/* ---- Article footer nav ---- */
 
 .blog-article-footer {
   border-top: 1px solid var(--stroke);
-  padding: 32px 24px;
+  padding: 32px clamp(20px, 4vw, 56px);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .blog-article-footer-inner {
-  max-width: 680px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   gap: 16px;
@@ -2755,12 +2770,12 @@ html[data-theme="dark"] .waitlist-card::before {
   border-bottom-color: var(--green-300);
 }
 
-/* ---- Subscribe block ---- */
+/* ---- Subscribe block (kept from prior, but tightened) ---- */
 
 .blog-subscribe {
   background: var(--cream-lifted);
   border-top: 1px solid var(--stroke);
-  padding: clamp(56px, 8vw, 96px) 24px;
+  padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 56px);
 }
 
 [data-theme="dark"] .blog-subscribe {
@@ -2768,7 +2783,7 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 .blog-subscribe-inner {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
   text-align: left;
 }
@@ -2780,14 +2795,11 @@ html[data-theme="dark"] .waitlist-card::before {
   text-transform: uppercase;
   color: var(--green-700);
   margin: 0 0 20px;
+  font-weight: 700;
 }
 
 [data-theme="dark"] .blog-subscribe-eyebrow {
   color: var(--green-300);
-}
-
-.blog-subscribe-dot {
-  /* re-use the wordmark period treatment */
 }
 
 .blog-subscribe-heading {
@@ -2815,10 +2827,6 @@ html[data-theme="dark"] .waitlist-card::before {
   align-items: center;
   gap: 24px;
   flex-wrap: wrap;
-}
-
-.blog-subscribe-cta {
-  /* Inherits .btn .btn-primary */
 }
 
 .blog-subscribe-rss {

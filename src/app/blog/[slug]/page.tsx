@@ -10,7 +10,6 @@ import { BlogSubscribeBlock } from "../../../components/BlogSubscribeBlock";
 import { WaitlistDialog } from "../../../components/WaitlistDialog";
 import {
   getAllPostSlugs,
-  getAllPosts,
   getPostBySlug,
   formatPublishDate,
 } from "../../../lib/blog";
@@ -55,63 +54,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function issueNumberForSlug(slug: string): string {
-  const all = getAllPosts();
-  const idx = all.findIndex((p) => p.frontmatter.slug === slug);
-  if (idx < 0) return "—";
-  const n = all.length - idx;
-  return n.toString().padStart(2, "0");
-}
-
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
   const { frontmatter, content, readingTimeText, topicMeta } = post;
-  const issueNum = issueNumberForSlug(frontmatter.slug);
 
   return (
     <>
       <article className="blog-article">
-        <header className="blog-article-header">
-          <div className="blog-article-header-inner">
-            <p className="blog-article-issue">
-              <Link href="/blog" className="blog-article-issue-link">
-                Field notes
+        <div className="blog-article-top">
+          <Link href="/blog" className="blog-article-back">
+            <span className="blog-article-back-arrow" aria-hidden="true">←</span>
+            Back to field notes
+          </Link>
+        </div>
+
+        <div className="blog-article-meta-row">
+          <span className="meta-left">
+            {topicMeta ? (
+              <Link href={`/blog/topics/${topicMeta.slug}`}>
+                {topicMeta.label}
               </Link>
-              <span className="blog-article-issue-sep" aria-hidden="true">·</span>
-              <span className="blog-article-issue-num">#{issueNum}</span>
-              {topicMeta && (
-                <>
-                  <span className="blog-article-issue-sep" aria-hidden="true">·</span>
-                  <Link
-                    href={`/blog/topics/${topicMeta.slug}`}
-                    className="blog-article-topic"
-                  >
-                    {topicMeta.label}
-                  </Link>
-                </>
-              )}
-            </p>
-            <h1 className="blog-article-title">{frontmatter.title}</h1>
-            <p className="blog-article-meta">
-              <span>{frontmatter.author}</span>
-              <span className="blog-meta-sep" aria-hidden="true">·</span>
-              <time dateTime={frontmatter.publishDate}>
-                {formatPublishDate(frontmatter.publishDate)}
-              </time>
-              <span className="blog-meta-sep" aria-hidden="true">·</span>
-              <span>{readingTimeText}</span>
-            </p>
-          </div>
-          {frontmatter.heroImage && (
-            <div className="blog-article-hero">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={frontmatter.heroImage} alt="" loading="eager" />
-            </div>
-          )}
+            ) : (
+              <span>Field notes</span>
+            )}
+          </span>
+          <span className="meta-mid">
+            <time dateTime={frontmatter.publishDate}>
+              {formatPublishDate(frontmatter.publishDate)}
+            </time>
+          </span>
+          <span className="meta-right">{readingTimeText}</span>
+        </div>
+
+        <header className="blog-article-title-block">
+          <h1 className="blog-article-title">{frontmatter.title}</h1>
         </header>
+
+        {frontmatter.heroImage && (
+          <div className="blog-article-hero">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={frontmatter.heroImage} alt="" loading="eager" />
+          </div>
+        )}
 
         <div className="blog-article-prose">
           <MDXRemote
