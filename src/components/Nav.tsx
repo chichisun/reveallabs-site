@@ -9,6 +9,7 @@ export function Nav() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isStory = pathname === "/our-story";
+  const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
 
   return (
     <header
@@ -27,6 +28,13 @@ export function Nav() {
               aria-current={isStory ? "page" : undefined}
             >
               Our Story
+            </Link>
+            <Link
+              href="/blog"
+              className={`nav-link${isBlog ? " is-current" : ""}`}
+              aria-current={isBlog ? "page" : undefined}
+            >
+              Blog
             </Link>
           </nav>
         </div>
