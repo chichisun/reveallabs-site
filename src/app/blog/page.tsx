@@ -157,6 +157,41 @@ export default function BlogIndexPage() {
               ))}
             </ul>
           )}
+
+          {/* Browse-by-topic grid. Each topic has an editorial illustration
+              of the operator-world objects it covers. Doubles as a useful
+              navigation surface while the article archive is still small. */}
+          <section
+            className="blog-topics-section"
+            aria-labelledby="browse-by-topic"
+          >
+            <header className="blog-topics-section-header">
+              <p className="blog-eyebrow">Browse by topic</p>
+              <h2
+                id="browse-by-topic"
+                className="blog-topics-section-heading"
+              >
+                What I write about<span className="blog-heading-dot">.</span>
+              </h2>
+            </header>
+            <ul className="blog-topic-card-grid">
+              {BLOG_TOPICS.map((topic) => (
+                <li key={topic.slug}>
+                  <Link
+                    href={`/blog/topics/${topic.slug}`}
+                    className="blog-topic-card"
+                  >
+                    <div className="blog-topic-card-image">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={topic.heroImage} alt="" loading="lazy" />
+                    </div>
+                    <h3 className="blog-topic-card-label">{topic.label}</h3>
+                    <p className="blog-topic-card-tagline">{topic.tagline}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       </main>
 

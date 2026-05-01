@@ -51,15 +51,22 @@ export default async function BlogTopicPage({ params }: Props) {
     <>
       <main className="blog-page">
         <div className="blog-page-inner">
-          <header className="blog-page-header">
-            <p className="blog-eyebrow">
-              <Link href="/blog" className="blog-eyebrow-link">
-                ← Field notes
-              </Link>
-            </p>
-            <h1 className="blog-page-heading">
-              {topic.label}<span className="blog-heading-dot">.</span>
-            </h1>
+          <header className="blog-topic-page-header">
+            <div className="blog-topic-page-text">
+              <p className="blog-eyebrow">
+                <Link href="/blog" className="blog-eyebrow-link">
+                  ← Field notes
+                </Link>
+              </p>
+              <h1 className="blog-page-heading">
+                {topic.label}<span className="blog-heading-dot">.</span>
+              </h1>
+              <p className="blog-topic-page-tagline">{topic.tagline}</p>
+            </div>
+            <div className="blog-topic-page-image">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={topic.heroImage} alt="" loading="eager" />
+            </div>
           </header>
 
           <nav className="blog-topics-bar" aria-label="Filter by topic">
