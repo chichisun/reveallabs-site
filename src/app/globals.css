@@ -2116,18 +2116,10 @@ html[data-theme="dark"] .waitlist-card::before {
   max-width: 60ch;
 }
 
-[data-theme="dark"] .blog-header {
-  background: var(--charcoal);
-  border-bottom-color: rgba(242, 241, 237, 0.1);
-}
-
-[data-theme="dark"] .blog-heading {
-  color: var(--cream);
-}
-
-[data-theme="dark"] .blog-lede {
-  color: rgba(242, 241, 237, 0.78);
-}
+/* Dark-mode overrides removed — the site's existing palette swap of
+   --cream / --charcoal / --charcoal-soft handles theme inversion via
+   var() resolution. Re-flipping inside [data-theme="dark"] caused
+   double-inversion (dark text on dark bg). */
 
 /* Topics bar */
 
@@ -2188,17 +2180,6 @@ html[data-theme="dark"] .waitlist-card::before {
   border-color: var(--green-700);
 }
 
-[data-theme="dark"] .blog-topics-bar {
-  background: rgba(46, 46, 46, 0.6);
-  backdrop-filter: blur(8px);
-  border-bottom-color: rgba(242, 241, 237, 0.1);
-}
-
-[data-theme="dark"] .topic-chip {
-  color: rgba(242, 241, 237, 0.7);
-  border-color: rgba(242, 241, 237, 0.18);
-}
-
 [data-theme="dark"] .topic-chip:hover {
   border-color: var(--green-400);
   color: var(--green-300);
@@ -2206,7 +2187,7 @@ html[data-theme="dark"] .waitlist-card::before {
 
 [data-theme="dark"] .topic-chip.is-active {
   background: var(--green-500);
-  color: var(--charcoal);
+  color: var(--cream);
   border-color: var(--green-500);
 }
 
@@ -2217,9 +2198,7 @@ html[data-theme="dark"] .waitlist-card::before {
   padding: 56px 24px 96px;
 }
 
-[data-theme="dark"] .blog-main {
-  background: var(--charcoal);
-}
+/* .blog-main background swaps automatically via --cream var. */
 
 .blog-empty {
   font-family: var(--font-sans);
@@ -2246,9 +2225,7 @@ html[data-theme="dark"] .waitlist-card::before {
   margin: 0;
 }
 
-[data-theme="dark"] .blog-section-heading {
-  color: var(--cream);
-}
+/* .blog-section-heading color swaps via --charcoal var. */
 
 .blog-topic-section {
   margin-top: 56px;
@@ -2330,11 +2307,6 @@ html[data-theme="dark"] .waitlist-card::before {
   transform: translateY(-2px);
 }
 
-[data-theme="dark"] .blog-featured-card {
-  background: rgba(242, 241, 237, 0.04);
-  border-color: rgba(242, 241, 237, 0.12);
-}
-
 [data-theme="dark"] .blog-featured-card:hover {
   border-color: var(--green-400);
 }
@@ -2382,10 +2354,6 @@ html[data-theme="dark"] .waitlist-card::before {
   margin: 0 0 12px;
 }
 
-[data-theme="dark"] .blog-featured-title {
-  color: var(--cream);
-}
-
 .blog-featured-desc {
   font-family: var(--font-sans);
   font-size: 15px;
@@ -2393,10 +2361,6 @@ html[data-theme="dark"] .waitlist-card::before {
   color: var(--charcoal-soft);
   margin: 0 0 16px;
   max-width: 50ch;
-}
-
-[data-theme="dark"] .blog-featured-desc {
-  color: rgba(242, 241, 237, 0.72);
 }
 
 .blog-card-meta {
@@ -2445,11 +2409,6 @@ html[data-theme="dark"] .waitlist-card::before {
   transform: translateY(-2px);
 }
 
-[data-theme="dark"] .blog-card {
-  background: rgba(242, 241, 237, 0.04);
-  border-color: rgba(242, 241, 237, 0.12);
-}
-
 [data-theme="dark"] .blog-card:hover {
   border-color: var(--green-400);
 }
@@ -2479,10 +2438,6 @@ html[data-theme="dark"] .waitlist-card::before {
   margin: 0;
 }
 
-[data-theme="dark"] .blog-card-title {
-  color: var(--cream);
-}
-
 .blog-card-desc {
   font-family: var(--font-sans);
   font-size: 14px;
@@ -2492,18 +2447,10 @@ html[data-theme="dark"] .waitlist-card::before {
   flex: 1;
 }
 
-[data-theme="dark"] .blog-card-desc {
-  color: rgba(242, 241, 237, 0.65);
-}
-
 /* Article (single post) */
 
 .blog-article {
   background: var(--cream);
-}
-
-[data-theme="dark"] .blog-article {
-  background: var(--charcoal);
 }
 
 .blog-article-header {
@@ -2551,9 +2498,7 @@ html[data-theme="dark"] .waitlist-card::before {
   margin: 0 0 24px;
 }
 
-[data-theme="dark"] .blog-article-title {
-  color: var(--cream);
-}
+/* .blog-article-title color swaps via --charcoal var. */
 
 .blog-article-meta {
   font-family: var(--font-mono);
@@ -2592,9 +2537,7 @@ html[data-theme="dark"] .waitlist-card::before {
   color: var(--charcoal);
 }
 
-[data-theme="dark"] .blog-article-prose {
-  color: rgba(242, 241, 237, 0.88);
-}
+/* .blog-article-prose color swaps via --charcoal var. */
 
 .blog-article-prose > * + * {
   margin-top: 1.2em;
@@ -2614,9 +2557,7 @@ html[data-theme="dark"] .waitlist-card::before {
   color: var(--charcoal);
 }
 
-[data-theme="dark"] .blog-article-prose h2 {
-  color: var(--cream);
-}
+/* .blog-article-prose h2 color swaps via --charcoal var. */
 
 .blog-article-prose h3 {
   font-size: clamp(18px, 1.8vw, 22px);
@@ -2683,8 +2624,9 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 [data-theme="dark"] .blog-article-prose blockquote {
-  background: rgba(95, 149, 104, 0.1);
-  color: rgba(242, 241, 237, 0.78);
+  /* Override the green-50 light tint with a darker green wash so the
+     quote block reads correctly against the dark page background. */
+  background: rgba(95, 149, 104, 0.12);
 }
 
 .blog-article-prose code {
@@ -2696,7 +2638,8 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 [data-theme="dark"] .blog-article-prose code {
-  background: rgba(242, 241, 237, 0.08);
+  /* Override green-50 with a subtle dark wash for readable inline code. */
+  background: rgba(95, 149, 104, 0.15);
 }
 
 .blog-article-prose pre {
@@ -2809,8 +2752,9 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 [data-theme="dark"] .blog-subscribe {
+  /* green-50 light tint isn't right against the dark page background;
+     use a deeper green wash that still separates this section. */
   background: rgba(95, 149, 104, 0.08);
-  border-top-color: rgba(242, 241, 237, 0.1);
 }
 
 .blog-subscribe-inner {
@@ -2845,10 +2789,6 @@ html[data-theme="dark"] .waitlist-card::before {
   margin-right: auto;
 }
 
-[data-theme="dark"] .blog-subscribe-heading {
-  color: var(--cream);
-}
-
 .blog-subscribe-lede {
   font-family: var(--font-sans);
   font-size: 16px;
@@ -2856,10 +2796,6 @@ html[data-theme="dark"] .waitlist-card::before {
   color: var(--charcoal-soft);
   margin: 0 auto 24px;
   max-width: 50ch;
-}
-
-[data-theme="dark"] .blog-subscribe-lede {
-  color: rgba(242, 241, 237, 0.72);
 }
 
 .blog-subscribe-actions {
@@ -2887,10 +2823,6 @@ html[data-theme="dark"] .waitlist-card::before {
 .blog-subscribe-rss:hover {
   color: var(--green-700);
   border-bottom-color: var(--green-700);
-}
-
-[data-theme="dark"] .blog-subscribe-rss {
-  color: rgba(242, 241, 237, 0.6);
 }
 
 [data-theme="dark"] .blog-subscribe-rss:hover {
