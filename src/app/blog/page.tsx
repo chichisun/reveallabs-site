@@ -83,7 +83,7 @@ export default function BlogIndexPage() {
               </h2>
               <Link
                 href={`/blog/${featured.frontmatter.slug}`}
-                className="blog-featured-card"
+                className={`blog-featured-card${featured.frontmatter.heroImage ? "" : " blog-featured-card--text-only"}`}
               >
                 {featured.frontmatter.heroImage && (
                   <div className="blog-featured-image">

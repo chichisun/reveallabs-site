@@ -2134,12 +2134,15 @@ html[data-theme="dark"] .waitlist-card::before {
 .blog-topics-bar {
   background: var(--cream-lifted);
   border-bottom: 1px solid var(--stroke);
-  padding: 14px 24px;
-  position: sticky;
-  top: 64px; /* below the Nav */
-  z-index: 5;
+  padding: 16px 24px;
+  /* overflow-x:auto with default overflow-y:auto was clipping the chips
+     vertically. We want horizontal scroll only — explicitly set both axes. */
   overflow-x: auto;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
+  /* Sticky removed — chips don't need to stay pinned while scrolling, and
+     the prior `top: 64px` was guessing the Nav's height (which is fixed-
+     positioned and overlays content rather than reserving space). */
 }
 
 .blog-topics-bar-inner {
@@ -2303,6 +2306,14 @@ html[data-theme="dark"] .waitlist-card::before {
   text-decoration: none;
   color: inherit;
   transition: border-color 200ms ease, transform 200ms ease;
+}
+
+/* When the featured post has no hero image yet, collapse to a single column
+   so the text fills the whole card cleanly instead of leaving a void where
+   the image would have been. */
+.blog-featured-card--text-only {
+  grid-template-columns: 1fr;
+  padding: 32px 28px;
 }
 
 .blog-featured-card:hover {
