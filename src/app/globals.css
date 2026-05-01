@@ -2567,16 +2567,23 @@ html[data-theme="dark"] .waitlist-card::before {
   margin-bottom: 0.4em;
 }
 
-.blog-heading-anchor {
+/* Auto-link headings via rehype-autolink-headings wrap the H2/H3 text in
+   an <a>. Without this, .blog-article-prose a wins on specificity and
+   colors them green with underlines. Match the parent prose specificity
+   to neutralize the link styling. */
+.blog-article-prose .blog-heading-anchor,
+.blog-article-prose a.blog-heading-anchor {
   color: inherit;
   text-decoration: none;
 }
 
-.blog-heading-anchor:hover {
+.blog-article-prose .blog-heading-anchor:hover,
+.blog-article-prose a.blog-heading-anchor:hover {
   color: var(--green-700);
+  text-decoration: none;
 }
 
-[data-theme="dark"] .blog-heading-anchor:hover {
+[data-theme="dark"] .blog-article-prose .blog-heading-anchor:hover {
   color: var(--green-300);
 }
 
