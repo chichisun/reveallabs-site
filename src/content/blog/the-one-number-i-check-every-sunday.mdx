@@ -1,0 +1,116 @@
+---
+title: "The One Number I Check Every Sunday"
+slug: "the-one-number-i-check-every-sunday"
+publishDate: "2026-04-25"
+metaDescription: "Prime cost is the one weekly number that tells you whether you can pay rent next month. Here's how to compute it in 20 minutes, what to flag when it moves, and the free Google Sheet that does the math."
+primaryKeyword: "restaurant prime cost calculation"
+secondaryKeywords:
+  - "weekly prime cost restaurant"
+  - "food cost percentage formula"
+  - "restaurant labor cost percentage"
+  - "how to read restaurant p&l"
+canonicalUrl: "https://www.reveallabs.co/blog/the-one-number-i-check-every-sunday"
+heroImage: "/blog-pillars/food-cost.png"
+ogImage: "/blog-pillars/food-cost.png"
+author: "Chayadol Sundarapura"
+topic: "food-cost"
+tags:
+  - "food-cost"
+  - "prime-cost"
+  - "p&l"
+status: "published"
+---
+
+I check one number every single Sunday. Not covers. Not ticket times. Not yesterday's sales. **Prime cost as a percentage of sales**, week-over-week, going back six weeks.
+
+If it's under 60%, I eat breakfast and read the paper. If it's between 60 and 65%, I go through the food invoices and the schedule. If it's over 65%, the rest of the day is whichever one of those is broken.
+
+That's it. Years of running Tuk Tuk in Denver and the operating discipline boils down to one weekly number, computed the same way every time. I want to tell you about something more sophisticated. I can't. The number is what works.
+
+## What prime cost actually is
+
+Prime cost = **food cost + beverage cost + labor cost**, divided by **net sales**, expressed as a percent.
+
+It's not a P&L. It's not a margin. It's the one combined metric that tells you whether the variable parts of your business — the parts that move every week with what you order and who you schedule — are in the right band.
+
+The good band for full-service indie restaurants is generally **55–65%**. Quick-service runs lower (45–55% is common). Bars run lower still on the bev side and higher on labor. Where you sit depends on your concept, your wage market, and your menu mix.
+
+But the percentage of prime cost matters less than **whether your prime cost is moving in the wrong direction week over week**. A restaurant at 64% prime that's been flat for six weeks is a healthy operation. A restaurant at 58% prime that's drifted from 56% to 58% to 60% over four weeks is in trouble that hasn't shown up on the P&L yet.
+
+That's what the weekly check actually catches. Not "what's my prime cost." "Where is my prime cost going."
+
+## How to compute it (the version that takes 20 minutes)
+
+If you've never done this, the first run takes longer. After three weeks, you'll be at 20 minutes flat.
+
+You need four numbers per week:
+
+1. **Net sales** — gross sales minus comps, voids, refunds, and sales tax. From your POS sales report. (Toast, Square, Aloha, Clover, SpotOn — whichever you run, the report exists, usually under "Sales Summary" with a tax-exclusive toggle.)
+2. **Food purchases** — every dollar that left the bank account this week for food. Shamrock invoices, Restaurant Depot runs, the cash you handed the produce guy on Tuesday morning. All of it.
+3. **Beverage purchases** — same as above, for liquor, beer, wine, NA. If your distributor is separate (Republic, Southern Glazer's, etc.), pull those invoices too.
+4. **Labor cost** — gross payroll for the week (everyone, FOH, BOH, salaried managers, you if you take a salary), plus payroll taxes and benefits. From your payroll provider's weekly report. Gusto, ADP, Paychex, 7shifts payroll all expose this.
+
+The formula:
+
+```
+prime cost % = (food + bev + labor) / net sales
+```
+
+That's it. No COGS depth, no inventory adjustment, no theoretical-vs-actual yet. Just a clean weekly snapshot.
+
+The shortcut that bookkeepers will tell you is wrong: I use **purchases instead of true cost of goods sold**. A real food cost requires beginning inventory + purchases - ending inventory. That's the formal version, and you should do it monthly.
+
+But weekly, what you want is the directional read. If your purchases jumped this week relative to sales, it's a signal worth investigating, even if some of that purchase is sitting on the shelf as ending inventory. The signal beats the precision.
+
+## What to look at when the number moves
+
+The number moves in three patterns. Each pattern points to a different fix.
+
+### Pattern 1: Food cost is up, labor is flat
+
+Look first at the **invoices**. Walk back through the [seven-step vendor invoice audit](/blog/reading-shamrock-invoices-line-by-line) — surcharges, unit-price drift, substitutions, quantity discrepancies. About 60% of unexplained food-cost spikes I've helped operators chase down are actually invoice problems, not theft or waste.
+
+Look second at the **menu mix**. Did you push a high-cost special this week that sold like crazy? A great steak feature can wreck your food cost % even when your operations are clean. The fix is menu engineering, not freaking out at the line.
+
+Look third at **portion creep and waste**. This is real but it's the hardest to catch from a Sunday morning P&L. The signal is week-over-week food cost climbing 0.5–1% with no menu mix change and no invoice problem. Solution is yield-tracking on your three biggest-cost proteins for two weeks.
+
+### Pattern 2: Labor is up, food cost is flat
+
+Schedule problem first. Pull last week's actual hours by department against forecasted sales. If you scheduled to a $24K week and did $20K, your labor % was always going to be high. The audit isn't "did labor cost too much," it's "did we forecast wrong."
+
+The other common cause is overtime accumulating because someone's covering a hole. If one of your line cooks worked 51 hours last week, you paid 1.5× for 11 of them. That alone can move your labor cost a full point. The fix is hiring, not yelling at the schedule.
+
+### Pattern 3: Both are up; sales are down
+
+This is the one that should ruin your Sunday morning a little. It usually means a demand problem, not an operations problem. Reservations down, walk-ins down, repeat customers tapering. Check your last 30 days of bank deposits against the same period last year. If sales are off 8–15% year-over-year and you're scaled to the higher number, your prime cost % is going to creep no matter how clean your invoices are.
+
+The fix here isn't a Sunday morning sheet. It's a longer conversation about menu, marketing, hours, and whether the demand is structural (a competitor opened, the neighborhood shifted) or temporary (weather, a slow month).
+
+## The free sheet
+
+Same Google Sheet that runs the [vendor invoice audit](/blog/reading-shamrock-invoices-line-by-line), with a prime-cost tab on the front. You enter four numbers a week. The sheet computes the percentage, tracks the six-week trend, and color-codes the row red when the number moves more than 1.5% in either direction in two consecutive weeks.
+
+→ **[Get the Restaurant Prime Cost Sheet (Google Sheets, 2026 Edition)](#)**
+
+(Live link going up shortly. If you want it before then, email chayadol@reveallabs.co and I'll send it.)
+
+If you want this computed automatically against your POS deposits and payroll feed instead of by hand on Sunday morning, that's what we built reveal. to do — same four numbers, pulled and tracked daily so you see the move on Wednesday instead of finding it on Sunday. Most operators don't need that. The Sunday-morning version works fine for one location. The automated version starts to matter at three or more.
+
+## Why this is the one number
+
+You can run a restaurant on a lot of things. You can run it on covers. You can run it on average ticket. You can run it on Yelp reviews. You can run it on the chef's intuition.
+
+You can't run it without knowing prime cost.
+
+Prime cost is the closest thing to a vital sign that restaurants have. It collapses three of your four big variables into one number. It tells you, in 20 minutes a week, whether the math of your operation is intact or quietly slipping. It is not the answer to every question. It is the question that tells you which other questions to ask.
+
+The version of me that gets to eat breakfast on Sunday is the one whose number is under 60. The version that doesn't is the one whose number drifted from 58 to 62 over three weeks and didn't notice. The number doesn't care which version of me shows up. It just shows up.
+
+## What to do this week
+
+1. Pull last Sunday-to-Saturday: net sales, food + bev purchases, gross payroll. Four numbers.
+2. Compute prime cost = (food + bev + labor) / net sales.
+3. Do it for the previous five weeks, too. Six weeks of trend.
+4. Look at the line. If it's moving in the wrong direction more than 1% over the trend, you have a question to ask. The questions are above.
+
+— Chayadol
