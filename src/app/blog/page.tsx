@@ -54,6 +54,11 @@ export default function BlogIndexPage() {
               operator finds while running the books at Tuk Tuk in Denver,
               written up for anyone running their own.
             </p>
+            <p className="blog-eyebrow" style={{ marginTop: "20px" }}>
+              <Link href="/blog/drop-log" className="blog-eyebrow-link">
+                Drop Log — what shipped this month →
+              </Link>
+            </p>
           </header>
 
           {/* Pinned, hourly-updated news widget. Replaces the old featured-post
@@ -95,6 +100,7 @@ export default function BlogIndexPage() {
                   slug: post.frontmatter.slug,
                   title: post.frontmatter.title,
                   publishDate: post.frontmatter.publishDate,
+                  author: post.frontmatter.author,
                 },
                 topicMeta: post.topicMeta
                   ? { label: post.topicMeta.label }

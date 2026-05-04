@@ -19,7 +19,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { WaitlistTrigger } from "./WaitlistTrigger";
+import { EmailSignupForm } from "./blog/EmailSignupForm";
 
 const PAPER_FULL_HEIGHT = 400; // px — fully extended receipt
 // Reveal range against `useScroll` progress with offset
@@ -72,17 +72,15 @@ export function BlogSubscribeBlock() {
               </span>
             </p>
             <h2 className="blog-subscribe-heading">
-              The next issue lands in your inbox if you&apos;re on the waitlist.
+              Get the Monday Brief in your inbox.
             </h2>
             <p className="blog-subscribe-lede">
-              One operator&apos;s field notes. Not a newsletter, not a content
-              drip. Same waitlist as the product, same people I&apos;m writing
-              for first.
+              One operator&apos;s field notes every week. Not a newsletter, not
+              a content drip — just the things worth knowing before the week
+              starts.
             </p>
             <div className="blog-subscribe-actions">
-              <WaitlistTrigger className="btn btn-primary blog-subscribe-cta">
-                Join the waitlist
-              </WaitlistTrigger>
+              <EmailSignupForm source="blog" />
               <a
                 href="/blog/rss.xml"
                 className="blog-subscribe-rss"
