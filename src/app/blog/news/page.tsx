@@ -139,7 +139,7 @@ export default async function NewsArchivePage(props: {
                           marginBottom: 6,
                         }}
                       >
-                        {item.headline_verbatim}
+                        {item.headline_friendly ?? item.headline_verbatim}
                       </h3>
                     </Link>
                     <p
