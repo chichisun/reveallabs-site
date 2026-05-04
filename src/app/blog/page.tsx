@@ -7,6 +7,8 @@ import { NewsWidget } from "../../components/NewsWidget";
 import { BLOG_TOPICS } from "../../lib/blog-topics";
 import { getAllPosts, formatPublishDate } from "../../lib/blog";
 import { SITE_URL } from "../../lib/site-config";
+import { RevealMorph } from "../../components/RevealMorph";
+import { AnimatedBlogCardGrid } from "../../components/AnimatedBlogCardGrid";
 
 export const metadata: Metadata = {
   title: "Restaurant Insights — reveal.",
@@ -45,8 +47,7 @@ export default function BlogIndexPage() {
           <header className="blog-page-header">
             <p className="blog-eyebrow">Field notes</p>
             <h1 className="blog-page-heading">
-              Restaurant Insights reveal
-              <span className="blog-heading-dot">.</span>ed
+              Restaurant Insights <RevealMorph />ed
             </h1>
             <p className="blog-page-lede">
               Vendor billing patterns, food cost math, POS migrations — what one
@@ -88,40 +89,21 @@ export default function BlogIndexPage() {
           </nav>
 
           {allPosts.length > 0 && (
-            <ul className="blog-card-grid" aria-label="All issues">
-              {allPosts.map((post) => (
-                <li key={post.frontmatter.slug}>
-                  <Link
-                    href={`/blog/${post.frontmatter.slug}`}
-                    className="blog-card"
-                  >
-                    <div className="blog-card-image">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={resolveCardImage(post)}
-                        alt=""
-                        loading="lazy"
-                      />
-                    </div>
-                    {post.topicMeta && (
-                      <p className="blog-card-eyebrow">
-                        {post.topicMeta.label}
-                      </p>
-                    )}
-                    <h3 className="blog-card-title">
-                      {post.frontmatter.title}
-                    </h3>
-                    <p className="blog-card-meta">
-                      <time dateTime={post.frontmatter.publishDate}>
-                        {formatPublishDate(post.frontmatter.publishDate)}
-                      </time>
-                      <span className="blog-meta-sep" aria-hidden="true">·</span>
-                      {post.readingTimeText}
-                    </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <AnimatedBlogCardGrid
+              posts={allPosts.map((post) => ({
+                frontmatter: {
+                  slug: post.frontmatter.slug,
+                  title: post.frontmatter.title,
+                  publishDate: post.frontmatter.publishDate,
+                },
+                topicMeta: post.topicMeta
+                  ? { label: post.topicMeta.label }
+                  : null,
+                readingTimeText: post.readingTimeText,
+                formattedDate: formatPublishDate(post.frontmatter.publishDate),
+                cardImage: resolveCardImage(post),
+              }))}
+            />
           )}
 
           {/* Browse-by-topic grid. Each topic has an editorial illustration

@@ -382,6 +382,10 @@ html[data-theme="dark"] .eyebrow {
   text-decoration: none;
   transition: opacity 0.2s ease;
   opacity: 0.75;
+  /* Keep multi-word links ("Our Story") on a single line on narrow
+     viewports — flex children otherwise wrap mid-word and break the
+     row's vertical alignment. */
+  white-space: nowrap;
 }
 .nav-link:hover { opacity: 1; }
 .nav-link.is-current {
@@ -396,6 +400,12 @@ html[data-theme="dark"] .eyebrow {
   padding: 10px 20px;
   font-size: 13px;
   letter-spacing: -0.1px;
+  /* Do not let the flex layout shrink the CTA below its content
+     ("Join the waitlist") on narrow viewports — combined with the
+     button's overflow:hidden (used by .btn-pulse), shrinking would
+     truncate the label. */
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* Surface shimmer — a bright diagonal slick sweeps across the glass
@@ -3270,4 +3280,236 @@ html[data-theme="dark"] .waitlist-card::before {
     align-items: center;
   }
   .news-widget-headline { font-size: 20px; }
+}
+/* ============================================================
+   Blog index animations
+   ============================================================ */
+
+/* ---- Heading "reveal." morph (mount + scroll-reverse) ----
+   Inline brand mark embedded in the heading. Slots are uniform-width so
+   the morph block reads as a coherent wordmark (matching the homepage
+   intro), and the surrounding "ed" anchors to a stable right edge.
+
+   Three nested elements per glyph mirror Intro.tsx:
+     .reveal-morph-glyph     → outer, handles arrive (translateY/opacity/scale)
+     .reveal-morph-tumbler   → 3D rotation, transform-style preserve-3d
+     .reveal-morph-letter
+     .reveal-morph-icon      → both share the same slot, crossfade via opacity */
+.reveal-morph {
+  display: inline-flex;
+  align-items: baseline;
+  vertical-align: baseline;
+  perspective: 900px;
+  /* Keep the seven glyphs of the brand mark on the same line — without
+     this, inline-block glyphs can break individually and "reveal." can
+     split across lines. */
+  white-space: nowrap;
+  /* Gap spreads the letters apart so the brand-mark icons (during the
+     scroll-reverse) don't overlap into adjacent slots. */
+  gap: 0.34em;
+  /* Padding-right buffers the trailing "ed" from the flame icon — the
+     accent icon is wider than the period letter slot and would
+     otherwise paint into the start of "ed" during the reverse. */
+  padding-right: 0.32em;
+}
+/* The LETTER is in-flow and defines the slot width, so "reveal.ed"
+   reflows tight in letter state (no artificial spacing). The icon is
+   absolutely overlaid at the slot's center; on narrow letters ("l", ".")
+   the icon extends visually beyond the slot, which is an accepted
+   brand-mark quirk — the icons are a unified set, not per-letter sized. */
+.reveal-morph-glyph {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+  will-change: transform, opacity;
+}
+.reveal-morph-tumbler {
+  display: inline-block;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform, filter;
+}
+.reveal-morph-letter {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  color: var(--charcoal);
+  will-change: opacity, transform;
+}
+.reveal-morph-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.5em;
+  height: 0.5em;
+  margin-left: -0.25em;
+  margin-top: -0.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: var(--charcoal);
+  will-change: opacity;
+}
+.reveal-morph-icon svg {
+  width: 100%;
+  height: 100%;
+}
+.reveal-morph-glyph.is-accent .reveal-morph-icon,
+.reveal-morph-glyph.is-accent .reveal-morph-letter {
+  color: var(--green-700);
+}
+/* Dark-mode override is only needed for the accent glyph — the
+   non-accent glyphs already use var(--charcoal), which flips to light
+   automatically in dark mode. (Setting them to var(--cream) in dark
+   mode was a bug — that variable is the page bg in dark, making the
+   icons invisible.) */
+[data-theme="dark"] .reveal-morph-glyph.is-accent .reveal-morph-icon,
+[data-theme="dark"] .reveal-morph-glyph.is-accent .reveal-morph-letter {
+  color: var(--green-400);
+}
+
+/* ---- Recent-posts grid: image mask-wipe entrance ----
+   The image is a motion.div that animates clip-path from full-right-
+   inset to zero, wiping the image into view. The text below fades up
+   on a slight delay. .blog-card-text wraps eyebrow + title + meta so
+   the wipe and fade-up are independent layers. */
+.blog-card-grid > li {
+  will-change: transform, opacity;
+}
+.blog-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+  will-change: transform, opacity;
+}
+
+/* ---- Subscribe CTA: vertical receipt printed by a thermal printer ----
+   The section is 200vh tall; the inner sticky pins for half of that.
+   While pinned, scroll progress drives the receipt's height up to its
+   full content height. The printer SVG sits above; the receipt grows
+   downward out of its slot. */
+.ticket-section {
+  position: relative;
+  /* `min-height` rather than `height` — body uses flex column layout,
+     and a fixed `height` on a flex item gets shrunk past the viewport.
+     `min-height` is honored regardless and lets the section be the
+     scroll-runway we need for the sticky reveal. Tuned so the section
+     ends shortly after the print completes — keeps the empty cream
+     "tail" small without breaking the sticky pin window. */
+  min-height: 115vh;
+  background: var(--cream);
+  /* Prevent flex-shrink collapsing the section height. */
+  flex-shrink: 0;
+}
+.ticket-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: clamp(40px, 6vw, 80px);
+  padding-bottom: 16px;
+}
+.ticket-printer {
+  width: clamp(340px, 42vw, 460px);
+  /* var(--charcoal) auto-flips: dark in light mode, light in dark mode.
+     No dark-mode override needed — setting it to var(--cream) was wrong
+     (that's the page bg color in dark mode, making the printer
+     invisible). */
+  color: var(--charcoal);
+  margin-bottom: -2px;
+  position: relative;
+  z-index: 2;
+}
+.ticket-printer svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ticket-paper {
+  width: clamp(290px, 34vw, 380px);
+  background: var(--cream-lifted);
+  overflow: hidden;
+  position: relative;
+  filter: drop-shadow(0 8px 18px rgba(28, 27, 23, 0.08));
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 200' preserveAspectRatio='none'><path d='M 0 0 L 16 0 L 16 192 L 8 200 L 0 192 Z' fill='black'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 200' preserveAspectRatio='none'><path d='M 0 0 L 16 0 L 16 192 L 8 200 L 0 192 Z' fill='black'/></svg>");
+  -webkit-mask-size: 16px 100%;
+  mask-size: 16px 100%;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+.ticket-paper-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 32px 28px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ticket-paper-content .blog-subscribe-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green-700);
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+[data-theme="dark"] .ticket-paper-content .blog-subscribe-eyebrow {
+  color: var(--green-300);
+}
+.ticket-paper-content .blog-subscribe-heading {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+  color: var(--charcoal);
+  margin: 0;
+}
+.ticket-paper-content .blog-subscribe-lede {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--charcoal-soft);
+  margin: 0;
+}
+.ticket-paper-content .blog-subscribe-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+.ticket-paper-content .blog-subscribe-cta {
+  align-self: flex-start;
+}
+.ticket-paper-content .blog-subscribe-rss {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  text-decoration: none;
+  align-self: flex-start;
+}
+.ticket-paper-content .blog-subscribe-rss:hover {
+  color: var(--green-700);
+}
+[data-theme="dark"] .ticket-paper-content .blog-subscribe-rss:hover {
+  color: var(--green-300);
+}
+
+.blog-subscribe-dot {
+  color: var(--green-700);
+  display: inline-block;
+}
+[data-theme="dark"] .blog-subscribe-dot {
+  color: var(--green-400);
 }
