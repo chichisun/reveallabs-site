@@ -46,7 +46,6 @@ export async function NewsWidget() {
     return null;
   }
   const { items, lastAt, sourceCount } = cached;
-  if (items.length === 0) return null;
 
   return (
     <section className="news-widget" aria-label="Pinned restaurant news">
@@ -60,7 +59,7 @@ export async function NewsWidget() {
         <div className="news-widget-meta">
           <span className="news-widget-updated">
             Updated{" "}
-            <strong>{lastAt ? relativeTime(lastAt) : "recently"}</strong> ·{" "}
+            <strong>{lastAt ? relativeTime(lastAt) : "—"}</strong> ·{" "}
             {sourceCount} sources monitored
           </span>
           <Link className="news-widget-monitor-link" href="/blog/news/sources">
@@ -68,6 +67,18 @@ export async function NewsWidget() {
           </Link>
         </div>
       </div>
+
+      {items.length === 0 && (
+        <div className="news-widget-empty">
+          <p>
+            The engine is monitoring {sourceCount} sources hourly. Items appear
+            here as they are surfaced and reviewed.
+          </p>
+          <Link className="news-widget-see-all" href="/blog/news/sources">
+            See what we monitor →
+          </Link>
+        </div>
+      )}
 
       {items.map((item) => (
         <article key={item.id} className="news-widget-row">
