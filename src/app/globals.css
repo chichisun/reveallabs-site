@@ -3513,6 +3513,103 @@ html[data-theme="dark"] .waitlist-card::before {
   color: var(--green-400);
 }
 
+/* ------------------------------------------------------------------ */
+/* Subscribe form — receipt-paper layout                              */
+/* ------------------------------------------------------------------ */
+/* Lives inside `.ticket-paper-content` (290–380px wide). Stacks
+   vertically: tiny mono label, hairline-underlined input, liquid
+   glass primary button. */
+.subscribe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.subscribe-form-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: -4px;
+}
+.subscribe-form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--stroke);
+  border-radius: 0;
+  padding: 8px 0 10px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--charcoal);
+  caret-color: var(--green-700);
+  transition: border-color 180ms ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.subscribe-form-input::placeholder {
+  color: var(--muted);
+  opacity: 0.65;
+}
+.subscribe-form-input:hover {
+  border-bottom-color: rgba(46, 46, 46, 0.25);
+}
+.subscribe-form-input:focus {
+  outline: none;
+  border-bottom-color: var(--green-700);
+}
+.subscribe-form-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+[data-theme="dark"] .subscribe-form-input {
+  color: var(--cream);
+}
+[data-theme="dark"] .subscribe-form-input:focus {
+  border-bottom-color: var(--green-400);
+}
+.subscribe-form-button {
+  width: 100%;
+  margin-top: 6px;
+  /* Reuse .btn .btn-primary base — only override the box model the
+     pill needs to fit the receipt width. */
+  padding: 12px 24px;
+  font-size: 14px;
+  justify-content: center;
+}
+.subscribe-form-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+.subscribe-form-success {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--charcoal-soft);
+  margin: 4px 0 0;
+}
+.subscribe-form-success::before {
+  content: "✓";
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--green-700);
+  font-weight: 700;
+}
+[data-theme="dark"] .subscribe-form-success::before {
+  color: var(--green-400);
+}
+.subscribe-form-error {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+  color: #c23b22;
+  margin: 4px 0 0;
+}
+
 /* News widget — empty state (engine running, no live items yet) */
 .news-widget-empty {
   padding: 28px 0;
