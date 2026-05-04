@@ -3141,10 +3141,12 @@ html[data-theme="dark"] .waitlist-card::before {
   grid-template-columns: 110px 1fr;
   gap: 28px;
   align-items: start;
-  padding: 22px 0;
   border-top: 1px solid var(--stroke);
 }
-.news-widget-row:first-of-type { border-top: none; padding-top: 0; }
+.news-widget-row:first-of-type { border-top: none; }
+.news-widget-row + .news-widget-row {
+  margin-top: 0;
+}
 .news-widget-row-meta {
   display: flex;
   flex-direction: column;
@@ -3181,51 +3183,43 @@ html[data-theme="dark"] .waitlist-card::before {
   border-color: var(--green-700);
   color: var(--green-700);
 }
+.news-widget-row-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 160ms ease;
+  border-radius: 8px;
+  margin: 0 -10px;
+  padding: 22px 10px;
+}
+.news-widget-row-link:hover {
+  background: var(--cream-lifted);
+}
+.news-widget-row-body {
+  min-width: 0;
+}
 .news-widget-headline {
   font-family: var(--font-sans);
   font-size: 22px;
   font-weight: 500;
   letter-spacing: -0.5px;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--charcoal);
-  margin-bottom: 10px;
+  margin: 0 0 6px;
 }
-.news-widget-headline a {
-  color: inherit;
-  text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 320ms ease;
+.news-widget-row-link:hover .news-widget-headline {
+  color: var(--green-700);
 }
-.news-widget-headline a:hover { background-size: 100% 1px; }
-.news-widget-block {
-  margin-top: 6px;
+.news-widget-hook {
+  margin: 0 0 12px;
   font-family: var(--font-sans);
   font-size: 15px;
-  line-height: 1.55;
+  line-height: 1.5;
   color: var(--charcoal-soft);
   max-width: 64ch;
 }
-.news-widget-todo {
-  margin-top: 10px;
-  padding-left: 14px;
-  border-left: 2px solid var(--green-700);
-  color: var(--charcoal);
-}
-.news-widget-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--green-700);
-  display: inline-block;
-  margin-right: 8px;
-}
 .news-widget-source {
-  margin-top: 14px;
+  margin: 0;
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -3236,14 +3230,19 @@ html[data-theme="dark"] .waitlist-card::before {
   gap: 8px;
   flex-wrap: wrap;
 }
-.news-widget-source a {
-  color: var(--green-700);
-  text-decoration: none;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 1px;
+.news-widget-source-name {
+  color: var(--charcoal-soft);
   font-weight: 700;
 }
 .news-widget-source-sep { color: var(--light); }
+.news-widget-readmore {
+  color: var(--green-700);
+  font-weight: 700;
+  margin-left: auto;
+}
+.news-widget-row-link:hover .news-widget-readmore {
+  color: var(--green-600);
+}
 .news-widget-footer {
   margin-top: 22px;
   display: flex;
