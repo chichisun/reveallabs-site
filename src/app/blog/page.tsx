@@ -95,6 +95,7 @@ export default function BlogIndexPage() {
                   slug: post.frontmatter.slug,
                   title: post.frontmatter.title,
                   publishDate: post.frontmatter.publishDate,
+                  author: post.frontmatter.author,
                 },
                 topicMeta: post.topicMeta
                   ? { label: post.topicMeta.label }
