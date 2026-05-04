@@ -36,6 +36,15 @@ function regionLabel(r: string): string {
   return r === "denver" ? "Denver" : r === "colorado" ? "Colorado" : "National";
 }
 
+// Take the first sentence (up to the first ".", "!", or "?" followed by space).
+// If no terminator found, return the whole string. Used for the widget hook
+// since "what it means" is already short (≤30 words) — usually 1-2 sentences.
+function firstSentence(s: string | null): string {
+  if (!s) return "";
+  const m = s.match(/^[^.!?]+[.!?]/);
+  return (m ? m[0] : s).trim();
+}
+
 export async function NewsWidget() {
   let cached;
   try {
@@ -81,38 +90,23 @@ export async function NewsWidget() {
       )}
 
       {items.map((item) => (
-        <article key={item.id} className="news-widget-row">
+        <Link
+          key={item.id}
+          href={`/blog/news/${item.slug}`}
+          className="news-widget-row news-widget-row-link"
+        >
           <div className="news-widget-row-meta">
             <span
               className={`news-widget-badge news-widget-badge-region ${item.region === "national" ? "is-national" : ""}`}
             >
               {regionLabel(item.region)}
             </span>
-            <span
-              className={`news-widget-badge news-widget-badge-tier ${item.tier === "curated" ? "is-curated" : ""}`}
-            >
-              {item.tier === "auto" ? "Auto" : "Curated"}
-            </span>
           </div>
-          <div>
-            <h3 className="news-widget-headline">
-              <Link href={`/blog/news/${item.slug}`}>
-                {item.headline_verbatim}
-              </Link>
-            </h3>
-            <p className="news-widget-block">
-              <span className="news-widget-label">What it means</span>{" "}
-              {item.what_it_means}
-            </p>
-            <p className="news-widget-block news-widget-todo">
-              <span className="news-widget-label">What to do</span>{" "}
-              {item.what_to_do}
-            </p>
+          <div className="news-widget-row-body">
+            <h3 className="news-widget-headline">{item.headline_verbatim}</h3>
+            <p className="news-widget-hook">{firstSentence(item.what_it_means)}</p>
             <p className="news-widget-source">
-              <span>via</span>{" "}
-              <a href={item.source_url} target="_blank" rel="noreferrer">
-                {item.source_id}
-              </a>
+              <span>via</span> <span className="news-widget-source-name">{item.source_id}</span>
               <span className="news-widget-source-sep">·</span>
               <time dateTime={item.published_at}>
                 {new Date(item.published_at)
@@ -120,9 +114,11 @@ export async function NewsWidget() {
                   .slice(0, 10)
                   .replace(/-/g, ".")}
               </time>
+              <span className="news-widget-source-sep">·</span>
+              <span className="news-widget-readmore">Read it →</span>
             </p>
           </div>
-        </article>
+        </Link>
       ))}
 
       <div className="news-widget-footer">
