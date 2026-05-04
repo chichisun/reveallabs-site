@@ -10,7 +10,6 @@ export function Nav() {
   const isHome = pathname === "/";
   const isStory = pathname === "/our-story";
   const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
-  const isDropLog = pathname === "/blog/drop-log" || pathname.startsWith("/blog/drop-log/");
 
   return (
     <header
@@ -36,13 +35,6 @@ export function Nav() {
               aria-current={isBlog ? "page" : undefined}
             >
               Blog
-            </Link>
-            <Link
-              href="/blog/drop-log"
-              className={`nav-link${isDropLog ? " is-current" : ""}`}
-              aria-current={isDropLog ? "page" : undefined}
-            >
-              Drop Log
             </Link>
           </nav>
         </div>
