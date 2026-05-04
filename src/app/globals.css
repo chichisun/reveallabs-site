@@ -3513,3 +3513,17 @@ html[data-theme="dark"] .waitlist-card::before {
 [data-theme="dark"] .blog-subscribe-dot {
   color: var(--green-400);
 }
+
+/* News widget — empty state (engine running, no live items yet) */
+.news-widget-empty {
+  padding: 28px 0;
+  text-align: center;
+}
+.news-widget-empty p {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 56ch;
+  margin: 0 auto 16px;
+  line-height: 1.55;
+}
