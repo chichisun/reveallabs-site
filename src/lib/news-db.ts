@@ -33,6 +33,7 @@ export interface PublicNewsItem {
   source_id: string;
   source_url: string;
   headline_verbatim: string;
+  headline_friendly: string | null;
   what_it_means: string;
   what_to_do: string;
   category: NewsCategory;
@@ -52,7 +53,7 @@ export interface PublicNewsSource {
 }
 
 const ITEM_COLS =
-  "id, slug, source_id, source_url, headline_verbatim, what_it_means, what_to_do, category, region, tier, published_at";
+  "id, slug, source_id, source_url, headline_verbatim, headline_friendly, what_it_means, what_to_do, category, region, tier, published_at";
 
 export async function getTopLiveItems(limit = 3): Promise<PublicNewsItem[]> {
   const { data } = await newsDb()

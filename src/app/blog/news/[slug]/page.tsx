@@ -25,13 +25,19 @@ export async function generateMetadata(props: {
     item = null;
   }
   if (!item) return { title: "Not found" };
+  const title = item.headline_friendly ?? item.headline_verbatim;
+  // First sentence as the meta description — readable and bounded.
+  const desc =
+    (item.what_it_means.match(/^[^.!?]+[.!?]/) ?? [item.what_it_means])[0]
+      .trim()
+      .slice(0, 200);
   return {
-    title: `${item.headline_verbatim} — Reveal news`,
-    description: item.what_it_means,
+    title: `${title} — Reveal news`,
+    description: desc,
     alternates: { canonical: `${SITE_URL}/blog/news/${slug}` },
     openGraph: {
-      title: item.headline_verbatim,
-      description: item.what_it_means,
+      title,
+      description: desc,
       url: `${SITE_URL}/blog/news/${slug}`,
       type: "article",
     },
@@ -62,7 +68,8 @@ export default async function NewsItemPage(props: {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    headline: item.headline_verbatim,
+    headline: item.headline_friendly ?? item.headline_verbatim,
+    alternativeHeadline: item.headline_verbatim,
     datePublished: item.published_at,
     description: item.what_it_means,
     url: `${SITE_URL}/blog/news/${item.slug}`,
@@ -104,11 +111,31 @@ export default async function NewsItemPage(props: {
               fontWeight: 500,
               letterSpacing: "-0.025em",
               lineHeight: 1.05,
-              margin: "12px 0 24px",
+              margin: "12px 0 12px",
             }}
           >
-            {item.headline_verbatim}
+            {item.headline_friendly ?? item.headline_verbatim}
           </h1>
+
+          {/* Source's original headline shown as small subtitle for verification.
+              Only render if it differs from the friendly headline. */}
+          {item.headline_friendly &&
+            item.headline_friendly !== item.headline_verbatim && (
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 12,
+                  letterSpacing: "0.04em",
+                  color: "var(--muted)",
+                  margin: "0 0 24px",
+                }}
+              >
+                Original headline:{" "}
+                <span style={{ fontStyle: "italic" }}>
+                  &ldquo;{item.headline_verbatim}&rdquo;
+                </span>
+              </p>
+            )}
 
           <p
             style={{
@@ -119,19 +146,23 @@ export default async function NewsItemPage(props: {
               color: "var(--muted)",
             }}
           >
-            What it means
+            Why this matters
           </p>
-          <p
+          <div
             style={{
               fontSize: 18,
-              lineHeight: 1.55,
+              lineHeight: 1.65,
               color: "var(--charcoal-soft)",
               marginTop: 8,
               marginBottom: 28,
             }}
           >
-            {item.what_it_means}
-          </p>
+            {item.what_it_means.split(/\n\n+/).map((para, i) => (
+              <p key={i} style={{ marginBottom: 16, marginTop: 0 }}>
+                {para}
+              </p>
+            ))}
+          </div>
 
           <p
             style={{

@@ -103,7 +103,9 @@ export async function NewsWidget() {
             </span>
           </div>
           <div className="news-widget-row-body">
-            <h3 className="news-widget-headline">{item.headline_verbatim}</h3>
+            <h3 className="news-widget-headline">
+              {item.headline_friendly ?? item.headline_verbatim}
+            </h3>
             <p className="news-widget-hook">{firstSentence(item.what_it_means)}</p>
             <p className="news-widget-source">
               <span>via</span> <span className="news-widget-source-name">{item.source_id}</span>
