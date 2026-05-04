@@ -14,7 +14,6 @@ import {
   formatPublishDate,
 } from "../../../lib/blog";
 import { SITE_URL } from "../../../lib/site-config";
-import { Byline } from "../../../components/blog/Byline";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -83,6 +82,8 @@ export default async function BlogPostPage({ params }: Props) {
             )}
           </span>
           <span className="meta-mid">
+            By <span className="meta-author">{frontmatter.author}</span>
+            <span aria-hidden="true"> · </span>
             <time dateTime={frontmatter.publishDate}>
               {formatPublishDate(frontmatter.publishDate)}
             </time>
@@ -92,13 +93,6 @@ export default async function BlogPostPage({ params }: Props) {
 
         <header className="blog-article-title-block">
           <h1 className="blog-article-title">{frontmatter.title}</h1>
-          <div className="mt-3">
-            <Byline
-              kind="essay"
-              author={frontmatter.author}
-              publishDate={frontmatter.publishDate}
-            />
-          </div>
         </header>
 
         {frontmatter.heroImage && (

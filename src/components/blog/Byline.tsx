@@ -1,68 +1,63 @@
 /**
- * Byline — attribution primitive for blog content.
+ * Byline — attribution primitive for blog content cards.
  *
  * Three render modes via discriminated union:
- *   - 'essay'       → "By Chayadol Sundarapura · May 4, 2026"  (cornerstone essays, signed)
- *   - 'news'        → "From FDA · May 4"                        (wire items, anonymous curation)
- *   - 'news-byline' → "By Chayadol Sundarapura · May 4"         (future bylined news pieces)
+ *   - 'essay'       → "By Chayadol Sundarapura · May 4, 2026"
+ *   - 'news'        → "From FDA · May 4"
+ *   - 'news-byline' → "By Chayadol Sundarapura · May 4"
  *
- * Color tokens: matches the site's CSS variable palette used throughout
- * globals.css — `--muted` (#797979 light / #8E8B80 dark) for the base text,
- * `--charcoal` (#2E2E2E light / #ECEBE4 dark) for the bold author/source name.
- * These are the same tokens used by `.blog-featured-byline` / `.blog-card-meta`.
+ * Uses non-breaking spaces around the bullet so spacing renders even if
+ * utility classes get purged in production. Color tokens come from the
+ * site's CSS variable palette in globals.css.
  */
 
+const SEPARATOR = " · "; // nbsp · nbsp
+
 type BylineProps =
-  | { kind: 'essay'; author: string; publishDate: string }
-  | { kind: 'news'; sourceName: string; capturedAt: string }
-  | { kind: 'news-byline'; author: string; capturedAt: string };
+  | { kind: "essay"; author: string; publishDate: string }
+  | { kind: "news"; sourceName: string; capturedAt: string }
+  | { kind: "news-byline"; author: string; capturedAt: string };
 
 export function Byline(props: BylineProps) {
-  if (props.kind === 'essay') {
+  if (props.kind === "essay") {
     return (
-      <p className="text-sm text-[var(--muted)]">
-        By{' '}
-        <span className="font-medium text-[var(--charcoal)]">{props.author}</span>
-        <span className="mx-2" aria-hidden="true">·</span>
+      <p className="blog-byline">
+        By{" "}
+        <span className="blog-byline-name">{props.author}</span>
+        <span aria-hidden="true">{SEPARATOR}</span>
         <time dateTime={props.publishDate}>
-          {new Date(props.publishDate).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          })}
+          {formatDate(props.publishDate, true)}
         </time>
       </p>
     );
   }
 
-  if (props.kind === 'news-byline') {
+  if (props.kind === "news-byline") {
     return (
-      <p className="text-sm text-[var(--muted)]">
-        By{' '}
-        <span className="font-medium text-[var(--charcoal)]">{props.author}</span>
-        <span className="mx-2" aria-hidden="true">·</span>
-        <time dateTime={props.capturedAt}>
-          {new Date(props.capturedAt).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-          })}
-        </time>
+      <p className="blog-byline">
+        By{" "}
+        <span className="blog-byline-name">{props.author}</span>
+        <span aria-hidden="true">{SEPARATOR}</span>
+        <time dateTime={props.capturedAt}>{formatDate(props.capturedAt)}</time>
       </p>
     );
   }
 
   // kind === 'news': sourced wire item, anonymous reveal. curation
   return (
-    <p className="text-sm text-[var(--muted)]">
-      From{' '}
-      <span className="font-medium text-[var(--charcoal)]">{props.sourceName}</span>
-      <span className="mx-2" aria-hidden="true">·</span>
-      <time dateTime={props.capturedAt}>
-        {new Date(props.capturedAt).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-        })}
-      </time>
+    <p className="blog-byline">
+      From{" "}
+      <span className="blog-byline-name">{props.sourceName}</span>
+      <span aria-hidden="true">{SEPARATOR}</span>
+      <time dateTime={props.capturedAt}>{formatDate(props.capturedAt)}</time>
     </p>
   );
+}
+
+function formatDate(iso: string, withYear = false): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    ...(withYear ? { year: "numeric" } : {}),
+  });
 }

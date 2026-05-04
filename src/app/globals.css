@@ -3514,6 +3514,33 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 
 /* ------------------------------------------------------------------ */
+/* Byline primitive (used by BlogCard / NewsCard / NewsWidget)        */
+/* ------------------------------------------------------------------ */
+.blog-byline {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+  margin: 0;
+}
+.blog-byline-name {
+  color: var(--charcoal);
+  font-weight: 500;
+}
+[data-theme="dark"] .blog-byline-name {
+  color: var(--cream);
+}
+
+/* Inline author callout in the post page meta row */
+.blog-article-meta-row .meta-author {
+  color: var(--charcoal);
+  font-weight: 500;
+}
+[data-theme="dark"] .blog-article-meta-row .meta-author {
+  color: var(--cream);
+}
+
+/* ------------------------------------------------------------------ */
 /* Subscribe form — receipt-paper layout                              */
 /* ------------------------------------------------------------------ */
 /* Lives inside `.ticket-paper-content` (290–380px wide). Stacks
