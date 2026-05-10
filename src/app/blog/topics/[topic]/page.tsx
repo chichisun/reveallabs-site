@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Footer } from "../../../../components/Footer";
 import { BlogSubscribeBlock } from "../../../../components/BlogSubscribeBlock";
 import { WaitlistDialog } from "../../../../components/WaitlistDialog";
+import { NewsSubscribeDialog } from "../../../../components/NewsSubscribeDialog";
 import {
   BLOG_TOPICS,
   getTopic,
@@ -134,6 +135,7 @@ export default async function BlogTopicPage({ params }: Props) {
       <BlogSubscribeBlock />
       <Footer />
       <WaitlistDialog />
+      <NewsSubscribeDialog source="blog-topic" />
     </>
   );
 }

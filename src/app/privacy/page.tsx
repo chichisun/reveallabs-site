@@ -16,13 +16,30 @@ export default function PrivacyPage() {
           Privacy
         </h1>
         <p className="text-lg leading-relaxed text-charcoal-soft">
-          reveal. is a revenue-intelligence tool for restaurants. At this stage
-          ({POLICY_EFFECTIVE_DATE}) we collect no data beyond what you
-          explicitly send us by email. If you click "Join the waitlist," we
-          receive your email address and subject line only. We do not use
-          trackers, cookies, or analytics on your identity. We use Vercel
-          Analytics for aggregate traffic metrics (page views, referrer,
-          country — no personal data).
+          reveal. is a revenue-intelligence tool for restaurants. As of{" "}
+          {POLICY_EFFECTIVE_DATE}, here is what we collect and why.
+        </p>
+        <p className="text-lg leading-relaxed text-charcoal-soft">
+          <strong>What you send us directly.</strong> If you join the waitlist,
+          we receive the name, restaurant name, and email you submit. If you
+          subscribe to reveal. news, we receive your email. We use these only
+          to contact you about reveal. and the news feed you signed up for.
+        </p>
+        <p className="text-lg leading-relaxed text-charcoal-soft">
+          <strong>Aggregate site analytics.</strong> We use Vercel Analytics
+          (page views, referrer, country — no personal data) and PostHog
+          (anonymous event tracking — page views, modal opens, form
+          submissions). PostHog persistence is memory-only — no cross-session
+          cookies, no session recording. We identify visitors by email only
+          after they submit a form to us, so we can attribute which content
+          led to which sign-up. You can request deletion of your analytics
+          record by emailing the address below.
+        </p>
+        <p className="text-lg leading-relaxed text-charcoal-soft">
+          <strong>What we do not do.</strong> We do not use cross-session
+          tracking cookies. We do not record sessions or replay video of your
+          activity. We do not sell your data. We do not share your data with
+          third parties beyond the analytics processors named above.
         </p>
         <p className="text-lg leading-relaxed text-charcoal-soft">
           Questions:{" "}

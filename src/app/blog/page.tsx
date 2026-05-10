@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Footer } from "../../components/Footer";
 import { BlogSubscribeBlock } from "../../components/BlogSubscribeBlock";
 import { WaitlistDialog } from "../../components/WaitlistDialog";
+import { NewsSubscribeDialog } from "../../components/NewsSubscribeDialog";
 import { NewsWidget } from "../../components/NewsWidget";
 import { BLOG_TOPICS } from "../../lib/blog-topics";
 import { getAllPosts, formatPublishDate } from "../../lib/blog";
@@ -146,6 +147,7 @@ export default function BlogIndexPage() {
       <BlogSubscribeBlock />
       <Footer />
       <WaitlistDialog />
+      <NewsSubscribeDialog source="blog" />
     </>
   );
 }

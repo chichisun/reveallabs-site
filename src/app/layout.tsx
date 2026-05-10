@@ -8,6 +8,7 @@ import {
   SITE_NAME,
 } from "../lib/site-config";
 import { Nav } from "../components/Nav";
+import { AnalyticsBoot } from "../components/AnalyticsBoot";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -100,6 +101,7 @@ export default function RootLayout({
         <Nav />
         {children}
         <Analytics />
+        <AnalyticsBoot />
       </body>
     </html>
   );

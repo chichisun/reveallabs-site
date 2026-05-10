@@ -4,21 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { track, identify } from "@/lib/analytics";
 
-// Other components fire this event to open the dialog — no prop drilling,
-// no context. Works from anywhere on the page.
-export const WAITLIST_OPEN_EVENT = "waitlist:open";
+export const NEWS_SUBSCRIBE_OPEN_EVENT = "news-subscribe:open";
 
 type FormState = {
-  name: string;
-  restaurant: string;
   email: string;
 };
 
-const EMPTY: FormState = { name: "", restaurant: "", email: "" };
+const EMPTY: FormState = { email: "" };
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export function WaitlistDialog() {
+type Props = {
+  /** Optional source label sent to the API for attribution (e.g., "blog", "footer", "news-page"). */
+  source?: string;
+};
+
+export function NewsSubscribeDialog({ source = "blog" }: Props) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY);
   const [status, setStatus] = useState<Status>("idle");
@@ -33,11 +34,11 @@ export function WaitlistDialog() {
       setServerError(null);
       setErrors({});
       setOpen(true);
-      track("waitlist_modal_opened").catch(() => {});
+      track("news_modal_opened", { source }).catch(() => {});
     };
-    window.addEventListener(WAITLIST_OPEN_EVENT, onOpen);
-    return () => window.removeEventListener(WAITLIST_OPEN_EVENT, onOpen);
-  }, []);
+    window.addEventListener(NEWS_SUBSCRIBE_OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(NEWS_SUBSCRIBE_OPEN_EVENT, onOpen);
+  }, [source]);
 
   useEffect(() => {
     if (!open) return;
@@ -75,8 +76,6 @@ export function WaitlistDialog() {
 
   const validate = (f: FormState): Partial<FormState> => {
     const e: Partial<FormState> = {};
-    if (!f.name.trim()) e.name = "Your name, please.";
-    if (!f.restaurant.trim()) e.restaurant = "Which restaurant?";
     if (!f.email.trim()) e.email = "Email, please.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim()))
       e.email = "That doesn't look like an email.";
@@ -95,13 +94,12 @@ export function WaitlistDialog() {
     setStatus("submitting");
 
     try {
-      const res = await fetch("/api/waitlist", {
+      const res = await fetch("/api/news/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: form.name.trim(),
-          restaurant: form.restaurant.trim(),
           email: form.email.trim(),
+          source,
         }),
       });
       if (!res.ok) {
@@ -113,12 +111,10 @@ export function WaitlistDialog() {
         return;
       }
       setStatus("success");
-      track("waitlist_submitted", {
-        restaurant: form.restaurant.trim(),
-      }).catch(() => {});
+      track("news_submitted", { source }).catch(() => {});
       identify(form.email.trim(), {
-        signup_type: "waitlist",
-        restaurant: form.restaurant.trim(),
+        signup_type: "news",
+        source,
       }).catch(() => {});
       window.setTimeout(() => closeBtnRef.current?.focus(), 40);
     } catch {
@@ -138,7 +134,7 @@ export function WaitlistDialog() {
           className="waitlist-scrim"
           role="dialog"
           aria-modal="true"
-          aria-labelledby="waitlist-title"
+          aria-labelledby="news-subscribe-title"
           onClick={(e) => {
             if (e.target === e.currentTarget) close();
           }}
@@ -179,62 +175,25 @@ export function WaitlistDialog() {
 
             {status !== "success" ? (
               <>
-                <div className="waitlist-eyebrow">Join the waitlist</div>
-                <h3 id="waitlist-title" className="waitlist-title">
-                  Tell us about your restaurant.
+                <div className="waitlist-eyebrow">reveal. news</div>
+                <h3 id="news-subscribe-title" className="waitlist-title">
+                  Restaurant industry signal, filtered.
                 </h3>
                 <p className="waitlist-sub">
-                  Three fields. We&apos;ll take it from here.
+                  One operator&apos;s field notes on what&apos;s actually
+                  changing — sent only when something useful happens.
                 </p>
 
                 <form onSubmit={onSubmit} noValidate className="waitlist-form">
                   <label className="waitlist-field">
-                    <span className="waitlist-label">Your name</span>
-                    <input
-                      ref={firstFieldRef}
-                      type="text"
-                      autoComplete="name"
-                      value={form.name}
-                      onChange={(e) =>
-                        setForm({ ...form, name: e.target.value })
-                      }
-                      aria-invalid={!!errors.name}
-                      disabled={submitting}
-                      className="waitlist-input"
-                    />
-                    {errors.name && (
-                      <span className="waitlist-error">{errors.name}</span>
-                    )}
-                  </label>
-
-                  <label className="waitlist-field">
-                    <span className="waitlist-label">Restaurant name</span>
-                    <input
-                      type="text"
-                      autoComplete="organization"
-                      value={form.restaurant}
-                      onChange={(e) =>
-                        setForm({ ...form, restaurant: e.target.value })
-                      }
-                      aria-invalid={!!errors.restaurant}
-                      disabled={submitting}
-                      className="waitlist-input"
-                    />
-                    {errors.restaurant && (
-                      <span className="waitlist-error">
-                        {errors.restaurant}
-                      </span>
-                    )}
-                  </label>
-
-                  <label className="waitlist-field">
                     <span className="waitlist-label">Email</span>
                     <input
+                      ref={firstFieldRef}
                       type="email"
                       autoComplete="email"
                       value={form.email}
                       onChange={(e) =>
-                        setForm({ ...form, email: e.target.value })
+                        setForm({ email: e.target.value })
                       }
                       aria-invalid={!!errors.email}
                       disabled={submitting}
@@ -260,8 +219,16 @@ export function WaitlistDialog() {
                     className="btn btn-primary waitlist-submit"
                     disabled={submitting}
                   >
-                    {submitting ? "Sending…" : "Join the waitlist"}
+                    {submitting ? "Sending…" : "Subscribe"}
                   </button>
+
+                  <p
+                    className="waitlist-sub"
+                    style={{ fontSize: 12, marginTop: 12, opacity: 0.7 }}
+                  >
+                    You&apos;ll get a confirmation email. One click and
+                    you&apos;re on the list. Unsubscribe anytime.
+                  </p>
                 </form>
               </>
             ) : (
@@ -280,9 +247,11 @@ export function WaitlistDialog() {
                     <path d="M20 6 9 17l-5-5" />
                   </svg>
                 </div>
-                <h3 className="waitlist-title">You&apos;re on the list.</h3>
+                <h3 className="waitlist-title">Check your inbox.</h3>
                 <p className="waitlist-sub">
-                  We&apos;ll be in touch soon. Until then — back to the kitchen.
+                  We just sent a confirmation link. One click and
+                  you&apos;re on. If it&apos;s not there in a minute, check
+                  spam.
                 </p>
                 <button
                   type="button"

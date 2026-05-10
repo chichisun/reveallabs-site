@@ -8,6 +8,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { Footer } from "../../../components/Footer";
 import { BlogSubscribeBlock } from "../../../components/BlogSubscribeBlock";
 import { WaitlistDialog } from "../../../components/WaitlistDialog";
+import { NewsSubscribeDialog } from "../../../components/NewsSubscribeDialog";
 import {
   getAllPostSlugs,
   getPostBySlug,
@@ -141,6 +142,7 @@ export default async function BlogPostPage({ params }: Props) {
       <BlogSubscribeBlock />
       <Footer />
       <WaitlistDialog />
+      <NewsSubscribeDialog source="blog-post" />
     </>
   );
 }
