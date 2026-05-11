@@ -9,7 +9,7 @@ export const SITE_DESCRIPTION =
 export const SITE_NAME = "reveal.";
 
 // Update when the privacy policy is materially revised
-export const POLICY_EFFECTIVE_DATE = "April 2026";
+export const POLICY_EFFECTIVE_DATE = "May 11, 2026";
 
 // Used as sitemap `lastModified` — set to the date of the last real content change.
 // Don't use `new Date()` (regenerates per request, makes the field meaningless).
