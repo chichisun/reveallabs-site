@@ -1,4 +1,5 @@
 import { Hero } from "../components/Hero";
+import { DashboardPreview } from "../components/dashboard-preview/DashboardPreview";
 import { Scrollytelling } from "../components/Scrollytelling";
 import { WhatWeDo } from "../components/WhatWeDo";
 import { FinalCTA } from "../components/FinalCTA";
@@ -13,6 +14,7 @@ export default function Home() {
       <Intro />
       <IntroReplay />
       <Hero />
+      <DashboardPreview />
       <Scrollytelling />
       <WhatWeDo />
       <FinalCTA />
