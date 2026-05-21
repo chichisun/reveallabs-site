@@ -4,6 +4,8 @@
 /node_modules
 /.pnp
 .pnp.*
+# this project uses npm — keep package-lock.json, never commit pnpm's lockfile
+pnpm-lock.yaml
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
