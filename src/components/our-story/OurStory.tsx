@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { OurStoryBeat, type BeatGrade } from "@/components/OurStoryBeat";
-import { TimelineSpine } from "@/components/TimelineSpine";
-import { CropEditor } from "@/components/CropEditor";
+import { OurStoryBeat, type BeatGrade } from "@/components/our-story/OurStoryBeat";
+import { TimelineSpine } from "@/components/our-story/TimelineSpine";
+import { CropEditor } from "@/components/our-story/CropEditor";
 
 interface Beat {
   year: string;

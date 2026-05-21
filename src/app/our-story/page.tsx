@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/Footer";
-import { OurStory } from "@/components/OurStory";
+import { Footer } from "@/components/layout/Footer";
+import { OurStory } from "@/components/our-story/OurStory";
 
 export const metadata: Metadata = {
   title: "Our Story — reveal.",

@@ -5,10 +5,10 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { Footer } from "@/components/Footer";
-import { BlogSubscribeBlock } from "@/components/BlogSubscribeBlock";
-import { WaitlistDialog } from "@/components/WaitlistDialog";
-import { NewsSubscribeDialog } from "@/components/NewsSubscribeDialog";
+import { Footer } from "@/components/layout/Footer";
+import { BlogSubscribeBlock } from "@/components/blog/BlogSubscribeBlock";
+import { WaitlistDialog } from "@/components/waitlist/WaitlistDialog";
+import { NewsSubscribeDialog } from "@/components/news/NewsSubscribeDialog";
 import {
   getAllPostSlugs,
   getPostBySlug,

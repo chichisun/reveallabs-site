@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Footer } from "@/components/Footer";
-import { BlogSubscribeBlock } from "@/components/BlogSubscribeBlock";
-import { WaitlistDialog } from "@/components/WaitlistDialog";
-import { NewsSubscribeDialog } from "@/components/NewsSubscribeDialog";
+import { Footer } from "@/components/layout/Footer";
+import { BlogSubscribeBlock } from "@/components/blog/BlogSubscribeBlock";
+import { WaitlistDialog } from "@/components/waitlist/WaitlistDialog";
+import { NewsSubscribeDialog } from "@/components/news/NewsSubscribeDialog";
 import {
   BLOG_TOPICS,
   getTopic,

@@ -19,8 +19,8 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { WaitlistTrigger } from "@/components/WaitlistTrigger";
-import { NewsSubscribeTrigger } from "@/components/NewsSubscribeTrigger";
+import { WaitlistTrigger } from "@/components/waitlist/WaitlistTrigger";
+import { NewsSubscribeTrigger } from "@/components/news/NewsSubscribeTrigger";
 
 const PAPER_FULL_HEIGHT = 400; // px — fully extended receipt
 // Reveal range against `useScroll` progress with offset

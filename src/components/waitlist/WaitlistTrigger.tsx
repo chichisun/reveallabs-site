@@ -1,6 +1,6 @@
 "use client";
 
-import { WAITLIST_OPEN_EVENT } from "@/components/WaitlistDialog";
+import { WAITLIST_OPEN_EVENT } from "@/components/waitlist/WaitlistDialog";
 
 type Props = {
   className?: string;

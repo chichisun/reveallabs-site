@@ -7,7 +7,7 @@ import {
   getAllSources,
   type PublicNewsSource,
 } from "@/lib/news-db";
-import { Footer } from "@/components/Footer";
+import { Footer } from "@/components/layout/Footer";
 import { SITE_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
