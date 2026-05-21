@@ -1,8 +1,8 @@
 import {
   INTERMISSION_VIDEO_URL,
   INTERMISSION_POSTER_URL,
-} from "../lib/site-config";
-import { WaitlistTrigger } from "./WaitlistTrigger";
+} from "@/lib/site-config";
+import { HeroWaitlist } from "@/components/sections/HeroWaitlist";
 
 export function Hero() {
   return (
@@ -24,18 +24,17 @@ export function Hero() {
 
       <div className="hero-inner">
         <div className="eyebrow"><span>For independent restaurants</span></div>
-        <h1 id="hero-title">
-          We see everything. We find the moves. We hand you the tools.
-        </h1>
-        <p className="hero-sub">
-          Every contract you signed. Every cost you pay. Every dollar your
-          restaurant makes. Connected in one place, then turned into the
-          moves you can actually make next month.
-        </p>
-        <div className="hero-ctas">
-          <WaitlistTrigger className="btn btn-primary btn-pulse">
-            Join the waitlist
-          </WaitlistTrigger>
+        <div className="hero-content">
+          <h1 id="hero-title">
+            One place for everything<br />your money touches.
+          </h1>
+          <p className="hero-sub">
+            Contracts, costs, and sales — connected, made sense of, and
+            turned into the moves to make next month.
+          </p>
+          <div className="hero-ctas">
+            <HeroWaitlist />
+          </div>
         </div>
       </div>
     </section>
