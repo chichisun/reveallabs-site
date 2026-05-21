@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateTag } from "next/cache";
 import { createClient } from "@supabase/supabase-js";
-import { verifyReviewToken } from "../../../../lib/news-jwt";
+import { verifyReviewToken } from "@/lib/news-jwt";
 
 // Service-role client. Bypasses RLS so we can update pending items.
 function adminDb() {

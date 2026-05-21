@@ -1,6 +1,6 @@
 "use client";
 
-import { NEWS_SUBSCRIBE_OPEN_EVENT } from "./NewsSubscribeDialog";
+import { NEWS_SUBSCRIBE_OPEN_EVENT } from "@/components/NewsSubscribeDialog";
 
 type Props = {
   className?: string;

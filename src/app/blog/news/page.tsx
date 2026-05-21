@@ -3,11 +3,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { unstable_cache } from "next/cache";
-import { getLiveItemsPaged, type PublicNewsItem } from "../../../lib/news-db";
-import { Footer } from "../../../components/Footer";
-import { NewsSubscribeDialog } from "../../../components/NewsSubscribeDialog";
-import { NewsSubscribeTrigger } from "../../../components/NewsSubscribeTrigger";
-import { SITE_URL } from "../../../lib/site-config";
+import { getLiveItemsPaged, type PublicNewsItem } from "@/lib/news-db";
+import { Footer } from "@/components/Footer";
+import { NewsSubscribeDialog } from "@/components/NewsSubscribeDialog";
+import { NewsSubscribeTrigger } from "@/components/NewsSubscribeTrigger";
+import { SITE_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "News · Restaurant Insights — reveal.",

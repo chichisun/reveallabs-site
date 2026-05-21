@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Footer } from "../../../../components/Footer";
-import { BlogSubscribeBlock } from "../../../../components/BlogSubscribeBlock";
-import { WaitlistDialog } from "../../../../components/WaitlistDialog";
-import { NewsSubscribeDialog } from "../../../../components/NewsSubscribeDialog";
+import { Footer } from "@/components/Footer";
+import { BlogSubscribeBlock } from "@/components/BlogSubscribeBlock";
+import { WaitlistDialog } from "@/components/WaitlistDialog";
+import { NewsSubscribeDialog } from "@/components/NewsSubscribeDialog";
 import {
   BLOG_TOPICS,
   getTopic,
   topicSlugs,
-} from "../../../../lib/blog-topics";
-import { getPostsByTopic, formatPublishDate } from "../../../../lib/blog";
-import { SITE_URL } from "../../../../lib/site-config";
+} from "@/lib/blog-topics";
+import { getPostsByTopic, formatPublishDate } from "@/lib/blog";
+import { SITE_URL } from "@/lib/site-config";
 
 type Props = {
   params: Promise<{ topic: string }>;

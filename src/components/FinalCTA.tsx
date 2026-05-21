@@ -1,4 +1,4 @@
-import { WaitlistTrigger } from "./WaitlistTrigger";
+import { WaitlistTrigger } from "@/components/WaitlistTrigger";
 
 const STATS = [
   { num: "100%", label: "Of your books, covered" },

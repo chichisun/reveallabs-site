@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL, SITE_LAST_MODIFIED } from "../lib/site-config";
-import { getAllPosts } from "../lib/blog";
-import { BLOG_TOPICS } from "../lib/blog-topics";
+import { SITE_URL, SITE_LAST_MODIFIED } from "@/lib/site-config";
+import { getAllPosts } from "@/lib/blog";
+import { BLOG_TOPICS } from "@/lib/blog-topics";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticEntries: MetadataRoute.Sitemap = [

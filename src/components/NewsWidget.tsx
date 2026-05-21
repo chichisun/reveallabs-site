@@ -6,7 +6,7 @@ import {
   getTopLiveItems,
   getMostRecentLiveAt,
   getAllSources,
-} from "../lib/news-db";
+} from "@/lib/news-db";
 
 const getCached = unstable_cache(
   async () => {

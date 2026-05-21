@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Footer } from "../../components/Footer";
-import { BlogSubscribeBlock } from "../../components/BlogSubscribeBlock";
-import { WaitlistDialog } from "../../components/WaitlistDialog";
-import { NewsSubscribeDialog } from "../../components/NewsSubscribeDialog";
-import { NewsWidget } from "../../components/NewsWidget";
-import { BLOG_TOPICS } from "../../lib/blog-topics";
-import { getAllPosts, formatPublishDate } from "../../lib/blog";
-import { SITE_URL } from "../../lib/site-config";
-import { RevealMorph } from "../../components/RevealMorph";
-import { AnimatedBlogCardGrid } from "../../components/AnimatedBlogCardGrid";
+import { Footer } from "@/components/Footer";
+import { BlogSubscribeBlock } from "@/components/BlogSubscribeBlock";
+import { WaitlistDialog } from "@/components/WaitlistDialog";
+import { NewsSubscribeDialog } from "@/components/NewsSubscribeDialog";
+import { NewsWidget } from "@/components/NewsWidget";
+import { BLOG_TOPICS } from "@/lib/blog-topics";
+import { getAllPosts, formatPublishDate } from "@/lib/blog";
+import { SITE_URL } from "@/lib/site-config";
+import { RevealMorph } from "@/components/RevealMorph";
+import { AnimatedBlogCardGrid } from "@/components/AnimatedBlogCardGrid";
 
 export const metadata: Metadata = {
   title: "Restaurant Insights — reveal.",

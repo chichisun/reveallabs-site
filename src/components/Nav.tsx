@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { WaitlistTrigger } from "./WaitlistTrigger";
-import { ThemeToggle } from "./ThemeToggle";
+import { WaitlistTrigger } from "@/components/WaitlistTrigger";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Nav() {
   const pathname = usePathname();

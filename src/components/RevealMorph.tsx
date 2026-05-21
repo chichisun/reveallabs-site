@@ -33,7 +33,7 @@ import {
   animate,
   type MotionValue,
 } from "framer-motion";
-import { REVEAL_GLYPHS, type GlyphSpec } from "./RevealGlyphs";
+import { REVEAL_GLYPHS, type GlyphSpec } from "@/components/RevealGlyphs";
 
 const N = REVEAL_GLYPHS.length;
 

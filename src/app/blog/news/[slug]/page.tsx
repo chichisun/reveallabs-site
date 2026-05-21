@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { unstable_cache } from "next/cache";
-import { getItemBySlug, getTopLiveItems } from "../../../../lib/news-db";
-import { Footer } from "../../../../components/Footer";
-import { SITE_URL } from "../../../../lib/site-config";
+import { getItemBySlug, getTopLiveItems } from "@/lib/news-db";
+import { Footer } from "@/components/Footer";
+import { SITE_URL } from "@/lib/site-config";
 
 const getCachedItem = (slug: string) =>
   unstable_cache(async () => getItemBySlug(slug), ["news_item", slug], {

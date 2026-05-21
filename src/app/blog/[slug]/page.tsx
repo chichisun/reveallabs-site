@@ -5,16 +5,16 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { Footer } from "../../../components/Footer";
-import { BlogSubscribeBlock } from "../../../components/BlogSubscribeBlock";
-import { WaitlistDialog } from "../../../components/WaitlistDialog";
-import { NewsSubscribeDialog } from "../../../components/NewsSubscribeDialog";
+import { Footer } from "@/components/Footer";
+import { BlogSubscribeBlock } from "@/components/BlogSubscribeBlock";
+import { WaitlistDialog } from "@/components/WaitlistDialog";
+import { NewsSubscribeDialog } from "@/components/NewsSubscribeDialog";
 import {
   getAllPostSlugs,
   getPostBySlug,
   formatPublishDate,
-} from "../../../lib/blog";
-import { SITE_URL } from "../../../lib/site-config";
+} from "@/lib/blog";
+import { SITE_URL } from "@/lib/site-config";
 
 type Props = {
   params: Promise<{ slug: string }>;
