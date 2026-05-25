@@ -1,37 +1,6 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-
 export function WhatWeDo() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.25, rootMargin: "0px 0px -10% 0px" }
-    );
-
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      className={`what-we-do${visible ? " is-visible" : ""}`}
-      aria-labelledby="what-we-do-title"
-    >
+    <section className="what-we-do" aria-labelledby="what-we-do-title">
       <div className="what-we-do-inner">
         <h2 className="what-we-do-lede" id="what-we-do-title">
           <span className="lede-line">Everything connected.</span>
