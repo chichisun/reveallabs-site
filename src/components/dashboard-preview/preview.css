@@ -1,5 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
+/* Inter is loaded once by next/font in src/app/layout.tsx and exposed as
+ * --font-inter on <html>. Importing it again here (especially via a blocking
+ * @import to fonts.googleapis.com) caused late paint + FOUT shift on iPhone
+ * right when the demo started animating in. */
 .reveal-dpv {
     --bg: #F1F2F4;
     --card: #FFFFFF;
@@ -18,7 +20,7 @@
     margin: 0; padding: 0;
     background: #ECEDF0;
     color: var(--ink);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
     min-height: 100vh;
   }.reveal-dpv {
     display: flex;
@@ -50,6 +52,8 @@
   }.reveal-dpv .phone-slide-wrap {
     transition: transform 760ms cubic-bezier(0.22, 0.61, 0.36, 1);
     will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }.reveal-dpv .stage.is-outro { gap: 0; }.reveal-dpv .stage.is-outro .caption-side {
     opacity: 0;
     flex-basis: 0;
@@ -186,6 +190,8 @@
     transform: scale(var(--phone-scale, 1));
     transition: transform 820ms cubic-bezier(0.22, 0.61, 0.36, 1);
     will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }.reveal-dpv .phone.rotated { transform: rotate(-90deg) scale(var(--phone-scale-rotated, 1)); }.reveal-dpv .phone::before {
     
     content: "";
@@ -204,6 +210,7 @@
     border-radius: 39px;
     overflow: hidden;
     background: var(--bg);
+    contain: paint;
   }.reveal-dpv .notch {
     position: absolute;
     top: 10px;
@@ -226,6 +233,9 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    contain: paint;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }.reveal-dpv .screen-layer-inner {
     width: 100%; height: 100%;
     display: flex;
@@ -428,9 +438,16 @@
     inset: 0;
     border-radius: 18px;
     pointer-events: none;
-    box-shadow: 0 0 0 0 rgba(192, 133, 50, 0);
+    /* Halo is a fixed box-shadow whose visibility is animated via opacity +
+     * transform — both GPU-composited. Animating box-shadow directly (its
+     * spread/color) repaints on every frame and was a major jank source on
+     * iPhone during the demo loop. */
+    box-shadow: 0 0 0 7px rgba(192, 133, 50, 0.18);
+    opacity: 0;
+    transform: scale(0.96);
+    will-change: opacity, transform;
     animation: amberPulse 2.4s ease-in-out infinite;
-  }@keyframes amberPulse {0%, 100% { box-shadow: 0 0 0 0 rgba(192, 133, 50, 0); }50% { box-shadow: 0 0 0 7px rgba(192, 133, 50, 0.18); }
+  }@keyframes amberPulse {0%, 100% { opacity: 0; transform: scale(0.96); }50% { opacity: 1; transform: scale(1); }
   }.reveal-dpv .amber-ico { background: #F4E0BE !important; color: #7A4F12 !important; }.reveal-dpv .amber-sub { color: var(--amber) !important; font-weight: 600; }.reveal-dpv .amber-cta { background: var(--amber) !important; color: #fff !important; }.reveal-dpv .stagger-slow > * { opacity: 0; animation: cardUp 380ms cubic-bezier(0.22, 0.61, 0.36, 1) both; }.reveal-dpv .stagger-slow > *:nth-child(1) { animation-delay: 200ms; }.reveal-dpv .stagger-slow > *:nth-child(2) { animation-delay: 650ms; }.reveal-dpv .stagger-slow > *:nth-child(3) { animation-delay: 1100ms; }.reveal-dpv .capture-stage {
     background: var(--bg);
     position: relative;
@@ -460,7 +477,7 @@
     border-radius: 10px;
     padding: 18px 18px 14px;
     color: #555;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter), sans-serif;
     box-shadow:
       0 14px 32px rgba(0,0,0,0.18),
       0 4px 10px rgba(0,0,0,0.08);
@@ -760,7 +777,7 @@
     border-radius: 6px;
     padding: 16px 14px;
     color: #555;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter), sans-serif;
     font-size: 9px;
     line-height: 1.5;
     box-shadow: 0 18px 40px rgba(0,0,0,0.4);
@@ -1019,6 +1036,16 @@ html[data-theme="dark"] .reveal-dpv .dot.active { background: var(--charcoal); }
   }
   /* Tighten the gap between the caption ("1 of 4") and the phone below it. */
   .reveal-dpv .stage { gap: 18px; }
+  /* Animating flex `gap` / `max-width` / `flex-basis` recalculates layout
+   * every frame — fine on desktop, but visibly choppy on iPhone. Snap those
+   * layout changes on mobile; keep the opacity fade so the caption still
+   * dissolves into the outro instead of popping. The phone slide-off itself
+   * stays animated (it's a translateX, GPU-cheap). */
+  .reveal-dpv .stage,
+  .reveal-dpv .caption-side,
+  .reveal-dpv .stage.is-outro .caption-side {
+    transition: opacity 380ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
   /* transform: scale() leaves the phone's layout box at full height, so ~64px
    * of dead space sits above the visible (shrunk) phone. Anchor the scale to
    * the top so the visible phone hugs the gap, and pull the now-empty space
