@@ -1215,6 +1215,30 @@ html[data-theme="dark"] .hero-waitlist-input::placeholder {
   .site-footer { padding: 40px 24px 24px; }
 }
 
+/* Mobile nav fit: the theme toggle is fixed top-right, so the inline links
+   (Our Story / Blog / Log in) must clear it. Toggle is right-anchored while
+   the links are left-anchored, so the squeeze tightens as the viewport
+   narrows — tighten the gaps, then shrink the type + wordmark on the
+   smallest phones so all three links stay left of the toggle. Placed after
+   the responsive blocks above so these win by source order. */
+@media (max-width: 560px) {
+  .nav { padding: 20px 18px; }
+  .nav-left { gap: 20px; }
+  .nav-links { gap: 16px; }
+}
+@media (max-width: 400px) {
+  .nav-left { gap: 16px; }
+  .nav-links { gap: 13px; }
+  .nav-link { font-size: 12px; letter-spacing: 0.02em; }
+}
+@media (max-width: 360px) {
+  .nav { padding: 16px 12px; }
+  .nav .wordmark { font-size: 24px; }
+  .nav-left { gap: 10px; }
+  .nav-links { gap: 9px; }
+  .nav-link { font-size: 11px; }
+}
+
 /* ── Brand intro overlay ── */
 html.intro-pending .nav,
 html.intro-pending .hero,
@@ -1450,52 +1474,6 @@ html.intro-pending .theme-toggle { visibility: hidden; }
   }
 }
 
-/* ── Log in link (fixed, sits just left of the theme toggle) ── */
-/* Matches the .nav-link typography (Our Story / Blog) — plain mono
-   uppercase text, not a pill. Vertically centered on the toggle. */
-.nav-login {
-  position: fixed;
-  top: 20px;
-  right: 76px; /* clears the 40px toggle at right:24px + gap */
-  z-index: 100;
-  height: 40px; /* match toggle height so it vertically centers */
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--charcoal);
-  text-decoration: none;
-  opacity: 0.75;
-  transition: opacity 0.2s ease;
-  white-space: nowrap;
-}
-.nav-login:hover { opacity: 1; }
-.nav-login:focus-visible {
-  outline: 2px solid var(--green-700);
-  outline-offset: 3px;
-}
-/* Over the dark hero on home — light text like .nav--home .nav-link. */
-.nav--home .nav-login {
-  color: #F2F1ED;
-  opacity: 1;
-  font-weight: 600;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55),
-    0 0 12px rgba(0, 0, 0, 0.35);
-}
-.nav--home .nav-login:hover { opacity: 0.8; }
-html.intro-pending .nav-login { visibility: hidden; }
-@media (prefers-reduced-motion: reduce) {
-  html.intro-pending .nav-login { visibility: visible; }
-}
-@media (max-width: 560px) {
-  .nav-login {
-    top: 16px;
-    right: 62px; /* clears the 36px toggle at right:16px + gap */
-    height: 36px;
-  }
-}
 .intro-replay svg {
   width: 18px;
   height: 18px;
