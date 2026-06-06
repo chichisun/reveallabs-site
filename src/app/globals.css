@@ -1451,37 +1451,40 @@ html.intro-pending .theme-toggle { visibility: hidden; }
 }
 
 /* ── Log in link (fixed, sits just left of the theme toggle) ── */
+/* Matches the .nav-link typography (Our Story / Blog) — plain mono
+   uppercase text, not a pill. Vertically centered on the toggle. */
 .nav-login {
   position: fixed;
   top: 20px;
-  right: 76px; /* 24 (toggle right) + 40 (toggle width) + 12 (gap) */
+  right: 76px; /* clears the 40px toggle at right:24px + gap */
   z-index: 100;
-  height: 40px;
+  height: 40px; /* match toggle height so it vertically centers */
   display: inline-flex;
   align-items: center;
-  padding: 0 16px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  background: var(--cream-lifted);
-  border: 1px solid var(--stroke);
-  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--charcoal);
-  cursor: pointer;
-  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  box-shadow: 0 2px 12px rgba(46, 46, 46, 0.08);
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
 }
-.nav-login:hover {
-  border-color: var(--charcoal);
-  transform: scale(1.05);
-}
+.nav-login:hover { opacity: 1; }
 .nav-login:focus-visible {
   outline: 2px solid var(--green-700);
   outline-offset: 3px;
 }
+/* Over the dark hero on home — light text like .nav--home .nav-link. */
+.nav--home .nav-login {
+  color: #F2F1ED;
+  opacity: 1;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55),
+    0 0 12px rgba(0, 0, 0, 0.35);
+}
+.nav--home .nav-login:hover { opacity: 0.8; }
 html.intro-pending .nav-login { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html.intro-pending .nav-login { visibility: visible; }
@@ -1489,10 +1492,8 @@ html.intro-pending .nav-login { visibility: hidden; }
 @media (max-width: 560px) {
   .nav-login {
     top: 16px;
-    right: 62px; /* 16 + 36 + 10 */
+    right: 62px; /* clears the 36px toggle at right:16px + gap */
     height: 36px;
-    padding: 0 12px;
-    font-size: 0.8125rem;
   }
 }
 .intro-replay svg {
