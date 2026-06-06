@@ -36,6 +36,9 @@ export function Nav() {
             >
               Blog
             </Link>
+            <a href="https://app.reveallabs.co/login" className="nav-link">
+              Log in
+            </a>
           </nav>
         </div>
         {!isHome && (
@@ -44,12 +47,6 @@ export function Nav() {
           </WaitlistTrigger>
         )}
       </div>
-      <a
-        href="https://app.reveallabs.co/login"
-        className="nav-login"
-      >
-        Log in
-      </a>
       <ThemeToggle />
     </header>
   );
