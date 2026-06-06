@@ -44,6 +44,12 @@ export function Nav() {
           </WaitlistTrigger>
         )}
       </div>
+      <a
+        href="https://app.reveallabs.co/login"
+        className="nav-login"
+      >
+        Log in
+      </a>
       <ThemeToggle />
     </header>
   );
