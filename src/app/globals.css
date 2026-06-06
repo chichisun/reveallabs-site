@@ -1449,6 +1449,52 @@ html.intro-pending .theme-toggle { visibility: hidden; }
     height: 36px;
   }
 }
+
+/* ── Log in link (fixed, sits just left of the theme toggle) ── */
+.nav-login {
+  position: fixed;
+  top: 20px;
+  right: 76px; /* 24 (toggle right) + 40 (toggle width) + 12 (gap) */
+  z-index: 100;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  background: var(--cream-lifted);
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  box-shadow: 0 2px 12px rgba(46, 46, 46, 0.08);
+}
+.nav-login:hover {
+  border-color: var(--charcoal);
+  transform: scale(1.05);
+}
+.nav-login:focus-visible {
+  outline: 2px solid var(--green-700);
+  outline-offset: 3px;
+}
+html.intro-pending .nav-login { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  html.intro-pending .nav-login { visibility: visible; }
+}
+@media (max-width: 560px) {
+  .nav-login {
+    top: 16px;
+    right: 62px; /* 16 + 36 + 10 */
+    height: 36px;
+    padding: 0 12px;
+    font-size: 0.8125rem;
+  }
+}
 .intro-replay svg {
   width: 18px;
   height: 18px;
