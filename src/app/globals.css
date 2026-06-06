@@ -407,12 +407,20 @@ html[data-theme="dark"] .eyebrow {
 .nav--home .nav-link:hover {
   opacity: 0.8;
 }
-/* Push the CTA left of the fixed theme toggle — needed on every
-   route since the toggle is top-right on all pages. The green glass
-   pill works identically on both hero video and cream bg, so no
-   per-theme override is needed any more. */
-.nav-cta {
+/* Right cluster (desktop Log in + waitlist CTA) sits top-right and is
+   pushed left of the fixed theme toggle — needed on every route since the
+   toggle is top-right on all pages. */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
   margin-right: 56px;
+}
+/* Desktop shows the Log in in .nav-right (next to the toggle); the inline
+   copy inside .nav-links is for mobile only (toggled in the responsive
+   block below). */
+.nav-login-m {
+  display: none;
 }
 .nav--home .wordmark {
   color: #F2F1ED;
@@ -1178,6 +1186,10 @@ html[data-theme="dark"] .hero-waitlist-input::placeholder {
 @media (max-width: 900px) {
   .nav { padding: 20px 20px; }
   .nav .wordmark { font-size: 30px; letter-spacing: -1.2px; }
+  /* Mobile/tablet: hide the top-right Log in, show the inline one in the
+     links row (the fixed toggle leaves no room beside it on small screens). */
+  .nav-login-d { display: none; }
+  .nav-login-m { display: inline-flex; }
   .hero { padding: 96px 20px 72px; min-height: 88vh; }
   .hero h1 { font-size: 48px; letter-spacing: -1.8px; }
   .what-we-do { margin: 0 0 80px; padding: 0 60px; }

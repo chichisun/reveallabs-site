@@ -36,16 +36,31 @@ export function Nav() {
             >
               Blog
             </Link>
-            <a href="https://app.reveallabs.co/login" className="nav-link">
+            {/* Mobile: Log in lives inline with the other links (the
+                desktop top-right copy below is hidden < 768px). */}
+            <a
+              href="https://app.reveallabs.co/login"
+              className="nav-link nav-login-m"
+            >
               Log in
             </a>
           </nav>
         </div>
-        {!isHome && (
-          <WaitlistTrigger className="btn btn-primary btn-pulse nav-cta">
-            Join the waitlist
-          </WaitlistTrigger>
-        )}
+        {/* Desktop: Log in sits top-right next to the theme toggle, beside
+            the waitlist CTA. Hidden on mobile (the inline copy shows there). */}
+        <div className="nav-right">
+          <a
+            href="https://app.reveallabs.co/login"
+            className="nav-link nav-login-d"
+          >
+            Log in
+          </a>
+          {!isHome && (
+            <WaitlistTrigger className="btn btn-primary btn-pulse nav-cta">
+              Join the waitlist
+            </WaitlistTrigger>
+          )}
+        </div>
       </div>
       <ThemeToggle />
     </header>
