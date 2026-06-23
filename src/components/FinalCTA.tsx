@@ -4,7 +4,7 @@ const STATS = [
   { num: "100%", label: "Of your books, covered" },
   { num: "24/7", label: "Eyes on the numbers" },
   { num: "Every", label: "Renewal, contract, payout" },
-  { num: "2–3", label: "Moves delivered every month" },
+  { num: "2–3", label: "Fixes surfaced every month" },
 ] as const;
 
 export function FinalCTA() {

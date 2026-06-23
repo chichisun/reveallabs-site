@@ -4,7 +4,7 @@ export const SITE_TITLE =
   "reveal. — A second set of eyes for independent restaurants";
 
 export const SITE_DESCRIPTION =
-  "Every contract you signed. Every cost you pay. Every dollar your restaurant makes. Reveal connects it in one place, finds the growth no one else would spot, and hands you the moves to make next month.";
+  "Reveal connects to your bank, POS, delivery apps, and the invoices and contracts you already keep — then checks every bill and payout against what you agreed to pay, flags the vendor who overcharged you and the payout that came up short, and helps you recover the money.";
 
 export const SITE_NAME = "reveal.";
 

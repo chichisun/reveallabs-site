@@ -34,22 +34,22 @@ export function WhatWeDo() {
     >
       <div className="what-we-do-inner">
         <h2 className="what-we-do-lede" id="what-we-do-title">
-          <span className="lede-line">Everything connected.</span>
-          <span className="lede-line">Nothing missed.</span>
+          <span className="lede-line">It watches the money,</span>
+          <span className="lede-line">so you don&apos;t have to.</span>
         </h2>
         <div className="what-we-do-body-wrap">
           <p className="what-we-do-body">
-            We watch everything your restaurant runs on — every contract
-            you signed, every cost you pay, every sale you make. Vendors,
-            leases, payouts, renewals, the whole picture. For the first
-            time, your restaurant lives in one connected place.
+            Reveal connects to your bank, POS, delivery apps, and the
+            invoices and contracts you already keep — then checks every
+            vendor bill, payout, and renewal against what you actually
+            agreed to. Everything in one place for the first time.
           </p>
           <p className="what-we-do-body">
-            Then we find the gaps and opportunities hiding in your data,
-            and build you a strategy. 2 or 3 specific moves to grow next
-            month — with everything you need to execute them. Scripts,
-            menu changes, marketing assets, tracking. Not generic advice.
-            A plan you can actually run.
+            When something doesn&apos;t line up — a vendor creeps their
+            price, an app pays you short, a permit&apos;s about to lapse —
+            Reveal catches it and hands you what you need to get the money
+            back: the numbers, the proof, the next step. Big chains pay
+            someone to do this. Now you don&apos;t have to.
           </p>
         </div>
       </div>
