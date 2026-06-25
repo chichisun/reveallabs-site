@@ -26,11 +26,13 @@ export function Hero() {
         <div className="eyebrow"><span>For independent restaurants</span></div>
         <div className="hero-content">
           <h1 id="hero-title">
-            One place for everything<br />your money touches.
+            Find the money leaking<br />out of your restaurant.
           </h1>
           <p className="hero-sub">
-            Contracts, costs, and sales — connected, made sense of, and
-            turned into the moves to make next month.
+            Reveal connects to your bank, POS, delivery apps, and the
+            invoices and contracts you already keep — then checks every
+            bill and payout against what you agreed to pay, flags the moment
+            you&apos;re overcharged or underpaid, and helps you recover it.
           </p>
           <div className="hero-ctas">
             <HeroWaitlist />

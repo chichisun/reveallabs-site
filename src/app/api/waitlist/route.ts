@@ -32,9 +32,11 @@ export async function POST(req: Request) {
   const restaurant = (body.restaurant || "").trim();
   const email = (body.email || "").trim();
 
-  if (!name || !restaurant || !email) {
+  // Email is the only required field. Name and restaurant are optional so the
+  // hero's inline email-only signup works; the full dialog still sends all three.
+  if (!email) {
     return NextResponse.json(
-      { error: "Name, restaurant, and email are required." },
+      { error: "Email is required." },
       { status: 400 },
     );
   }
@@ -69,12 +71,13 @@ export async function POST(req: Request) {
 
   try {
     const resend = new Resend(apiKey);
-    const subject = `Waitlist: ${name} — ${restaurant}`;
+    const label = [name, restaurant].filter(Boolean).join(" — ") || email;
+    const subject = `Waitlist: ${label}`;
     const text = [
       `Someone just joined the reveal. waitlist.`,
       ``,
-      `Name: ${name}`,
-      `Restaurant: ${restaurant}`,
+      `Name: ${name || "(not provided)"}`,
+      `Restaurant: ${restaurant || "(not provided)"}`,
       `Email: ${email}`,
       ``,
       `—`,

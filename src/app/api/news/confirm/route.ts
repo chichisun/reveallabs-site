@@ -13,10 +13,44 @@
  */
 
 import { NextResponse, type NextRequest } from "next/server";
+import { Resend } from "resend";
 import { subscribersDb } from "@/lib/subscribers-db";
 
 export const runtime = "nodejs";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://reveallabs.co";
+const NOTIFY_FROM_ADDRESS =
+  process.env.RESEND_NEWS_FROM_ADDRESS || "reveal. news <news@reveallabs.co>";
+const NOTIFY_TO_ADDRESS =
+  process.env.RESEND_NEWS_NOTIFY_TO || "chayadol@reveallabs.co";
+
+async function sendOwnerNotification(args: {
+  email: string;
+  source: string | null;
+  confirmedAt: string;
+}) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+  try {
+    const resend = new Resend(apiKey);
+    const subject = `new reveal. news subscriber: ${args.email}`;
+    const text = [
+      `New confirmed subscriber to reveal. news.`,
+      ``,
+      `email:        ${args.email}`,
+      `source:       ${args.source ?? "(none)"}`,
+      `confirmed at: ${args.confirmedAt}`,
+    ].join("\n");
+    const { error } = await resend.emails.send({
+      from: NOTIFY_FROM_ADDRESS,
+      to: [NOTIFY_TO_ADDRESS],
+      subject,
+      text,
+    });
+    if (error) console.error("Owner notify Resend error:", error);
+  } catch (err) {
+    console.error("Owner notify unexpected error:", err);
+  }
+}
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -33,7 +67,7 @@ export async function GET(req: NextRequest) {
     const { data: subscriber, error: lookupErr } = await db
       .from("subscribers")
       .select(
-        "id, email, status, confirmation_token_expires_at",
+        "id, email, source, status, confirmation_token_expires_at",
       )
       .eq("confirmation_token", token)
       .maybeSingle();
@@ -61,11 +95,12 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(`${SITE_URL}/blog/news/confirm/expired`);
     }
 
+    const confirmedAt = new Date().toISOString();
     const { error: updateErr } = await db
       .from("subscribers")
       .update({
         status: "confirmed",
-        confirmed_at: new Date().toISOString(),
+        confirmed_at: confirmedAt,
         unsubscribed_at: null,
       })
       .eq("id", subscriber.id);
@@ -78,10 +113,16 @@ export async function GET(req: NextRequest) {
     console.log(
       JSON.stringify({
         event: "news_subscribe_confirmed",
-        at: new Date().toISOString(),
+        at: confirmedAt,
         email: subscriber.email,
       }),
     );
+
+    await sendOwnerNotification({
+      email: subscriber.email,
+      source: (subscriber as { source?: string | null }).source ?? null,
+      confirmedAt,
+    });
 
     return NextResponse.redirect(`${SITE_URL}/blog/news/confirm/done`);
   } catch (err) {

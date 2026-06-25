@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Space_Mono } from "next/font/google";
+import { Space_Grotesk, Space_Mono, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import {
   SITE_URL,
   SITE_TITLE,
   SITE_DESCRIPTION,
   SITE_NAME,
-} from "../lib/site-config";
-import { Nav } from "../components/Nav";
-import { AnalyticsBoot } from "../components/AnalyticsBoot";
+} from "@/lib/site-config";
+import { Nav } from "@/components/layout/Nav";
+import { AnalyticsBoot } from "@/components/layout/AnalyticsBoot";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -22,6 +22,17 @@ const spaceMono = Space_Mono({
   variable: "--font-space-mono",
   subsets: ["latin"],
   weight: ["400", "700"],
+  display: "swap",
+});
+
+// Inter is loaded only so the dashboard preview's phone interior can use the
+// real product font. Exposed as a CSS variable and applied ONLY inside
+// `.reveal-app-preview` (see dashboard-preview/preview.css) — the rest of the
+// site keeps Space Grotesk.
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -91,7 +102,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${spaceMono.variable} antialiased`}
+      className={`${spaceGrotesk.variable} ${spaceMono.variable} ${inter.variable} antialiased`}
       suppressHydrationWarning
     >
       <head>

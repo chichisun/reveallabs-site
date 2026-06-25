@@ -5,17 +5,17 @@ import { useEffect, useRef, useState } from "react";
 const BEATS = [
   {
     kind: "voice" as const,
-    heading: "A RESTAURANT IS LOUD",
-    body: "Something's always breaking. Someone always needs you. You're always busy.",
+    heading: "YOU CAN'T WATCH EVERYTHING",
+    body: "Something's always breaking. Someone always needs you. Auditing every vendor bill and payout isn't happening.",
   },
   {
     kind: "voice" as const,
-    heading: "THE DATA IS QUIET",
-    body: "It doesn't tell you when something is wrong. We Will.",
+    heading: "SO THE LEAKS GO UNNOTICED",
+    body: "A price creeps up. A delivery app pays you short. Nothing tells you something's wrong — until Reveal catches it and helps you get the money back.",
   },
   {
     kind: "case-study" as const,
-    body: "Real Data. Real Restaurants.",
+    body: "Real data. Real restaurant. One month.",
   },
 ];
 
@@ -87,11 +87,11 @@ export function Scrollytelling() {
     return (
       <>
         <div className="beat-eyebrow">Case study — Tuk Tuk Thai Grill</div>
-        <div className="beat-primary">$5,931</div>
-        <div className="beat-label">Found in growth moves last month</div>
+        <div className="beat-primary">$1,297.87</div>
+        <div className="beat-label">Caught leaking in month one</div>
         <hr className="beat-divider" />
-        <div className="beat-secondary">57</div>
-        <div className="beat-label">Agreements now watched</div>
+        <div className="beat-secondary">38</div>
+        <div className="beat-label">Issues found — every one real</div>
       </>
     );
   };
