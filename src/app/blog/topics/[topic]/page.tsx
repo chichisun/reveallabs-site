@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/layout/Footer";
-import { BlogSubscribeBlock } from "@/components/blog/BlogSubscribeBlock";
-import { WaitlistDialog } from "@/components/waitlist/WaitlistDialog";
-import { NewsSubscribeDialog } from "@/components/news/NewsSubscribeDialog";
+import { SiteNav } from "@/components/home-v2/SiteNav";
+import { HomeWaitlist } from "@/components/home-v2/HomeWaitlist";
+import { ArticleShell } from "@/components/blog-v2/ArticleShell";
 import {
   BLOG_TOPICS,
   getTopic,
@@ -49,93 +49,89 @@ export default async function BlogTopicPage({ params }: Props) {
   const posts = getPostsByTopic(topic.slug);
 
   return (
-    <>
-      <main className="blog-page">
-        <div className="blog-page-inner">
-          <header className="blog-topic-page-header">
-            <div className="blog-topic-page-text">
-              <p className="blog-eyebrow">
-                <Link href="/blog" className="blog-eyebrow-link">
-                  ← Field notes
-                </Link>
-              </p>
-              <h1 className="blog-page-heading">
-                {topic.label}<span className="blog-heading-dot">.</span>
-              </h1>
-              <p className="blog-topic-page-tagline">{topic.tagline}</p>
-            </div>
-            <div className="blog-topic-page-image">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={topic.heroImage} alt="" loading="eager" />
-            </div>
-          </header>
+    <ArticleShell>
+      <SiteNav page="blog" />
 
-          <nav className="blog-topics-bar" aria-label="Filter by topic">
-            <div className="blog-topics-bar-inner">
-              <Link href="/blog" className="topic-link">
-                All
-              </Link>
-              {BLOG_TOPICS.map((t) => (
+      <main className="wrap">
+        <header className="blog-header">
+          <Link href="/blog" className="chip chip--slate topic-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Field notes
+          </Link>
+          <h1>
+            {topic.label}<span className="dot">.</span>
+          </h1>
+          <p className="blog-lede">{topic.tagline}</p>
+        </header>
+
+        <nav className="topics-bar" aria-label="Filter by topic">
+          <Link href="/blog" className="topic-link">
+            All
+          </Link>
+          {BLOG_TOPICS.map((t) => (
+            <Link
+              key={t.slug}
+              href={`/blog/topics/${t.slug}`}
+              className={`topic-link${t.slug === topic.slug ? " is-active" : ""}`}
+            >
+              {t.label}
+            </Link>
+          ))}
+        </nav>
+
+        {posts.length === 0 ? (
+          <div className="blog-empty">
+            <p>
+              No issues here yet. New articles in this topic will appear once
+              published.
+            </p>
+          </div>
+        ) : (
+          <ul className="card-grid" aria-label={`${topic.label} issues`}>
+            {posts.map((post, i) => (
+              <li key={post.frontmatter.slug}>
                 <Link
-                  key={t.slug}
-                  href={`/blog/topics/${t.slug}`}
-                  className={`topic-link${t.slug === topic.slug ? " is-active" : ""}`}
+                  href={`/blog/${post.frontmatter.slug}`}
+                  className="blog-card"
+                  style={{ "--col-delay": `${(i % 3) * 120}ms` } as React.CSSProperties}
                 >
-                  {t.label}
-                </Link>
-              ))}
-            </div>
-          </nav>
-
-          {posts.length === 0 ? (
-            <div className="blog-empty">
-              <p>
-                No issues here yet. New articles in this topic will appear once
-                published.
-              </p>
-              <p>
-                <Link href="/blog">← Back to all field notes</Link>
-              </p>
-            </div>
-          ) : (
-            <ul className="blog-card-grid" aria-label={`${topic.label} issues`}>
-              {posts.map((post) => (
-                <li key={post.frontmatter.slug}>
-                  <Link
-                    href={`/blog/${post.frontmatter.slug}`}
-                    className="blog-card"
-                  >
-                    <div className="blog-card-image">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={post.frontmatter.heroImage ?? topic.heroImage}
-                        alt=""
-                        loading="lazy"
-                      />
-                    </div>
+                  <div className="blog-card-image">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={post.frontmatter.heroImage ?? topic.heroImage}
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="blog-card-text">
                     <p className="blog-card-eyebrow">{topic.label}</p>
-                    <h3 className="blog-card-title">
-                      {post.frontmatter.title}
-                    </h3>
+                    <h3 className="blog-card-title">{post.frontmatter.title}</h3>
                     <p className="blog-card-meta">
                       <time dateTime={post.frontmatter.publishDate}>
                         {formatPublishDate(post.frontmatter.publishDate)}
                       </time>
-                      <span className="blog-meta-sep" aria-hidden="true">·</span>
+                      <span className="sep" aria-hidden="true">·</span>
                       {post.readingTimeText}
                     </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
 
-      <BlogSubscribeBlock />
+      <section className="closer">
+        <h2>Stop paying for other people&apos;s mistakes.</h2>
+        <p className="sub">
+          Join the waitlist and be first in line when Reveal opens up.
+        </p>
+        <HomeWaitlist source="blog_topic_closer" />
+      </section>
+
       <Footer />
-      <WaitlistDialog />
-      <NewsSubscribeDialog source="blog-topic" />
-    </>
+    </ArticleShell>
   );
 }

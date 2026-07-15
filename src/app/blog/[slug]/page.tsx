@@ -6,9 +6,9 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { Footer } from "@/components/layout/Footer";
-import { BlogSubscribeBlock } from "@/components/blog/BlogSubscribeBlock";
-import { WaitlistDialog } from "@/components/waitlist/WaitlistDialog";
-import { NewsSubscribeDialog } from "@/components/news/NewsSubscribeDialog";
+import { SiteNav } from "@/components/home-v2/SiteNav";
+import { HomeWaitlist } from "@/components/home-v2/HomeWaitlist";
+import { ArticleShell } from "@/components/blog-v2/ArticleShell";
 import {
   getAllPostSlugs,
   getPostBySlug,
@@ -63,47 +63,46 @@ export default async function BlogPostPage({ params }: Props) {
   const { frontmatter, content, readingTimeText, topicMeta } = post;
 
   return (
-    <>
-      <article className="blog-article">
-        <div className="blog-article-top">
-          <Link href="/blog" className="blog-article-back">
-            <span className="blog-article-back-arrow" aria-hidden="true">←</span>
-            Back to field notes
-          </Link>
-        </div>
+    <ArticleShell>
+      <SiteNav page="blog" />
 
-        <div className="blog-article-meta-row">
-          <span className="meta-left">
+      <article className="article">
+        <Link href="/blog" className="article-back reveal-in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Back to field notes
+        </Link>
+
+        <header className="article-head reveal-in">
+          <div className="article-meta">
             {topicMeta ? (
-              <Link href={`/blog/topics/${topicMeta.slug}`}>
+              <Link href={`/blog/topics/${topicMeta.slug}`} className="article-meta-topic">
                 {topicMeta.label}
               </Link>
             ) : (
-              <span>Field notes</span>
+              <span className="article-meta-topic">Field notes</span>
             )}
-          </span>
-          <span className="meta-mid">
-            By <span className="meta-author">{frontmatter.author}</span>
-            <span aria-hidden="true"> · </span>
+            <span className="sep" aria-hidden="true">·</span>
+            <span>By {frontmatter.author}</span>
+            <span className="sep" aria-hidden="true">·</span>
             <time dateTime={frontmatter.publishDate}>
               {formatPublishDate(frontmatter.publishDate)}
             </time>
-          </span>
-          <span className="meta-right">{readingTimeText}</span>
-        </div>
-
-        <header className="blog-article-title-block">
-          <h1 className="blog-article-title">{frontmatter.title}</h1>
+            <span className="sep" aria-hidden="true">·</span>
+            <span>{readingTimeText}</span>
+          </div>
+          <h1 className="article-title">{frontmatter.title}</h1>
         </header>
 
         {frontmatter.heroImage && (
-          <div className="blog-article-hero">
+          <div className="article-hero">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={frontmatter.heroImage} alt="" loading="eager" />
           </div>
         )}
 
-        <div className="blog-article-prose">
+        <div className="article-prose">
           <MDXRemote
             source={content}
             options={{
@@ -124,27 +123,33 @@ export default async function BlogPostPage({ params }: Props) {
           />
         </div>
 
-        <footer className="blog-article-footer">
-          <div className="blog-article-footer-inner">
-            <Link href="/blog" className="blog-back-link">
-              ← All field notes
+        <footer className="article-foot">
+          <Link href="/blog" className="article-foot-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            All field notes
+          </Link>
+          {topicMeta && (
+            <Link href={`/blog/topics/${topicMeta.slug}`} className="article-foot-link">
+              More on {topicMeta.label}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
             </Link>
-            {topicMeta && (
-              <Link
-                href={`/blog/topics/${topicMeta.slug}`}
-                className="blog-back-link"
-              >
-                More on {topicMeta.label} →
-              </Link>
-            )}
-          </div>
+          )}
         </footer>
       </article>
 
-      <BlogSubscribeBlock />
+      <section className="closer">
+        <h2>Stop paying for other people&apos;s mistakes.</h2>
+        <p className="sub">
+          Join the waitlist and be first in line when Reveal opens up.
+        </p>
+        <HomeWaitlist source="blog_article_closer" />
+      </section>
+
       <Footer />
-      <WaitlistDialog />
-      <NewsSubscribeDialog source="blog-post" />
-    </>
+    </ArticleShell>
   );
 }

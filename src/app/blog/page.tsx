@@ -12,12 +12,12 @@ import { HomeWaitlist } from "@/components/home-v2/HomeWaitlist";
 export const metadata: Metadata = {
   title: "Restaurant Insights — reveal.",
   description:
-    "Restaurant insights revealed. Vendor billing patterns, food cost math, POS migrations — what one operator finds while running the books.",
+    "Restaurant insights revealed. Vendor billing patterns, food cost math, POS migrations, and what one operator finds while running the books.",
   alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
     title: "Restaurant Insights — reveal.",
     description:
-      "Restaurant insights revealed — what one operator finds while running the books.",
+      "Restaurant insights revealed. What one operator finds while running the books.",
     url: `${SITE_URL}/blog`,
     type: "website",
   },
@@ -73,7 +73,7 @@ export default function BlogIndexPage() {
               </span>
             </h1>
             <p className="blog-lede">
-              Vendor billing patterns, food cost math, POS migrations — what
+              Vendor billing patterns, food cost math, POS migrations. What
               one operator finds while running the books at Tuk Tuk in Denver,
               written up for anyone running their own.
             </p>

@@ -104,22 +104,44 @@
 .storyv2 .nav-menu a:active { background: rgba(46,46,46,0.05); }
 
 /* ── page header ── */
-.storyv2 .story-header { max-width: 1240px; margin: 0 auto; padding: 170px 24px 30px; }
+.storyv2 .story-header {
+  max-width: 1240px; margin: 0 auto;
+  padding: clamp(104px, 13vh, 138px) 24px clamp(34px, 5vh, 52px);
+}
 .storyv2 .story-header h1 {
   font-size: clamp(52px, 7vw, 84px);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.022em;
+  margin-top: 20px;
+}
+.storyv2 .story-lede {
+  margin-top: 18px;
+  font-size: clamp(18px, 1.7vw, 21px);
+  color: var(--muted);
+  max-width: 46ch;
 }
 .storyv2 .story-kicker {
   display: inline-flex; align-items: center; gap: 8px;
   background: #F6E7E2; color: #A03A24;
   font-size: 14px; font-weight: 550;
   padding: 6px 14px; border-radius: 999px;
-  margin-top: 22px;
 }
 .storyv2 .story-kicker .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-700); }
 .storyv2 .story-kicker svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* hero entrance cascade on load (mirrors the homepage hero) */
+@keyframes storyv2-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.storyv2 .story-kicker, .storyv2 .story-header h1, .storyv2 .story-lede {
+  opacity: 0;
+  animation: storyv2-rise 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.storyv2 .story-kicker { animation-delay: 100ms; }
+.storyv2 .story-header h1 { animation-delay: 220ms; }
+.storyv2 .story-lede { animation-delay: 360ms; }
+@media (prefers-reduced-motion: reduce) {
+  .storyv2 .story-kicker, .storyv2 .story-header h1, .storyv2 .story-lede { animation: none; opacity: 1; }
+}
 
 /* ── layout: sticky spine + beats ── */
 .storyv2 .story {
@@ -326,7 +348,8 @@
   padding: 8px 16px; border-radius: 999px;
 }
 .storyv2 .proof-chip strong { color: #FAF9F5; font-weight: 650; }
-.storyv2 .proof-chip .tick { color: var(--green-400); }
+.storyv2 .proof-chip .tick { color: var(--green-400); display: inline-flex; }
+.storyv2 .proof-chip .tick svg { width: 15px; height: 15px; }
 
 /* live waitlist success/error (port-only, mirrors home-v2.css) */
 .storyv2 .hv2-waitlist-success {

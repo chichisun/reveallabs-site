@@ -156,13 +156,16 @@ export function StoryV2() {
       <SiteNav page="story" />
 
       <header className="story-header">
-        <h1>Our story.</h1>
         <div className="story-kicker">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
           </svg>
           Three generations, one kitchen
         </div>
+        <h1>Our story.</h1>
+        <p className="story-lede">
+          This is the restaurant that raised me, and the reason Reveal exists.
+        </p>
       </header>
 
       <section className="story" aria-label="Reveal's origin story, 1970 to today">
@@ -213,7 +216,11 @@ export function StoryV2() {
         <p className="sub">Join the waitlist and be first in line when Reveal opens up.</p>
         <HomeWaitlist source="story_closer" />
         <div className="proof-chip">
-          <span className="tick">✓</span>
+          <span className="tick" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          </span>
           <span>
             <strong>$1,297.87</strong> caught at one restaurant in month one.
           </span>

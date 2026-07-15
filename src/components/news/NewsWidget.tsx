@@ -46,19 +46,68 @@ function firstSentence(s: string | null): string {
   return (m ? m[0] : s).trim();
 }
 
+// Dev-only preview data. Rendered ONLY when NODE_ENV !== "production" and the
+// live feed is unavailable/empty (e.g. no Supabase env locally), so the widget
+// can be designed/reviewed without a database. Never used in production.
+const IS_DEV = process.env.NODE_ENV !== "production";
+const SAMPLE = {
+  sourceCount: 10,
+  lastAt: new Date(Date.now() - 12 * 3600 * 1000).toISOString(),
+  items: [
+    {
+      id: "sample-1",
+      slug: "#",
+      region: "denver",
+      headline_friendly: "Birria chain builds training center to fuel national expansion",
+      headline_verbatim: "",
+      what_it_means: "A Denver-born concept is standardizing its kitchens before scaling, a signal of where labor costs are heading.",
+      source_name: "Denver Business Journal",
+      source_id: "dbj",
+      published_at: new Date(Date.now() - 12 * 3600 * 1000).toISOString(),
+    },
+    {
+      id: "sample-2",
+      slug: "#",
+      region: "national",
+      headline_friendly: "Card processors quietly raise interchange fees again this quarter",
+      headline_verbatim: "",
+      what_it_means: "Small operators absorb the increase unless they audit statements line by line.",
+      source_name: "Restaurant Dive",
+      source_id: "rd",
+      published_at: new Date(Date.now() - 26 * 3600 * 1000).toISOString(),
+    },
+    {
+      id: "sample-3",
+      slug: "#",
+      region: "colorado",
+      headline_friendly: "New tip-credit ruling changes how Colorado restaurants schedule",
+      headline_verbatim: "",
+      what_it_means: "Owners will need to reconcile payroll against the updated wage floor.",
+      source_name: "Colorado Sun",
+      source_id: "cs",
+      published_at: new Date(Date.now() - 52 * 3600 * 1000).toISOString(),
+    },
+  ],
+};
+
 export async function NewsWidget() {
   let cached;
   try {
     cached = await getCached();
   } catch (err) {
-    // If Supabase is misconfigured, render nothing rather than crashing /blog.
+    // If Supabase is misconfigured, render nothing in production; show the
+    // dev sample locally so the widget can be reviewed.
     console.error("[NewsWidget] failed to load:", err);
-    return null;
+    if (!IS_DEV) return null;
+    cached = SAMPLE;
   }
-  const { items, lastAt, sourceCount } = cached;
+  let { items, lastAt, sourceCount } = cached;
+  if (items.length === 0 && IS_DEV) {
+    ({ items, lastAt, sourceCount } = SAMPLE);
+  }
 
   return (
-    <section className="news-widget" aria-label="Pinned restaurant news">
+    <section className="news-widget reveal-in" aria-label="Pinned restaurant news">
       <div className="news-widget-header">
         <div className="news-eyebrow-row">
           <span className="news-widget-eyebrow">
