@@ -13,14 +13,12 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { Byline } from "./blog/Byline";
 
 type CardPost = {
   frontmatter: {
     slug: string;
     title: string;
     publishDate: string;
-    author: string;
   };
   topicMeta: { label: string } | null | undefined;
   readingTimeText: string;
@@ -71,15 +69,13 @@ export function AnimatedBlogCardGrid({ posts }: { posts: CardPost[] }) {
                   <p className="blog-card-eyebrow">{post.topicMeta.label}</p>
                 )}
                 <h3 className="blog-card-title">{post.frontmatter.title}</h3>
-                <div className="blog-card-meta">
-                  <Byline
-                    kind="essay"
-                    author={post.frontmatter.author}
-                    publishDate={post.frontmatter.publishDate}
-                  />
+                <p className="blog-card-meta">
+                  <time dateTime={post.frontmatter.publishDate}>
+                    {post.formattedDate}
+                  </time>
                   <span className="blog-meta-sep" aria-hidden="true">·</span>
-                  <span>{post.readingTimeText}</span>
-                </div>
+                  {post.readingTimeText}
+                </p>
               </motion.div>
             </Link>
           </li>
