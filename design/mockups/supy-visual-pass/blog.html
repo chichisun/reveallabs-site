@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog — reveal. (Fustat mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #F2F1ED;
+    --cream-lifted: #FCFBFA;
+    --white: #FFFFFF;
+    --charcoal: #2E2E2E;
+    --charcoal-soft: #3D3D3D;
+    --muted: #797979;
+    --stroke: rgba(46, 46, 46, 0.10);
+    --green-900: #1E3522;
+    --green-800: #2A4B30;
+    --green-700: #355E3B;
+    --green-400: #8BAF8F;
+    --green-100: #E8F0E9;
+    --r-btn: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Fustat", Arial, sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 18px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  ul { list-style: none; }
+  a { text-decoration: none; color: inherit; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: inherit; font-size: 16px; font-weight: 500;
+    padding: 10px 18px; border-radius: var(--r-btn);
+    border: none; cursor: pointer;
+    transition: background 200ms ease, transform 150ms ease;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--green-700); color: var(--cream); }
+  .btn-primary:hover { background: var(--green-800); }
+
+  nav.main-nav {
+    position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+    width: min(1100px, calc(100% - 32px));
+    background: rgba(252, 251, 250, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--stroke);
+    border-radius: 18px;
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 100;
+    transition: box-shadow 300ms ease;
+  }
+  nav.main-nav.scrolled { box-shadow: 0 8px 30px rgba(20,40,24,0.12); }
+  .logo { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; color: var(--charcoal); }
+  .logo em { font-style: normal; color: var(--green-700); }
+  .nav-links { display: flex; align-items: center; gap: 26px; }
+  .nav-links a { font-size: 16px; color: var(--charcoal-soft); }
+  .nav-links a:hover, .nav-links a.active { color: var(--charcoal); }
+  .nav-links a.active { font-weight: 600; }
+  .nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: var(--cream); }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── page header (structure from current blog page) ── */
+  .blog-header { padding: 170px 0 44px; max-width: 760px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-100); color: var(--green-800);
+    font-size: 14px; font-weight: 550;
+    padding: 6px 14px; border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-700); }
+  .chip svg { width: 13px; height: 13px; flex-shrink: 0; }
+  /* chip tint variants — all from the site's accent palette */
+  .chip--amber { background: #F3EADA; color: #8A6224; }
+  .chip--terra { background: #F6E7E2; color: #A03A24; }
+  .chip--blue  { background: #E7ECF6; color: #3B5693; }
+  .chip--slate { background: rgba(46, 46, 46, 0.07); color: #55524C; }
+  .chip--taupe { background: #EEE9E0; color: #75695A; }
+
+  .blog-header h1 {
+    font-size: clamp(44px, 6vw, 72px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+  }
+  /* "reveal.ed" morph moment — letters settle from spread to snug */
+  .morph { white-space: nowrap; }
+  .morph .m-ch { display: inline-block; transition: transform 900ms cubic-bezier(0.22,1,0.36,1); }
+  .morph .m-dot { color: var(--green-700); }
+  .blog-lede { margin-top: 20px; font-size: 19px; color: var(--muted); max-width: 58ch; }
+
+  /* ── topics filter bar ── */
+  .topics-bar {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 22px 0;
+    border-top: 1px solid var(--stroke);
+    border-bottom: 1px solid var(--stroke);
+    margin-bottom: 56px;
+  }
+  .topic-link {
+    font-size: 14.5px; font-weight: 550;
+    color: var(--charcoal-soft);
+    padding: 7px 15px; border-radius: 999px;
+    border: 1px solid var(--stroke);
+    transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  }
+  .topic-link:hover { background: var(--green-100); border-color: transparent; color: var(--green-800); }
+  .topic-link.is-active { background: var(--green-700); border-color: var(--green-700); color: var(--cream); }
+
+  /* ── card grid (wipe-reveal choreography from current site) ── */
+  .card-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 40px 28px;
+    margin-bottom: 110px;
+  }
+  .blog-card { display: block; }
+  .blog-card-image {
+    aspect-ratio: 4 / 3.2;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--cream-lifted);
+    border: 1px solid var(--stroke);
+    /* wipe: clipped from the right, uncovered left-to-right on scroll entry */
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 950ms cubic-bezier(0.65, 0, 0.35, 1);
+    transition-delay: var(--col-delay, 0ms);
+  }
+  .blog-card.vis .blog-card-image { clip-path: inset(0 0% 0 0); }
+  .blog-card-image img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 600ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .blog-card:hover .blog-card-image img { transform: scale(1.035); }
+  .blog-card-text {
+    padding-top: 16px;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 550ms cubic-bezier(0.65, 0, 0.35, 1), transform 550ms cubic-bezier(0.65, 0, 0.35, 1);
+    transition-delay: calc(var(--col-delay, 0ms) + 400ms);
+  }
+  .blog-card.vis .blog-card-text { opacity: 1; transform: none; }
+  .blog-card-eyebrow {
+    font-size: 13px; font-weight: 650; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--green-700);
+    margin-bottom: 6px;
+  }
+  .blog-card-title {
+    font-size: 22px; font-weight: 550; line-height: 1.25;
+    letter-spacing: -0.008em; text-wrap: balance;
+  }
+  .blog-card:hover .blog-card-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .blog-card-meta { margin-top: 8px; font-size: 14px; color: var(--muted); }
+  .blog-card-meta .sep { margin: 0 6px; }
+
+  /* ── browse-by-topic (inset container, Supy-style) ── */
+  .topics-section {
+    background: var(--cream-lifted);
+    border: 1px solid var(--stroke);
+    border-radius: 44px;
+    max-width: 1360px;
+    margin: 0 auto 28px;
+    padding: 90px 24px;
+  }
+  .topics-head { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+  .topics-head h2 {
+    font-size: clamp(34px, 4.4vw, 54px);
+    font-weight: 450; line-height: 1.08; letter-spacing: -0.018em;
+  }
+  .topics-head h2 .dot { color: var(--green-700); }
+  .topic-card-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 18px; max-width: 1180px; margin: 0 auto;
+  }
+  .topic-card {
+    display: block;
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: 16px; padding: 14px 14px 20px;
+    transition: transform 250ms cubic-bezier(0.16,1,0.3,1), box-shadow 250ms ease;
+  }
+  .topic-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(46,46,46,0.07); }
+  .topic-card-image { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 10px; margin-bottom: 14px; }
+  .topic-card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .topic-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 5px; }
+  .topic-card p { font-size: 14px; color: var(--muted); line-height: 1.45; }
+
+  /* scroll entry for section blocks */
+  .reveal-in {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 700ms cubic-bezier(0.16,1,0.3,1), transform 700ms cubic-bezier(0.16,1,0.3,1);
+    transition-delay: calc(var(--i, 0) * 80ms);
+  }
+  .reveal-in.vis { opacity: 1; transform: none; }
+
+  /* ── universal closer + footer ── */
+  .closer {
+    position: relative;
+    background-color: #111110;
+    color: var(--cream);
+    border-radius: 44px;
+    max-width: 1360px; margin: 28px auto;
+    padding: 110px 24px; text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .closer::before {
+    content: ""; position: absolute; inset: -20px;
+    background-image: url("../../../public/cta-kitchen.jpg");
+    background-size: cover; background-position: center;
+    filter: blur(5px) contrast(1.08) brightness(0.82);
+    z-index: 0; pointer-events: none;
+  }
+  .closer::after {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E"),
+      linear-gradient(115deg,
+        rgba(10, 10, 9, 0.52) 0%,
+        rgba(10, 10, 9, 0.22) 45%,
+        rgba(10, 10, 9, 0.38) 72%,
+        rgba(10, 10, 9, 0.58) 100%);
+    background-size: 256px 256px, 100% 100%;
+    background-repeat: repeat, no-repeat;
+    z-index: 1; pointer-events: none;
+  }
+  .closer > * { position: relative; z-index: 2; }
+  .closer h2 {
+    font-size: clamp(34px, 4.4vw, 54px); font-weight: 450;
+    line-height: 1.08; letter-spacing: -0.018em;
+    color: #FAF9F5; max-width: 20ch; margin: 0 auto 16px;
+    text-wrap: balance;
+  }
+  .closer .sub { font-size: 19px; color: rgba(242,241,237,0.75); margin: 0 auto 34px; }
+  .waitlist { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .waitlist input {
+    font-family: inherit; font-size: 16px;
+    padding: 13px 18px; width: 300px; max-width: 80vw;
+    border-radius: var(--r-btn);
+    border: 1px solid rgba(242,241,237,0.25);
+    background: rgba(252,251,250,0.10);
+    color: var(--cream);
+  }
+  .waitlist input::placeholder { color: rgba(242,241,237,0.55); }
+  .closer .btn-primary { background: var(--cream); color: var(--green-900); font-weight: 600; padding: 13px 22px; }
+  .closer .btn-primary:hover { background: var(--white); }
+
+  footer {
+    max-width: 1360px; margin: 0 auto; padding: 34px 40px 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: var(--muted); font-size: 15px;
+  }
+  footer a { color: var(--muted); margin-left: 22px; }
+  footer a:hover { color: var(--charcoal); }
+
+  @media (max-width: 980px) {
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+    .topic-card-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .card-grid, .topic-card-grid { grid-template-columns: 1fr; }
+    .nav-links a:not(.btn) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blog-card-image, .blog-card-text, .reveal-in, .morph .m-ch { transition: none !important; clip-path: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="main-nav" aria-label="Main">
+  <a class="logo" href="index.html">reveal<em>.</em></a>
+  <div class="nav-links">
+    <a href="our-story.html">Our story</a>
+    <a href="blog.html" class="active">Blog</a>
+    <a class="btn btn-primary" href="index.html#closer">Join the waitlist</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <header class="blog-header">
+    <div class="chip chip--amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Field notes</div>
+    <h1>Restaurant insights,<br /><span class="morph" id="morph">reveal<span class="m-dot">.</span>ed</span></h1>
+    <p class="blog-lede">Vendor billing patterns, food cost math, POS migrations — what one operator finds while running the books at Tuk Tuk in Denver, written up for anyone running their own.</p>
+  </header>
+
+  <!-- pinned hourly news widget (mirrors live /blog NewsWidget) -->
+  <style>
+    .news-widget { border-top: 1px solid var(--stroke); border-bottom: 1px solid var(--stroke); padding: 28px 0 24px; margin-bottom: clamp(40px, 6vw, 64px); }
+    .news-widget .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+    .nw-header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+    .nw-eyebrow-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .nw-eyebrow { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green-700); font-weight: 700; }
+    .nw-live { display: inline-flex; align-items: center; gap: 6px; font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .nw-live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green-700); animation: nw-pulse 2.4s ease-in-out infinite; }
+    @keyframes nw-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(53,94,59,0.5); } 50% { box-shadow: 0 0 0 6px rgba(53,94,59,0); } }
+    .nw-meta { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--muted); }
+    .nw-meta strong { color: var(--charcoal); }
+    .nw-meta a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--stroke); font-size: 11px; }
+    .nw-meta a:hover { color: var(--green-700); border-bottom-color: var(--green-700); }
+    .nw-row { display: grid; grid-template-columns: 110px 1fr; gap: 28px; align-items: start; border-top: 1px solid var(--stroke); padding: 18px 0; text-decoration: none; color: inherit; }
+    .nw-row:first-of-type { border-top: none; }
+    .nw-badge { display: inline-block; font-family: ui-monospace, Menlo, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: var(--green-100); color: var(--green-700); }
+    .nw-badge.is-national { background: #EEF3FB; color: #3860BE; }
+    .nw-headline { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; margin-bottom: 5px; }
+    .nw-row:hover .nw-headline { color: var(--green-700); }
+    .nw-hook { font-size: 15px; color: var(--muted); margin-bottom: 7px; }
+    .nw-source { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; color: var(--muted); letter-spacing: 0.03em; }
+    .nw-source b { font-weight: 700; color: var(--charcoal); }
+    .nw-footer { border-top: 1px solid var(--stroke); padding-top: 14px; font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+    @media (max-width: 640px) { .nw-row { grid-template-columns: 1fr; gap: 8px; } }
+  </style>
+  <section class="news-widget" aria-label="Pinned restaurant news">
+    <div class="nw-header">
+      <div class="nw-eyebrow-row">
+        <span class="nw-eyebrow">News reveal<span style="color: var(--green-700);">.</span>ed</span>
+        <span class="nw-live">Live</span>
+      </div>
+      <div class="nw-meta">
+        <span>Updated <strong>38 min ago</strong> &middot; 24 sources monitored</span>
+        <a href="#">What we monitor &rarr;</a>
+      </div>
+    </div>
+    <a class="nw-row" href="#">
+      <div><span class="nw-badge">Denver</span></div>
+      <div>
+        <h3 class="nw-headline">Denver raises tipped minimum wage for 2027</h3>
+        <p class="nw-hook">Budget January labor now; the increase lands on your busiest payroll of the year.</p>
+        <p class="nw-source"><span>via</span> <b>denver-gov</b> &middot; 2026.07.12 &middot; Read it &rarr;</p>
+      </div>
+    </a>
+    <a class="nw-row" href="#">
+      <div><span class="nw-badge">Colorado</span></div>
+      <div>
+        <h3 class="nw-headline">Colorado retail delivery fee climbs again this month</h3>
+        <p class="nw-hook">Every delivery order pays it. Worth checking that your apps pass it through.</p>
+        <p class="nw-source"><span>via</span> <b>co-dor</b> &middot; 2026.07.10 &middot; Read it &rarr;</p>
+      </div>
+    </a>
+    <a class="nw-row" href="#">
+      <div><span class="nw-badge is-national">National</span></div>
+      <div>
+        <h3 class="nw-headline">DoorDash updates its payout-error policy after settlement</h3>
+        <p class="nw-hook">Short payouts must now be corrected within 14 days of a documented dispute.</p>
+        <p class="nw-source"><span>via</span> <b>industry-wire</b> &middot; 2026.07.08 &middot; Read it &rarr;</p>
+      </div>
+    </a>
+    <div class="nw-footer">Engine runs hourly. Auto items publish on capture; curated items reviewed before posting.</div>
+  </section>
+
+  <nav class="topics-bar" aria-label="Filter by topic">
+    <a class="topic-link is-active" href="#">All</a>
+    <a class="topic-link" href="#">Vendor Billing &amp; Audits</a>
+    <a class="topic-link" href="#">Food Cost &amp; Margin</a>
+    <a class="topic-link" href="#">Labor &amp; Hiring</a>
+    <a class="topic-link" href="#">Operations &amp; Audit</a>
+    <a class="topic-link" href="#">Marketing &amp; Reviews</a>
+    <a class="topic-link" href="#">Industry Trends</a>
+    <a class="topic-link" href="#">News &amp; Synthesis</a>
+    <a class="topic-link" href="#">Local &amp; Regional</a>
+  </nav>
+
+  <ul class="card-grid" id="cardGrid"><!-- cards injected --></ul>
+</main>
+
+<section class="topics-section">
+  <div class="topics-head reveal-in">
+    <div class="chip chip--blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Browse by topic</div>
+    <h2>What I write about<span class="dot">.</span></h2>
+  </div>
+  <div class="topic-card-grid" id="topicGrid"><!-- topics injected --></div>
+</section>
+
+<section class="closer">
+  <h2>Stop paying for other people's mistakes.</h2>
+  <p class="sub">Join the waitlist and be first in line when Reveal opens up.</p>
+  <form class="waitlist" onsubmit="return false">
+    <input type="email" placeholder="Your email" aria-label="Email address" />
+    <button class="btn btn-primary" type="submit">Join the waitlist &nbsp;&rarr;</button>
+  </form>
+</section>
+
+<footer>
+  <a class="logo" href="index.html" style="font-size: 20px;">reveal<em>.</em></a>
+  <div>
+    <a href="our-story.html">Our story</a>
+    <a href="blog.html">Blog</a>
+    <a href="#">Privacy</a>
+    <span style="margin-left: 22px;">&copy; 2026 Reveal Labs</span>
+  </div>
+</footer>
+
+<script>
+  const POSTS = [
+    { title: "How to Read Your Shamrock Invoices Line by Line", topic: "Vendor Billing & Audits", img: "/public/blog-pillars/vendor-billing.png", date: "May 1, 2026", read: "11 min read" },
+    { title: "Welcome to the reveal. blog", topic: "Operations & Audit", img: "/public/blog-pillars/operations.png", date: "April 30, 2026", read: "2 min read" },
+    { title: "The One Number We Check Every Sunday", topic: "Food Cost & Margin", img: "/public/blog-pillars/food-cost.png", date: "April 24, 2026", read: "7 min read" },
+    { title: "The Conversation We Have with Every New Hire on Day One", topic: "Labor & Hiring", img: "/public/blog-pillars/labor.png", date: "April 17, 2026", read: "8 min read" },
+    { title: "Before You Switch POS Systems: 9 Questions to Ask First", topic: "Operations & Audit", img: "/public/blog-pillars/operations.png", date: "April 10, 2026", read: "8 min read" },
+    { title: "Why We Stopped Paying Yelp (and What Actually Brings People Back)", topic: "Marketing & Reviews", img: "/public/blog-pillars/marketing.png", date: "April 3, 2026", read: "7 min read" },
+    { title: "How to Read a Restaurant Industry Report Without Falling for the PR Spin", topic: "Industry Trends", img: "/public/blog-pillars/industry-trends.png", date: "March 27, 2026", read: "9 min read" },
+    { title: "This Week in Restaurant Operations: A New Format", topic: "News & Synthesis", img: "/public/blog-pillars/news.png", date: "March 20, 2026", read: "4 min read" },
+    { title: "Who's Actually Making Money in Denver Restaurants Right Now?", topic: "Local & Regional", img: "/public/blog-pillars/local.png", date: "March 13, 2026", read: "8 min read" },
+  ];
+  const TOPICS = [
+    { label: "Vendor Billing & Audits", tagline: "Sysco surcharges, US Foods invoice errors, supplier credits, and the spreadsheets that catch them.", img: "/public/blog-pillars/vendor-billing.png" },
+    { label: "Food Cost & Margin", tagline: "Inflation, prime cost, COGS, and the math that keeps margins above water.", img: "/public/blog-pillars/food-cost.png" },
+    { label: "Labor & Hiring", tagline: "Turnover, scheduling, payroll comparisons, and the operator playbooks that actually retain staff.", img: "/public/blog-pillars/labor.png" },
+    { label: "Operations & Audit", tagline: "POS migrations, daily ops, the audit habit that catches what dashboards miss.", img: "/public/blog-pillars/operations.png" },
+    { label: "Marketing & Reviews", tagline: "Yelp, Google, social, and where independent operators actually move the needle.", img: "/public/blog-pillars/marketing.png" },
+    { label: "Industry Trends", tagline: "Macro signals, regulation shifts, and what they mean for a single-unit indie.", img: "/public/blog-pillars/industry-trends.png" },
+    { label: "News & Synthesis", tagline: "Weekly synthesis of what crossed the wire and why it matters.", img: "/public/blog-pillars/news.png" },
+    { label: "Local & Regional", tagline: "Below-the-block intelligence: city-level dynamics that don't make national press.", img: "/public/blog-pillars/local.png" },
+  ];
+
+  const grid = document.getElementById('cardGrid');
+  POSTS.forEach((p, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <a class="blog-card" href="#" style="--col-delay: ${(i % 3) * 120}ms">
+        <div class="blog-card-image"><img src="${p.img}" alt="" loading="lazy" /></div>
+        <div class="blog-card-text">
+          <p class="blog-card-eyebrow">${p.topic}</p>
+          <h3 class="blog-card-title">${p.title}</h3>
+          <p class="blog-card-meta">${p.date}<span class="sep">&middot;</span>${p.read}</p>
+        </div>
+      </a>`;
+    grid.appendChild(li);
+  });
+
+  const tgrid = document.getElementById('topicGrid');
+  TOPICS.forEach((t, i) => {
+    const a = document.createElement('a');
+    a.className = 'topic-card reveal-in';
+    a.href = '#';
+    a.style.setProperty('--i', i % 4);
+    a.innerHTML = `
+      <div class="topic-card-image"><img src="${t.img}" alt="" loading="lazy" /></div>
+      <h3>${t.label}</h3>
+      <p>${t.tagline}</p>`;
+    tgrid.appendChild(a);
+  });
+
+  // wipe reveal on scroll entry (same viewport margin as live site)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -10% 0px' });
+  document.querySelectorAll('.blog-card, .reveal-in').forEach(el => io.observe(el));
+
+  // "reveal.ed" morph: letters start spread, settle snug after load
+  const morph = document.getElementById('morph');
+  morph.innerHTML = [...morph.textContent].map((ch, i) =>
+    `<span class="m-ch${ch === '.' ? ' m-dot' : ''}" style="transform: translateX(${i * 7}px)">${ch}</span>`).join('');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    morph.querySelectorAll('.m-ch').forEach(s => s.style.transform = 'translateX(0)');
+  }));
+
+  const nav = document.querySelector('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+</script>
+
+</body>
+</html>

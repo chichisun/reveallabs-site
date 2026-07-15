@@ -55,6 +55,8 @@ reverted-*.png
 anim-*.png
 green-*.png
 reveal-*.png
+# ...but the brand logo shipped with the site must not be swept up by that pattern
+!public/reveal-logo.png
 beat-*.png
 crop-editor*.png
 photos-*.png

@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="en" class="intro-pending">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>reveal. — Supy visual pass mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="https://mrlkjxt3lsgrbzoh.public.blob.vercel-storage.com/intermission-poster.jpg" />
+<style>
+  :root {
+    --cream: #F2F1ED;
+    --cream-lifted: #FCFBFA;
+    --white: #FFFFFF;
+    --charcoal: #2E2E2E;
+    --charcoal-soft: #3D3D3D;
+    --muted: #797979;
+    --stroke: rgba(46, 46, 46, 0.10);
+    --green-900: #1E3522;
+    --green-800: #2A4B30;
+    --green-700: #355E3B;
+    --green-500: #5F9568;
+    --green-400: #8BAF8F;
+    --green-100: #E8F0E9;
+    --green-50: #F3F8F4;
+    --error: #C23B22;
+    --warning: #C08532;
+    --r-section: 44px;
+    --r-card: 16px;
+    --r-btn: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Fustat", Arial, sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 18px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- type scale (Supy: big + light, tight tracking) ---------- */
+  h1 {
+    font-size: clamp(44px, 6vw, 70px);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.022em;
+  }
+  h2 {
+    font-size: clamp(34px, 4.4vw, 54px);
+    font-weight: 450;
+    line-height: 1.08;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+  h3 {
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 480;
+    line-height: 1.15;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+  }
+  .sub { font-size: 19px; color: var(--muted); max-width: 58ch; }
+
+  /* ---------- pill badge (Supy's category chips) ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-100); color: var(--green-800);
+    font-size: 14px; font-weight: 550; letter-spacing: 0.01em;
+    padding: 6px 14px; border-radius: 999px;
+  }
+  .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-700); }
+  .chip svg { width: 13px; height: 13px; flex-shrink: 0; }
+  /* chip tint variants — all from the site's accent palette */
+  .chip--amber { background: #F3EADA; color: #8A6224; }
+  .chip--terra { background: #F6E7E2; color: #A03A24; }
+  .chip--blue  { background: #E7ECF6; color: #3B5693; }
+  .chip--slate { background: rgba(46, 46, 46, 0.07); color: #55524C; }
+  .chip--taupe { background: #EEE9E0; color: #75695A; }
+
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: inherit; font-size: 16px; font-weight: 500;
+    padding: 13px 22px; border-radius: var(--r-btn);
+    border: none; cursor: pointer; text-decoration: none;
+    transition: background 200ms ease, transform 150ms ease;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--green-700); color: var(--cream); }
+  .btn-primary:hover { background: var(--green-800); }
+  .btn-ghost { background: transparent; color: var(--charcoal); border: 1px solid var(--stroke); }
+  .btn-ghost:hover { background: rgba(46,46,46,0.04); }
+
+  /* ---------- floating nav ---------- */
+  nav {
+    position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+    width: min(1100px, calc(100% - 32px));
+    /* clear liquid glass over the hero video */
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(18px) saturate(1.6);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px rgba(10, 20, 12, 0.22);
+    border-radius: 18px;
+    padding: 10px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 100;
+  }
+  .logo { font-size: 21px; font-weight: 600; letter-spacing: -0.02em; color: var(--charcoal); text-decoration: none; white-space: nowrap; }
+  nav .logo { color: var(--cream); transition: color 400ms ease, font-size 550ms cubic-bezier(0.22, 1, 0.36, 1); }
+  nav.scrolled .logo { color: var(--charcoal); }
+  .logo em { font-style: normal; color: var(--green-700); }
+  nav .logo em { color: var(--green-400); transition: color 400ms ease; }
+  nav.scrolled .logo em { color: var(--green-700); }
+  .nav-links { display: flex; align-items: center; gap: 26px; }
+  .nav-burger { display: none; background: transparent; border: 0; cursor: pointer; padding: 7px; color: rgba(242,241,237,0.92); }
+  .nav-burger svg { width: 22px; height: 22px; display: block; }
+  nav.scrolled .nav-burger { color: var(--charcoal); }
+  .nav-menu {
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+    background: var(--cream-lifted); border: 1px solid var(--stroke); border-radius: 16px;
+    padding: 8px; display: none; flex-direction: column;
+    box-shadow: 0 18px 44px rgba(20,40,24,0.18);
+  }
+  .nav-menu.open { display: flex; }
+  .nav-menu a { padding: 13px 14px; border-radius: 10px; color: var(--charcoal); text-decoration: none; font-size: 16px; font-weight: 500; }
+  .nav-menu a:active { background: rgba(46,46,46,0.05); }
+  .nav-links a { font-size: 15px; font-weight: 450; color: rgba(242, 241, 237, 0.78); text-decoration: none; transition: color 400ms ease; }
+  .nav-links a:hover { color: var(--cream); }
+  nav.scrolled .nav-links a { color: var(--muted); }
+  nav.scrolled .nav-links a:hover { color: var(--charcoal); }
+  .nav-links a.btn-primary, .nav-links a.btn-primary:hover,
+  nav.scrolled .nav-links a.btn-primary, nav.scrolled .nav-links a.btn-primary:hover { color: var(--cream); }
+  nav .btn { padding: 9px 16px; font-size: 15px; font-weight: 500; }
+
+  /* ---------- hero (dark green bookend, video background) ---------- */
+  .hero {
+    position: relative;
+    background: var(--cream); /* shows at the edges as the video recedes on scroll */
+    color: var(--cream);
+    padding: 150px 24px 0;
+    text-align: center;
+  }
+  .hero-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.88);
+  }
+  .hero-wash {
+    position: absolute; inset: 0;
+    background: rgba(30, 30, 30, 0.38);
+  }
+  .hero > *:not(.hero-video):not(.hero-wash) { position: relative; }
+  .hero .chip {
+    background: rgba(232,240,233,0.14); color: var(--green-100);
+    border: 1px solid rgba(232,240,233,0.18);
+  }
+  .hero h1 { margin: 26px auto 18px; max-width: 28ch; color: #FAF9F5; }
+  .hero .sub {
+    color: rgba(242,241,237,0.78); margin: 0 auto 34px;
+    max-width: none; white-space: nowrap;
+    font-size: clamp(14px, 1.45vw, 20px); /* shrinks before it ever wraps */
+  }
+
+  /* joined glass pill (carried over from the live site's waitlist form) */
+  .waitlist {
+    display: flex; align-items: center; gap: 6px;
+    width: fit-content; margin-left: auto; margin-right: auto;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(252,251,250,0.12);
+    border: 1px solid rgba(242,241,237,0.22);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 32px rgba(20,40,24,0.25);
+  }
+  .waitlist input {
+    font-family: inherit; font-size: 16px;
+    padding: 12px 20px; width: 280px; max-width: 62vw;
+    border: none; background: transparent;
+    color: var(--cream);
+  }
+  .waitlist input::placeholder { color: rgba(242,241,237,0.55); }
+  .waitlist input:focus { outline: none; }
+  .waitlist:focus-within { border-color: var(--green-400); }
+  .waitlist .btn { border-radius: 999px; }
+  .hero .btn-primary { background: var(--cream); color: var(--green-900); font-weight: 600; }
+  .hero .btn-primary:hover { background: var(--white); }
+
+  .proof-chip {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 26px;
+    font-size: 15px; color: rgba(242,241,237,0.82);
+    background: rgba(30,53,34,0.55);
+    border: 1px solid rgba(232,240,233,0.16);
+    padding: 8px 16px; border-radius: 999px;
+  }
+  .proof-chip strong { color: #FAF9F5; font-weight: 650; }
+  .proof-chip .tick { color: var(--green-400); }
+
+  /* ---------- product dashboard (glass frame; fintech-grade app shell) ----------
+     Product tokens from src/components/dashboard-preview/preview.css */
+  .dash-stage {
+    margin: 64px auto -170px;
+    max-width: 1010px;
+    text-align: left;
+    position: relative;
+    --ink: #14171F;
+    --ink-2: #667085;
+    --ink-3: #98A2B3;
+    --line: #E8E9EC;
+    --shell: #F6F7F8;
+    --app-red: #C23B22;
+    --app-red-soft: #FDF2F0;
+    --app-green: #355E3B;
+    --app-green-tint: #EAF2EA;
+    --card-shadow: 0 1px 2px rgba(20, 23, 31, 0.05);
+  }
+  .dash-app { font-family: "Inter", system-ui, sans-serif; color: var(--ink); }
+  .dash-app .tnum { font-variant-numeric: tabular-nums; }
+
+  /* frosted glass outer frame over the video */
+  .dash-glass {
+    background: rgba(252, 251, 250, 0.35);
+    backdrop-filter: blur(22px) saturate(1.25);
+    -webkit-backdrop-filter: blur(22px) saturate(1.25);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 26px;
+    box-shadow: 0 30px 80px rgba(10, 20, 12, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    padding: 12px;
+    margin-right: 190px; /* room for the overlapping phone */
+  }
+
+  /* app shell: one quiet gray surface, white cards on top */
+  .dash-desk {
+    display: grid;
+    grid-template-columns: 176px 1fr;
+    background: var(--shell);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  /* sidebar lives on the shell itself */
+  .dash-side {
+    display: flex; flex-direction: column;
+    padding: 16px 10px 12px;
+    border-right: 1px solid var(--line);
+  }
+  .dash-side .dlogo {
+    font-family: "Fustat", sans-serif;
+    font-size: 18px; font-weight: 650; letter-spacing: -0.02em;
+    padding: 0 10px 16px;
+  }
+  .dash-side .dlogo em { font-style: normal; color: var(--app-green); }
+  .dnav {
+    display: flex; align-items: center; gap: 9px;
+    height: 32px;
+    font-size: 13px; font-weight: 500; color: var(--ink-2);
+    padding: 0 10px; border-radius: 8px;
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+  }
+  .dnav svg { width: 15px; height: 15px; flex-shrink: 0; stroke-width: 1.75; }
+  .dnav.active {
+    background: #fff; color: var(--ink); font-weight: 600;
+    border-color: var(--line);
+    box-shadow: var(--card-shadow);
+  }
+  .dnav .badge {
+    margin-left: auto;
+    background: var(--app-red-soft); color: var(--app-red);
+    font-size: 10.5px; font-weight: 700;
+    padding: 1px 6px; border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+  }
+  .dash-side .spacer { flex: 1; min-height: 18px; }
+  .workspace {
+    display: flex; align-items: center; gap: 8px;
+    border-top: 1px solid var(--line);
+    padding: 12px 8px 2px;
+  }
+  .workspace .wmark {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: var(--app-green); color: #fff;
+    font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .workspace .wname { font-size: 11.5px; font-weight: 600; line-height: 1.3; white-space: nowrap; }
+  .workspace .wplan { font-size: 10.5px; color: var(--ink-3); white-space: nowrap; }
+
+  /* main column */
+  .dash-main { padding: 16px 18px 18px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+  .dash-head { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; }
+  .dash-head .ht { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .head-tools { display: inline-flex; align-items: center; gap: 14px; }
+  .dash-head .sync {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11.5px; color: var(--ink-2);
+  }
+  .dash-head .sync i {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--app-green); font-style: normal;
+  }
+  .head-tools .search {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12px; color: var(--ink-3);
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 8px; padding: 5px 8px 5px 9px;
+    box-shadow: var(--card-shadow);
+  }
+  .head-tools .search svg { width: 12px; height: 12px; }
+  .head-tools .search kbd {
+    font-family: inherit; font-size: 10px; font-weight: 500;
+    color: var(--ink-3);
+    background: var(--shell); border: 1px solid var(--line);
+    border-radius: 4px; padding: 1px 4px;
+    margin-left: 6px;
+  }
+  .head-tools .bell { position: relative; display: inline-flex; color: var(--ink-2); }
+  .head-tools .bell svg { width: 15px; height: 15px; }
+  .head-tools .bell .nub {
+    position: absolute; top: -1px; right: -2px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--app-red);
+    border: 1.5px solid var(--shell);
+  }
+  .dash-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--app-green); color: #fff;
+    font-size: 11px; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  /* stat row */
+  .kpis { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .kpi {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px 16px;
+    box-shadow: var(--card-shadow);
+    position: relative;
+  }
+  .kpi .label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .kpi .label .live {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--app-red);
+  }
+  .dash-stage.booted .kpi .label .live { animation: sync-breathe 2.2s ease-in-out 1.5s infinite; }
+  .kpi .value {
+    font-size: 24px; font-weight: 620; letter-spacing: -0.015em;
+    margin-top: 6px; font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .kpi .value.red { color: var(--app-red); }
+  .kpi .value.green { color: var(--app-green); }
+  .kpi .meta { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; }
+  .kpi .spark {
+    position: absolute; right: 16px; bottom: 16px;
+    width: 64px; height: 26px;
+    overflow: visible;
+  }
+  .kpi .spark polyline { fill: none; stroke: var(--app-green); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .kpi .spark .fill { stroke: none; }
+  .kpi .spark .tip {
+    fill: var(--app-green);
+    opacity: 0;
+    transition: opacity 300ms ease 1850ms;
+  }
+  .dash-stage.booted .kpi .spark .tip { opacity: 1; }
+
+  /* leaks panel */
+  .panel {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 0 16px;
+  }
+  .panel-title {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12.5px; font-weight: 600;
+    padding: 13px 2px 11px;
+    border-bottom: 1px solid var(--line);
+  }
+  .panel-title .pt-left { display: inline-flex; align-items: center; gap: 8px; }
+  .panel-title .count {
+    font-size: 10.5px; font-weight: 600; color: var(--app-red);
+    background: var(--app-red-soft);
+    padding: 2px 8px; border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+  }
+  .panel-title .viewall {
+    display: inline-flex; align-items: center; gap: 2px;
+    font-size: 11.5px; font-weight: 500; color: var(--ink-3);
+    cursor: pointer;
+    transition: color 150ms ease;
+  }
+  .panel-title .viewall:hover { color: var(--ink-2); }
+  .panel-title .viewall svg { width: 12px; height: 12px; }
+  .leak {
+    display: flex; align-items: center; gap: 12px; padding: 12px 2px;
+    transition: background 150ms ease;
+  }
+  .leak:hover { background: #FCFCFD; }
+  .leak + .leak { border-top: 1px solid var(--line); }
+  .leak .mono {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+    background: var(--app-green-tint);
+    color: var(--app-green);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.02em;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .leak .mono.dp { background: #EEF1F5; color: #4A5568; }
+  .leak .what { flex: 1; min-width: 0; }
+  .leak .what b { display: block; font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
+  .leak .what span {
+    display: block; font-size: 12px; color: var(--ink-2); margin-top: 1px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .leak .amt {
+    font-weight: 620; font-size: 13.5px; color: var(--app-red);
+    flex-shrink: 0; text-align: right;
+    width: 62px;
+  }
+  .leak .amt.ok { color: var(--app-green); }
+  .leak .amt small { display: block; font-size: 10.5px; font-weight: 500; color: var(--ink-3); margin-top: 1px; }
+  .leak .act {
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    color: #fff; background: var(--ink);
+    border: none; border-radius: 8px;
+    height: 30px; padding: 0 12px;
+    min-width: 58px;
+    cursor: pointer; white-space: nowrap;
+    box-shadow: var(--card-shadow);
+    transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background 150ms ease;
+    margin-left: 4px;
+  }
+  .leak .act:hover { background: #23262F; }
+  .leak .act:active { transform: scale(0.97); }
+  .leak .act.ghost { background: #fff; color: var(--ink-2); border: 1px solid var(--line); }
+  .leak .act.ghost:hover { background: var(--shell); }
+
+  /* phone — same product, matching detail level */
+  .dash-phone {
+    position: absolute; right: -10px; bottom: -36px;
+    width: 218px; z-index: 3;
+    background: rgba(252, 251, 250, 0.45);
+    backdrop-filter: blur(22px) saturate(1.25);
+    -webkit-backdrop-filter: blur(22px) saturate(1.25);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 32px;
+    padding: 9px;
+    box-shadow: 0 30px 70px rgba(10, 20, 12, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    font-family: "Inter", system-ui, sans-serif; color: var(--ink);
+  }
+  .phone-screen {
+    background: #FFFFFF; border-radius: 24px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .p-status {
+    display: flex; align-items: center;
+    font-size: 10.5px; font-weight: 600; color: var(--ink);
+    padding: 10px 16px 0;
+  }
+  .p-status .p-time { flex: 1; padding-left: 4px; }
+  .p-status .p-isl {
+    width: 50px; height: 15px; border-radius: 999px;
+    background: #14171F; flex-shrink: 0;
+  }
+  .p-glyphs { flex: 1; display: inline-flex; justify-content: flex-end; align-items: center; gap: 4px; color: var(--ink); padding-right: 2px; }
+  .p-glyphs svg { height: 9px; width: auto; display: block; }
+  .p-head { padding: 16px 18px 0; font-size: 11.5px; font-weight: 500; color: var(--ink); }
+  .p-sub {
+    display: flex; align-items: center; gap: 5px;
+    padding: 3px 18px 0;
+    font-size: 10px; color: var(--ink-3);
+  }
+  .p-sub i {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--app-green); font-style: normal;
+  }
+  .dash-stage.booted .p-sub i { animation: sync-breathe 2.8s ease-in-out 2s infinite; }
+  .p-hero { padding: 18px 18px 20px; }
+  .p-hero .amt {
+    font-size: 29px; font-weight: 650; letter-spacing: -0.02em; line-height: 1;
+    color: var(--app-red);
+  }
+  .p-hero .amt .unit { font-size: 12px; font-weight: 500; color: var(--ink-2); margin-left: 6px; letter-spacing: 0; }
+  .p-hero .recovered {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 12px;
+    font-size: 11.5px; font-weight: 500; color: var(--app-green);
+  }
+  .p-listhead {
+    display: flex; justify-content: space-between;
+    border-top: 1px solid var(--line);
+    margin: 0 18px; padding: 12px 0 2px;
+    font-size: 9.5px; font-weight: 600; letter-spacing: 0.06em; color: var(--ink-3);
+  }
+  .p-leak { padding: 12px 18px; }
+  .p-leak .l1 {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  }
+  .p-leak .l1 b { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .p-leak .l1 .amt { font-size: 12.5px; font-weight: 620; color: var(--app-red); flex-shrink: 0; }
+  .p-leak .l2 {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    margin-top: 4px;
+  }
+  .p-leak .l2 > span {
+    font-size: 10.5px; color: var(--ink-2); line-height: 1.4;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .p-fix {
+    font-family: inherit; font-size: 10px; font-weight: 600;
+    background: var(--ink); color: #fff;
+    border: none; border-radius: 6px;
+    height: 21px; padding: 0 9px;
+    cursor: pointer; flex-shrink: 0;
+    transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .p-fix:active { transform: scale(0.96); }
+  .p-leak + .p-leak { border-top: 1px solid var(--line); margin: 0 18px; padding-left: 0; padding-right: 0; }
+  .p-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line);
+    padding: 12px 22px 14px;
+    margin-top: 14px;
+  }
+  .p-nav svg { width: 17px; height: 17px; }
+  .p-nav .it { color: var(--ink-3); display: flex; }
+  .p-nav .it.on { color: var(--ink); }
+  .p-nav .plus {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 500; line-height: 1;
+  }
+
+  /* ---------- dashboard boot choreography (plays once, on view) ---------- */
+  .dash-app .boot-el {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 450ms cubic-bezier(0.23, 1, 0.32, 1), transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    transition-delay: calc(var(--b, 0) * 55ms);
+  }
+  .dash-stage.booted .boot-el { opacity: 1; transform: none; }
+  /* badge pops in slightly after its nav item */
+  .dash-app .dnav .badge {
+    opacity: 0; transform: scale(0.85);
+    transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 620ms, transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 620ms;
+  }
+  .dash-stage.booted .dnav .badge { opacity: 1; transform: scale(1); }
+  /* sparkline draws itself once the Recovered card has landed */
+  .kpi .spark polyline {
+    stroke-dasharray: 95;
+    stroke-dashoffset: 95;
+    transition: stroke-dashoffset 950ms cubic-bezier(0.4, 0, 0.2, 1) 900ms;
+  }
+  .dash-stage.booted .kpi .spark polyline { stroke-dashoffset: 0; }
+  /* newest leak reads as "just flagged": red wash settles to white */
+  @keyframes leak-flash {
+    0% { background: var(--app-red-soft); }
+    100% { background: transparent; }
+  }
+  .dash-stage.booted .leak.is-new {
+    border-radius: 8px;
+    animation: leak-flash 1500ms ease-out 1350ms both;
+  }
+  /* sync dot breathes — quiet "always watching" ambience */
+  @keyframes sync-breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .dash-stage.booted .dash-head .sync i { animation: sync-breathe 2.8s ease-in-out 2s infinite; }
+  /* phone floats gently once everything has settled */
+  @keyframes phone-float { from { transform: translateY(0); } to { transform: translateY(-7px); } }
+  .dash-stage.booted .dash-phone { animation: phone-float 6.5s ease-in-out 2.2s infinite alternate; }
+  @media (prefers-reduced-motion: reduce) {
+    .dash-app .boot-el, .dash-app .dnav .badge { opacity: 1; transform: none; transition: none; }
+    .kpi .spark polyline { stroke-dashoffset: 0; transition: none; }
+    .dash-stage.booted .leak.is-new,
+    .dash-stage.booted .dash-head .sync i,
+    .dash-stage.booted .dash-phone { animation: none; }
+  }
+
+  /* ---------- inset section containers (Supy's rounded gray cards) ---------- */
+  .inset {
+    background: var(--cream-lifted);
+    border: 1px solid var(--stroke);
+    border-radius: var(--r-section);
+    margin: 28px auto;
+    max-width: 1360px;
+    padding: 96px 24px;
+  }
+  section.plain { padding: 110px 24px; }
+  .center { text-align: center; }
+  .sect-head { max-width: 720px; margin: 0 auto 60px; text-align: center; }
+  .sect-head .chip { margin-bottom: 20px; }
+  .sect-head p { margin-top: 18px; }
+
+  /* pain cards */
+  .pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1100px; margin: 0 auto; }
+  .pain-card {
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: var(--r-card); padding: 30px 28px;
+  }
+  .pain-card .num {
+    font-size: 34px; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--green-700);
+  }
+  .pain-card h4 { font-size: 19px; font-weight: 600; margin: 10px 0 8px; }
+  .pain-card p { font-size: 15.5px; color: var(--muted); }
+  /* receipt anatomy — these are real findings, shown like evidence */
+  .pc-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .pc-id {
+    font-size: 10.5px; font-weight: 650; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--light);
+  }
+  .pc-real {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 650;
+    color: var(--green-800); background: var(--green-100);
+    padding: 3px 10px; border-radius: 999px;
+  }
+  .pc-math {
+    margin-top: 18px; padding-top: 14px;
+    border-top: 1px dashed rgba(46, 46, 46, 0.18);
+    font-size: 13.5px; color: var(--muted);
+  }
+  .pc-math b { color: var(--charcoal); font-weight: 600; }
+
+  h2.one-line { text-wrap: nowrap; }
+  @media (max-width: 1100px) { h2.one-line { text-wrap: balance; } }
+
+  /* why Reveal — bento grid (stat as hero cell, live vignettes per card) */
+  .bento { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; max-width: 1180px; margin: 0 auto; }
+  .bento-cell {
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: var(--r-card);
+    transition: transform 250ms cubic-bezier(0.16,1,0.3,1), box-shadow 250ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .bento-cell:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(46,46,46,0.08); }
+  }
+  .bento-cell h4 {
+    font-size: clamp(21px, 2vw, 25px); font-weight: 600;
+    letter-spacing: -0.012em; line-height: 1.15; margin: 0 0 10px;
+  }
+  .bento-cell p { font-size: 16px; color: var(--muted); }
+  .bento-hero {
+    grid-row: 1 / 3;
+    background:
+      radial-gradient(120% 90% at 72% 8%, rgba(95,149,104,0.5), transparent 56%),
+      radial-gradient(90% 70% at 10% 94%, rgba(53,94,59,0.55), transparent 62%),
+      linear-gradient(160deg, var(--green-800), #16281A 84%);
+    border: none; color: var(--cream);
+    padding: 34px 32px; display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .bento-hero::before {
+    content: ""; position: absolute; inset: -40%;
+    background: radial-gradient(closest-side, rgba(139,175,143,0.20), transparent 70%);
+    animation: stage-drift 22s ease-in-out infinite alternate; pointer-events: none;
+  }
+  .bento-hero > * { position: relative; }
+  .bento-hero h4 { color: #FAF9F5; font-size: clamp(23px, 2.2vw, 28px); }
+  .bento-hero p { color: rgba(242,241,237,0.75); }
+  .bento-hero .big {
+    font-size: clamp(46px, 4.8vw, 64px); font-weight: 650; letter-spacing: -0.02em;
+    color: #FAF9F5; margin: 20px 0 2px; line-height: 1;
+  }
+  .bento-hero .biglabel { font-size: 14px; color: var(--green-400); margin-bottom: 24px; }
+  .bento-card { padding: 28px 28px 28px; display: flex; flex-direction: column; }
+  .bento-card .vig {
+    flex: 1 1 auto; margin-top: 0; margin-bottom: 0;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .vig-note .send { align-self: flex-start; }
+  .bento-card p { margin-bottom: 20px; }
+  .bento-wide { grid-column: 2 / 4; padding: 28px 30px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 26px; align-items: center; }
+  .bento-wide .vig { margin: 0; }
+
+  /* micro-vignettes (7s loops) */
+  .vig {
+    background: var(--green-50); border: 1px solid var(--stroke);
+    border-radius: 12px; padding: 14px;
+    font-size: 13px; overflow: hidden; position: relative;
+  }
+  .bento-hero .vig { background: rgba(252,251,250,0.08); border-color: rgba(242,241,237,0.14); margin-top: auto; }
+  .bento-foot { text-align: center; margin: 34px auto 0; font-size: 16px; color: var(--muted); }
+  .bento-foot b { color: var(--charcoal); font-weight: 600; }
+  .vrow2 {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: 9px; padding: 8px 10px;
+  }
+  .vrow2 + .vrow2 { margin-top: 7px; }
+  .vrow2 b { font-weight: 600; }
+  .vrow2 small { color: var(--muted); }
+  .bento-hero .vrow2 { background: rgba(252,251,250,0.10); border-color: rgba(242,241,237,0.10); color: var(--cream); }
+  .bento-hero .vrow2 small { color: rgba(242,241,237,0.55); }
+  .pill { font-size: 11px; font-weight: 650; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+  .pill.flag { background: #FBEFE3; color: var(--warning); }
+  .pill.rec { background: var(--green-100); color: var(--green-800); }
+  .vig-recover .pill-stack { position: relative; width: 84px; height: 22px; flex: none; }
+  .vig-recover .pill-stack .pill { position: absolute; right: 0; top: 0; }
+  .vig-recover .pill.flag { animation: pill-flip-a 7s infinite; }
+  .vig-recover .pill.rec  { animation: pill-flip-b 7s infinite; }
+  @keyframes pill-flip-a { 0%, 42% { opacity: 1; transform: scale(1); } 50%, 100% { opacity: 0; transform: scale(0.95); } }
+  @keyframes pill-flip-b { 0%, 46% { opacity: 0; transform: scale(0.95); } 54%, 92% { opacity: 1; transform: scale(1); } 100% { opacity: 1; } }
+  .vig-note .line { height: 7px; border-radius: 4px; background: #E7E5DF; margin: 8px 0; transform-origin: left; animation: line-grow 7s infinite cubic-bezier(0.23,1,0.32,1); }
+  .vig-note .line:nth-of-type(2) { width: 92%; animation-delay: 0.25s; }
+  .vig-note .line:nth-of-type(3) { width: 70%; animation-delay: 0.5s; }
+  @keyframes line-grow { 0% { transform: scaleX(0); } 12%, 100% { transform: scaleX(1); } }
+  .vig-note .send {
+    display: inline-flex; margin-top: 8px; font-size: 12px; font-weight: 650;
+    background: var(--green-700); color: var(--cream);
+    padding: 5px 12px; border-radius: 999px;
+    opacity: 0; transform: scale(0.95) translateY(4px);
+    animation: send-pop 7s infinite cubic-bezier(0.23,1,0.32,1); animation-delay: 0.9s;
+  }
+  @keyframes send-pop { 0% { opacity: 0; transform: scale(0.95) translateY(4px); } 10%, 85% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; transform: scale(0.95) translateY(4px); } }
+  .vig-feed .tick { color: var(--green-700); font-weight: 700; opacity: 0; animation: tick-in 7s infinite cubic-bezier(0.23,1,0.32,1); }
+  .vig-feed .vrow2:nth-child(1) .tick { animation-delay: 0.15s; }
+  .vig-feed .vrow2:nth-child(2) .tick { animation-delay: 0.45s; }
+  .vig-feed .vrow2:nth-child(3) .tick { animation-delay: 0.75s; }
+  @keyframes tick-in { 0% { opacity: 0; transform: scale(0.8); } 8%, 88% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+  .vig-alert .bubble {
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: 12px 12px 12px 4px; padding: 9px 12px; max-width: 92%;
+    opacity: 0; transform: translateY(8px) scale(0.97); transform-origin: bottom left;
+    animation: bubble-in 7s infinite cubic-bezier(0.23,1,0.32,1);
+  }
+  .vig-alert .bubble + .bubble { margin-top: 7px; animation-delay: 0.6s; border-radius: 12px 12px 4px 12px; transform-origin: bottom right; margin-left: auto; max-width: 60%; background: var(--green-100); border-color: transparent; }
+  @keyframes bubble-in { 0% { opacity: 0; transform: translateY(8px) scale(0.97); } 9%, 87% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; } }
+
+  /* Dale beat */
+  .dale { max-width: 880px; margin: 0 auto; text-align: center; }
+  .dale h2 { font-weight: 400; }
+  .dale h2 b { font-weight: 600; color: var(--green-700); }
+  .dale .byline { margin-top: 34px; display: inline-flex; align-items: center; gap: 14px; text-align: left; }
+  .dale .avatar {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: var(--green-900);
+    object-fit: cover; object-position: 50% 22%;
+    display: block;
+  }
+  .dale .byline .who { font-size: 15px; line-height: 1.4; }
+  .dale .byline .who b { display: block; font-weight: 600; }
+  .dale .byline .who span { color: var(--muted); }
+
+  /* how-it-works — pinned scroll walkthrough */
+  .hiw {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 70px;
+    max-width: 1100px; margin: 0 auto;
+    align-items: start;
+  }
+  .hiw-steps { display: flex; flex-direction: column; }
+  .hiw-step {
+    min-height: 72vh;
+    display: flex; flex-direction: column; justify-content: center;
+    opacity: 0.22; transform: translateY(10px);
+    transition: opacity 550ms cubic-bezier(0.16,1,0.3,1), transform 550ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .hiw-step.active { opacity: 1; transform: none; }
+  .hiw-step .chip { margin-bottom: 18px; width: fit-content; }
+  .hiw-step .stepnum {
+    font-size: 15px; font-weight: 650; letter-spacing: 0.06em;
+    color: var(--green-700); margin-bottom: 14px;
+  }
+  .hiw-step p { color: var(--muted); margin-top: 14px; font-size: 17px; max-width: 46ch; }
+
+  .hiw-visual-wrap {
+    position: sticky;
+    top: calc(50vh - 250px);
+    height: 500px;
+  }
+  .hiw-stage {
+    position: relative; height: 100%;
+    background: linear-gradient(150deg, var(--green-800), var(--green-900));
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    padding: 34px;
+  }
+  /* slow ambient light drifting inside the stage */
+  .hiw-stage::before {
+    content: ""; position: absolute; inset: -40%;
+    background: radial-gradient(closest-side, rgba(139,175,143,0.22), transparent 70%);
+    animation: stage-drift 22s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes stage-drift {
+    from { transform: translate(-12%, -10%); }
+    to { transform: translate(12%, 14%); }
+  }
+  /* Supy-style progress dots: active dot stretches into a pill */
+  .hiw-dots { position: absolute; top: 20px; right: 22px; display: flex; gap: 6px; }
+  .hiw-dots i {
+    width: 7px; height: 7px; border-radius: 999px;
+    background: rgba(242,241,237,0.35);
+    transition: width 350ms cubic-bezier(0.16,1,0.3,1), background 350ms ease;
+  }
+  .hiw-dots i.active { width: 26px; background: var(--cream); }
+
+  .hiw-card {
+    position: absolute; width: min(380px, 78%);
+    opacity: 0; transform: translateY(28px) scale(0.98);
+    transition: opacity 600ms cubic-bezier(0.16,1,0.3,1), transform 600ms cubic-bezier(0.16,1,0.3,1);
+    pointer-events: none;
+  }
+  .hiw-card.active { opacity: 1; transform: none; }
+
+  .mini-card {
+    background: var(--cream-lifted); border-radius: 14px;
+    padding: 20px 22px; width: 100%;
+    box-shadow: 0 18px 44px rgba(20,40,24,0.35);
+    font-size: 15px;
+  }
+  .mini-card .mrow { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--stroke); }
+  .mini-card .mrow:last-child { border-bottom: none; }
+  .mini-card .ok { color: var(--green-700); font-weight: 600; }
+  .mini-card .warn { color: var(--warning); font-weight: 600; }
+  .mini-card .bad { color: var(--error); font-weight: 600; }
+  /* rows cascade in each time their card becomes active */
+  .hiw-card .mrow { opacity: 0; transform: translateY(10px); transition: opacity 450ms cubic-bezier(0.16,1,0.3,1), transform 450ms cubic-bezier(0.16,1,0.3,1); }
+  .hiw-card.active .mrow { opacity: 1; transform: none; }
+  .hiw-card.active .mrow:nth-child(1) { transition-delay: 220ms; }
+  .hiw-card.active .mrow:nth-child(2) { transition-delay: 310ms; }
+  .hiw-card.active .mrow:nth-child(3) { transition-delay: 400ms; }
+  .hiw-card.active .mrow:nth-child(4) { transition-delay: 490ms; }
+
+  /* per-step inline card, used when the pinned stage is hidden (mobile / reduced motion) */
+  .hiw-step .step-card { display: none; margin-top: 26px; max-width: 380px; }
+  .hiw-step .step-card .mrow { opacity: 1; transform: none; }
+
+  /* closer bookend — blurred B&W kitchen photo, same treatment as live FinalCTA */
+  .closer {
+    position: relative;
+    background-color: #111110; /* fallback before image loads */
+    color: var(--cream);
+    border-radius: var(--r-section);
+    max-width: 1360px; margin: 28px auto;
+    padding: 110px 24px; text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .closer::before {
+    content: ""; position: absolute;
+    inset: -20px; /* expand so the blur doesn't show a soft edge */
+    background-image: url("../../../public/cta-kitchen.jpg");
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px) contrast(1.08) brightness(0.82);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .closer::after {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E"),
+      linear-gradient(115deg,
+        rgba(10, 10, 9, 0.52) 0%,
+        rgba(10, 10, 9, 0.22) 45%,
+        rgba(10, 10, 9, 0.38) 72%,
+        rgba(10, 10, 9, 0.58) 100%);
+    background-size: 256px 256px, 100% 100%;
+    background-repeat: repeat, no-repeat;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .closer > * { position: relative; z-index: 2; }
+  .closer h2 { color: #FAF9F5; max-width: 18ch; margin: 0 auto 16px; }
+  .closer .sub { color: rgba(242,241,237,0.75); margin: 0 auto 34px; }
+  .closer .btn-primary { background: var(--cream); color: var(--green-900); font-weight: 600; }
+  .closer .btn-primary:hover { background: var(--white); }
+  .closer-note {
+    max-width: 52ch; margin: 44px auto 0;
+    font-size: 15.5px; font-style: italic; line-height: 1.6;
+    color: rgba(242,241,237,0.62);
+  }
+
+  footer {
+    max-width: 1360px; margin: 0 auto; padding: 34px 40px 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: var(--muted); font-size: 15px;
+  }
+  footer a { color: var(--muted); text-decoration: none; margin-left: 22px; }
+  footer a:hover { color: var(--charcoal); }
+
+  /* ---------- motion ---------- */
+  /* scroll entry (staggered via --i) */
+  .reveal-in {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 700ms cubic-bezier(0.16,1,0.3,1), transform 700ms cubic-bezier(0.16,1,0.3,1);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  .reveal-in.vis { opacity: 1; transform: none; }
+
+  /* hero entrance cascade on load */
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .hero .chip, .hero h1, .hero .sub, .hero .waitlist, .hero .proof-chip, .hero .dash-stage {
+    opacity: 0;
+    animation: rise 800ms cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  .hero .chip { animation-delay: 100ms; }
+  .hero h1 { animation-delay: 200ms; }
+  .hero .sub { animation-delay: 320ms; }
+  .hero .waitlist { animation-delay: 440ms; }
+  .hero .proof-chip { animation-delay: 560ms; }
+  .hero .dash-stage { animation-delay: 720ms; animation-duration: 950ms; }
+
+  /* card hover lift */
+  .pain-card, .frow, .kpi, .mini-card {
+    transition: transform 250ms cubic-bezier(0.16,1,0.3,1), box-shadow 250ms ease;
+  }
+  .pain-card:hover, .frow:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(46,46,46,0.07);
+  }
+
+  /* ---------- nav: drop-in on load, condenses into a capsule on scroll ---------- */
+  @keyframes nav-drop {
+    from { opacity: 0; transform: translate(-50%, -18px); filter: blur(6px); }
+    to   { opacity: 1; transform: translate(-50%, 0);     filter: blur(0); }
+  }
+  nav {
+    animation: nav-drop 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    transition:
+      width 550ms cubic-bezier(0.22, 1, 0.36, 1),
+      padding 550ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 400ms ease,
+      background 400ms ease;
+  }
+  html.intro-pending nav { animation-play-state: paused; }
+  /* logo dot pops in after the bar settles */
+  .logo em { display: inline-block; animation: dot-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 650ms both; }
+  html.intro-pending .logo em { animation-play-state: paused; }
+  @keyframes dot-pop {
+    from { transform: scale(0.2); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+  /* condensed state: the pill tightens around its content */
+  nav.scrolled {
+    width: min(700px, calc(100% - 32px));
+    padding: 7px 9px 7px 16px;
+    box-shadow: 0 8px 28px rgba(20, 40, 24, 0.12);
+    background: rgba(252, 251, 250, 0.96);
+    border-color: rgba(46, 46, 46, 0.07);
+  }
+  nav .logo { transition: font-size 550ms cubic-bezier(0.22, 1, 0.36, 1); }
+  nav.scrolled .logo { font-size: 19px; }
+  nav .btn { transition: background 200ms ease, transform 150ms ease, padding 550ms cubic-bezier(0.22, 1, 0.36, 1), font-size 550ms cubic-bezier(0.22, 1, 0.36, 1); }
+  nav.scrolled .btn { padding: 7px 13px; font-size: 14px; }
+  .nav-links { transition: gap 550ms cubic-bezier(0.22, 1, 0.36, 1); }
+  nav.scrolled .nav-links { gap: 20px; }
+  /* link hover: underline slides out from the left */
+  .nav-links a:not(.btn) { position: relative; }
+  .nav-links a:not(.btn)::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -5px;
+    height: 1.5px; background: currentColor;
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .nav-links a:not(.btn):hover::after { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    nav, .logo em { animation: none; }
+    nav, nav .logo, nav .btn, .nav-links { transition: none; }
+  }
+
+  /* checks ticker (Reveal's stand-in for Supy's logo marquee) */
+  .ticker-band { overflow: hidden; padding: 26px 0 6px; position: relative; }
+  .ticker-band::before, .ticker-band::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
+  }
+  .ticker-band::before { left: 0; background: linear-gradient(90deg, var(--cream-lifted), transparent); }
+  .ticker-band::after { right: 0; background: linear-gradient(270deg, var(--cream-lifted), transparent); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-track { display: flex; gap: 12px; width: max-content; animation: ticker 55s linear infinite; }
+  .ticker-band:hover .ticker-track { animation-play-state: paused; }
+  .tick-item {
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+    font-size: 14.5px; color: var(--charcoal-soft);
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: 999px; padding: 8px 16px;
+  }
+  .tick-item .ok { color: var(--green-700); font-weight: 650; }
+  .tick-item .warn-i { color: var(--warning); font-weight: 650; }
+  .tick-item small { color: var(--muted); }
+
+  /* ---------- brand intro (icons → tumble → "reveal." → dock to nav) ---------- */
+  /* hold the hero entrance until the intro hands off */
+  html.intro-pending .hero .chip, html.intro-pending .hero h1, html.intro-pending .hero .sub,
+  html.intro-pending .hero .waitlist, html.intro-pending .hero .proof-chip,
+  html.intro-pending .hero .dash-stage { animation-play-state: paused; }
+
+  .intro-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    perspective: 1600px; perspective-origin: 50% 45%;
+  }
+  .intro-scrim {
+    position: absolute; inset: 0;
+    background: var(--cream);
+    transition: opacity 550ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .intro-overlay.is-leaving .intro-scrim { opacity: 0; }
+  .intro-row {
+    position: relative; z-index: 1;
+    display: flex; gap: 34px; align-items: center;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    will-change: transform;
+    transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms linear;
+  }
+  .intro-glyph {
+    position: relative; width: 72px; height: 96px;
+    display: flex; align-items: center; justify-content: center;
+    transform-style: preserve-3d;
+    opacity: 0; transform: translateY(26px) scale(0.92);
+    will-change: transform, opacity, width;
+    transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes glyph-arrive { to { opacity: 1; transform: none; } }
+  .intro-glyph.arrive { animation: glyph-arrive 600ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .intro-breathe {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    transform-style: preserve-3d;
+  }
+  @keyframes intro-breathe {
+    0%, 50%, 100% { transform: translate3d(0, 0, 0); }
+    25% { transform: translate3d(0, -3px, 0); }
+    75% { transform: translate3d(0, 2px, 0); }
+  }
+  .intro-breathe.is-breathing { animation: intro-breathe 3.2s ease-in-out infinite both; }
+  .intro-tumbler {
+    position: relative; width: 72px; height: 72px;
+    transform-style: preserve-3d;
+    will-change: transform, filter;
+  }
+  @keyframes intro-tumble {
+    0%   { transform: rotateX(0deg)   rotateY(0deg)   rotateZ(0deg); }
+    55%  { transform: rotateX(180deg) rotateY(200deg) rotateZ(8deg); }
+    100% { transform: rotateX(0deg)   rotateY(360deg) rotateZ(0deg); }
+  }
+  .intro-tumbler.is-tumbling { animation: intro-tumble var(--tumble-dur, 900ms) cubic-bezier(0.37, 0, 0.63, 1) both; }
+  /* wide eased crossfade through the tumble midpoint — dissolve, not a swap */
+  @keyframes intro-icon-fade { 0%, 30% { opacity: 1; } 65%, 100% { opacity: 0; } }
+  @keyframes intro-letter-fade { 0%, 35% { opacity: 0; } 70%, 100% { opacity: 1; } }
+  @keyframes intro-letter-grow { from { transform: scale(0.85); } to { transform: scale(1); } }
+  .intro-tumbler.is-tumbling .intro-icon { animation: intro-icon-fade var(--tumble-dur, 900ms) cubic-bezier(0.4, 0, 0.2, 1) both; }
+  .intro-tumbler.is-tumbling .intro-letter {
+    animation:
+      intro-letter-fade var(--tumble-dur, 900ms) cubic-bezier(0.4, 0, 0.2, 1) both,
+      intro-letter-grow var(--tumble-dur, 900ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes intro-glow {
+    0%   { filter: drop-shadow(0 0 0 rgba(53, 94, 59, 0)); }
+    45%  { filter: drop-shadow(0 0 14px rgba(53, 94, 59, 0.55)); }
+    100% { filter: drop-shadow(0 0 5px rgba(53, 94, 59, 0.3)); }
+  }
+  .intro-tumbler.is-accent.is-tumbling {
+    animation:
+      intro-tumble var(--tumble-dur, 900ms) cubic-bezier(0.37, 0, 0.63, 1) both,
+      intro-glow 900ms ease-out 550ms both;
+  }
+  .intro-content {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .intro-icon { color: var(--charcoal); }
+  .intro-icon svg { width: 64px; height: 64px; }
+  .intro-tumbler.is-accent .intro-icon { color: var(--green-700); }
+  .intro-letter { opacity: 0; font-size: 72px; font-weight: 650; letter-spacing: -0.02em; line-height: 1; color: var(--charcoal); }
+  .intro-letter.accent { color: var(--green-700); }
+  .intro-skip {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    z-index: 2;
+    background: none; border: 1px solid var(--stroke); border-radius: 999px;
+    padding: 8px 18px;
+    font-family: inherit; font-size: 14px; color: var(--muted);
+    cursor: pointer;
+    transition: opacity 250ms ease;
+  }
+  @media (max-width: 640px) {
+    /* nav: compact */
+    nav { padding: 8px 8px 8px 14px; border-radius: 14px; top: 10px; }
+    nav.scrolled { width: calc(100% - 48px); padding: 6px 6px 6px 14px; }
+    .logo { font-size: 19px; }
+    nav .btn { font-size: 13.5px; padding: 8px 13px; }
+    /* hero + closer form: fit the pill to the screen */
+    .waitlist { width: calc(100% - 8px); max-width: 420px; padding: 5px; }
+    .waitlist input { flex: 1; width: auto; min-width: 0; font-size: 15px; padding: 10px 14px; }
+    .waitlist .btn { font-size: 14px; padding: 11px 15px; white-space: nowrap; flex-shrink: 0; }
+    .proof-chip { font-size: 12.5px; padding: 7px 13px; gap: 8px; margin-top: 20px; max-width: calc(100% - 12px); }
+    .hero .sub { font-size: 17px; white-space: normal; max-width: 34ch; text-wrap: balance; }
+    .intro-row { gap: 14px; }
+    .intro-glyph { width: 40px; height: 64px; }
+    .intro-tumbler { width: 40px; height: 40px; }
+    .intro-icon svg { width: 34px; height: 34px; }
+    .intro-letter { font-size: 40px; }
+    .hero h1 br { display: none; }
+    .hero h1 { text-wrap: balance; }
+  }
+
+  /* ---------- hero → page transition (video recedes into a rounded card) ---------- */
+  .hero-top { will-change: transform, opacity; }
+  .hero-video, .hero-wash { will-change: transform; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-in, .hero .chip, .hero h1, .hero .sub, .hero .waitlist, .hero .proof-chip, .hero .dash-stage {
+      animation: none; transition: none; opacity: 1; transform: none;
+    }
+    .ticker-track { animation: none; }
+    /* bento vignettes: hold final frame, no loops */
+    .vig *, .bento-hero::before { animation: none !important; }
+    .vig .pill.flag { opacity: 0; }
+    .vig .pill.rec, .vig .send, .vig .tick, .vig .bubble { opacity: 1; transform: none; }
+    .vig-note .line { transform: scaleX(1); }
+    /* how-it-works: static stacked layout, no pinned choreography */
+    .hiw { grid-template-columns: 1fr; gap: 0; }
+    .hiw-visual-wrap { display: none; }
+    .hiw-step { min-height: 0; padding: 44px 0; opacity: 1; transform: none; transition: none; }
+    .hiw-step + .hiw-step { border-top: 1px solid var(--stroke); }
+    .hiw-step .step-card { display: block; }
+  }
+
+  @media (max-width: 900px) {
+    .pain-grid { grid-template-columns: 1fr; }
+    .bento { grid-template-columns: 1fr; }
+    .bento-hero { grid-row: auto; }
+    .bento-wide { grid-column: auto; grid-template-columns: 1fr; }
+    .nav-links a:not(.btn) { display: none; }
+    .nav-burger { display: block; }
+    /* one coherent scale for everything under 900px: no desktop-type-on-mobile-layout zone */
+    .inset { padding: clamp(52px, 7vw, 72px) clamp(16px, 3vw, 22px); border-radius: 30px; margin: 16px auto; }
+    .sect-head { margin-bottom: clamp(32px, 5vw, 44px); }
+    h2 { font-size: clamp(25px, 4.4vw, 34px); }
+    .sub { font-size: 16px; }
+    .dale h2 { font-size: clamp(22px, 3.4vw, 27px); }
+    .dale { max-width: 560px; }
+    .bento-foot { font-size: 14px; }
+    .bento-hero .big { font-size: clamp(40px, 7vw, 50px); }
+    .closer { padding: clamp(64px, 9vw, 84px) 22px; }
+    .closer .sub { font-size: 16px; }
+    .closer-note { font-size: 13.5px; max-width: 36ch; margin-top: 28px; }
+    .ticker-band { margin-bottom: 40px !important; }
+    /* pain findings: scroll-cycling card stack (Supy-style) */
+    .pain-grid { display: flex; flex-direction: column; gap: 0; max-width: 560px; }
+    .pain-card {
+      position: sticky; top: 92px;
+      margin-bottom: 18px;
+      box-shadow: 0 -14px 34px rgba(46,46,46,0.1);
+      border: 1px solid var(--stroke);
+    }
+    .pain-card:nth-child(2) { top: 104px; }
+    .pain-card:nth-child(3) { top: 116px; }
+    /* Supy-style hero preview: keep the DESKTOP dashboard, scaled to fit (JS sets the scale).
+       No overlap trick on small screens: the hero ends clean, the next section starts clean. */
+    .dash-stage { margin-bottom: 28px; }
+    .dash-glass { margin-right: 0; }
+    .dash-phone { display: none; }
+    section.inset[style*="padding-top"] { padding-top: 64px !important; }
+    /* how-it-works: drop the pinned stage, show cards inline per step */
+    .hiw { grid-template-columns: 1fr; gap: 0; }
+    .hiw-visual-wrap { display: none; }
+    .hiw-step { min-height: 0; padding: 44px 0; opacity: 1 !important; transform: none !important; }
+    .hiw-step + .hiw-step { border-top: 1px solid var(--stroke); }
+    .hiw-step .step-card { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<nav aria-label="Main">
+  <a class="logo" href="#">reveal<em>.</em></a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="our-story.html">Our story</a>
+    <a href="blog.html">Blog</a>
+    <a class="btn btn-primary" href="#closer">Join the waitlist</a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div class="nav-menu" id="navMenu">
+    <a href="#how">How it works</a>
+    <a href="our-story.html">Our story</a>
+    <a href="blog.html">Blog</a>
+  </div>
+</nav>
+<script>
+  (() => {
+    const b = document.getElementById('navBurger'), m = document.getElementById('navMenu');
+    if (!b || !m) return;
+    b.addEventListener('click', () => {
+      const open = m.classList.toggle('open');
+      b.setAttribute('aria-expanded', open);
+    });
+    m.querySelectorAll('a').forEach(a => a.addEventListener('click', () => m.classList.remove('open')));
+  })();
+</script>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <video class="hero-video" autoplay loop muted playsinline preload="metadata"
+    poster="https://mrlkjxt3lsgrbzoh.public.blob.vercel-storage.com/intermission-poster.jpg" aria-hidden="true">
+    <source src="https://mrlkjxt3lsgrbzoh.public.blob.vercel-storage.com/intermission.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-wash" aria-hidden="true"></div>
+  <div class="hero-top">
+    <h1>The auditing system <br />for independent restaurants.</h1>
+    <p class="sub">AI that checks every payment in and out of your restaurant, and recovers the ones that are wrong.</p>
+    <form class="waitlist" onsubmit="return false">
+      <input type="email" placeholder="Your email" aria-label="Email address" />
+      <button class="btn btn-primary" type="submit">Join the waitlist &nbsp;&rarr;</button>
+    </form>
+    <div class="proof-chip"><span class="tick">&#10003;</span><span><strong>$1,297.87</strong> caught at Tuk Tuk Thai Grill in month one.</span></div>
+  </div>
+
+  <div class="dash-stage dash-app" role="img" aria-label="Preview of the Reveal dashboard on desktop and mobile">
+    <div class="dash-glass">
+      <div class="dash-desk">
+
+        <aside class="dash-side">
+          <div class="dlogo">reveal<em>.</em></div>
+          <div class="dnav active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            Home
+          </div>
+          <div class="dnav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
+            Leaks
+            <span class="badge">4</span>
+          </div>
+          <div class="dnav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Commitments
+          </div>
+          <div class="dnav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            Pulse
+          </div>
+          <div class="spacer"></div>
+          <div class="workspace">
+            <div class="wmark">TT</div>
+            <div>
+              <div class="wname">Tuk Tuk Thai Grill</div>
+              <div class="wplan">Denver, CO</div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="dash-main">
+          <div class="dash-head">
+            <span class="ht">Home</span>
+            <div class="head-tools">
+              <span class="sync"><i></i>Synced 2 min ago</span>
+              <span class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Search<kbd>&#8984;K</kbd></span>
+              <span class="bell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><i class="nub"></i></span>
+              <span class="dash-avatar">K</span>
+            </div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label"><span class="live" aria-hidden="true"></span>Leaking now</div>
+              <div class="value red" data-count="1240" data-prefix="$" data-commas="1">$1,240</div>
+              <div class="meta">4 open · this week</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Recovered</div>
+              <div class="value green" data-count="1247" data-prefix="$" data-commas="1">$1,247</div>
+              <div class="meta">this month</div>
+              <svg class="spark" viewBox="0 0 64 26" aria-hidden="true">
+                <defs>
+                  <linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#355E3B" stop-opacity="0.22"/>
+                    <stop offset="100%" stop-color="#355E3B" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path class="fill" fill="url(#sparkfill)" d="M2,21 L14,19 L26,19.5 L38,13 L50,10 L60,4 L60,26 L2,26 Z"/>
+                <polyline points="2,21 14,19 26,19.5 38,13 50,10 60,4"/>
+                <circle class="tip" cx="60" cy="4" r="2"/>
+              </svg>
+            </div>
+            <div class="kpi">
+              <div class="label">Checked</div>
+              <div class="value" data-count="217">217</div>
+              <div class="meta">payments · this week</div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title">
+              <span class="pt-left">Open leaks<span class="count tnum">4 open</span></span>
+              <span class="viewall">View all<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+            </div>
+            <div class="leak is-new">
+              <span class="mono">PS</span>
+              <div class="what"><b>Produce Supplier</b><span>Case price crept up &mdash; $48 vs the $39 you usually pay</span></div>
+              <span class="amt tnum">&minus;$184<small>today</small></span>
+              <button class="act" type="button">Fix it</button>
+            </div>
+            <div class="leak">
+              <span class="mono dp">DP</span>
+              <div class="what"><b>Delivery Platform</b><span>Payout was $4,210 &mdash; your orders say $4,552</span></div>
+              <span class="amt tnum">&minus;$342<small>May 15</small></span>
+              <button class="act" type="button">Fix it</button>
+            </div>
+            <div class="leak">
+              <span class="mono">PS</span>
+              <div class="what"><b>Produce Supplier &middot; credit</b><span>Recovered &middot; vendor issued a credit memo</span></div>
+              <span class="amt ok tnum">+$214<small>May 12</small></span>
+              <button class="act ghost" type="button">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="p-status">
+          <span class="p-time tnum">9:41</span>
+          <span class="p-isl" aria-hidden="true"></span>
+          <span class="p-glyphs">
+            <svg viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0.5" width="3" height="11.5" rx="0.8"/></svg>
+            <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1.5 4.5a10 10 0 0 1 13 0"/><path d="M4 7.5a6.5 6.5 0 0 1 8 0"/><circle cx="8" cy="10.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 25 12" fill="none"><rect x="0.7" y="0.7" width="21" height="10.6" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.6" fill="currentColor"/><path d="M23.5 4v4a2.2 2.2 0 0 0 0-4z" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+        <div class="p-head">Hi there &middot; Your Restaurant</div>
+        <div class="p-sub"><i></i>Watching &middot; updated just now</div>
+        <div class="p-hero">
+          <div class="amt tnum">$1,240<span class="unit">leaking</span></div>
+          <div class="recovered tnum">&#10003; $1,247 recovered</div>
+        </div>
+        <div class="p-listhead"><span>OPEN LEAKS</span><span class="tnum">4</span></div>
+        <div class="p-leak">
+          <div class="l1"><b>Produce Supplier</b><span class="amt tnum">&minus;$184</span></div>
+          <div class="l2"><span>$48 vs usual $39</span><button class="p-fix" type="button">Fix</button></div>
+        </div>
+        <div class="p-leak">
+          <div class="l1"><b>Delivery Platform</b><span class="amt tnum">&minus;$342</span></div>
+          <div class="l2"><span>Payout short 4 orders</span><button class="p-fix" type="button">Fix</button></div>
+        </div>
+        <div class="p-nav">
+          <span class="it on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+          <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+          <span class="plus">+</span>
+          <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+          <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= PAIN (inset container) ================= -->
+<section class="inset" style="padding-top: 210px;">
+  <div class="ticker-band" aria-hidden="true" style="margin-bottom: 70px;">
+    <div class="ticker-track" id="tickerTrack">
+      <span class="tick-item"><span class="ok">&#10003;</span> Produce invoice #48211 <small>checked against your price list</small></span>
+      <span class="tick-item"><span class="warn-i">&#9888;</span> Onion, 50 lb <small>+72% vs last three invoices</small></span>
+      <span class="tick-item"><span class="ok">&#10003;</span> Delivery payout, Mar 12 <small>matched POS sales</small></span>
+      <span class="tick-item"><span class="warn-i">&#9888;</span> Delivery payout, Mar 14 <small>$312.40 short</small></span>
+      <span class="tick-item"><span class="ok">&#10003;</span> Linen service invoice <small>matched your contract</small></span>
+      <span class="tick-item"><span class="ok">&#10003;</span> Card processing fees, Feb <small>matched your agreement</small></span>
+      <span class="tick-item"><span class="warn-i">&#9888;</span> Lease CAM charge, Q1 <small>escalation math off by $89.12/mo</small></span>
+      <span class="tick-item"><span class="ok">&#10003;</span> Dairy invoice #4471 <small>checked against your price list</small></span>
+    </div>
+  </div>
+  <div class="sect-head reveal-in">
+    <div class="chip chip--amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Where it hides</div>
+    <h2>You're paying for other people's mistakes.</h2>
+    <p class="sub" style="margin: 18px auto 0;">A vendor's price creeps. A payout comes in short. A lease charge doesn't match the lease. Real findings from Tuk Tuk Thai Grill in Denver, month one:</p>
+  </div>
+  <div class="pain-grid">
+    <div class="pain-card reveal-in" style="--i: 0;">
+      <div class="pc-top"><span class="pc-id">Finding 03 &middot; Vendor</span><span class="pc-real">&#10003; Real</span></div>
+      <div class="num" data-count="72" data-prefix="+" data-suffix="%">+72%</div>
+      <h4>A vendor slips the price</h4>
+      <p>Onion prices crept up 72% across three invoices. No notice, no renegotiation. Just a bigger number each week.</p>
+      <div class="pc-math">Same onions. <b>$0.62/lb &rarr; $1.07/lb</b> in three invoices.</div>
+    </div>
+    <div class="pain-card reveal-in" style="--i: 1;">
+      <div class="pc-top"><span class="pc-id">Finding 11 &middot; Payout</span><span class="pc-real">&#10003; Real</span></div>
+      <div class="num" data-count="312.40" data-prefix="$" data-decimals="2">$312.40</div>
+      <h4>A payout comes up short</h4>
+      <p>The delivery app's deposit didn't match what you actually sold. It rarely does, and nobody checks the math.</p>
+      <div class="pc-math">Orders say <b>$4,552</b>. Deposit was <b>$4,239.60</b>.</div>
+    </div>
+    <div class="pain-card reveal-in" style="--i: 2;">
+      <div class="pc-top"><span class="pc-id">Finding 17 &middot; Lease</span><span class="pc-real">&#10003; Real</span></div>
+      <div class="num" data-count="89.12" data-prefix="$" data-decimals="2" data-suffix="/mo">$89.12/mo</div>
+      <h4>The lease escalates wrong</h4>
+      <p>Your rent escalation kicked in with arithmetic that doesn't match the lease you signed. Every month, forever.</p>
+      <div class="pc-math">Lease math says <b>$2,215/mo</b>. Billed <b>$2,304.12</b>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DALE BEAT ================= -->
+<section class="plain">
+  <div class="dale reveal-in">
+    <h2>Big chains have audit teams checking every invoice and payout. Independents have nobody. <b>Reveal is that team, automated.</b></h2>
+    <div class="byline">
+      <img class="avatar" src="founder-chayadol.png" alt="Chayadol Sundarapura" />
+      <div class="who"><b>Chayadol Sundarapura</b><span>Founder, building Reveal inside a working restaurant</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS (breathing-inset scroll takeover) ================= -->
+<style>
+  .aud-track { height: 700vh; position: relative; margin: 28px 0; }
+  .aud-pin { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .aud-stage {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(110% 80% at 68% 6%, rgba(95,149,104,0.45), transparent 55%),
+      radial-gradient(80% 65% at 8% 96%, rgba(53,94,59,0.5), transparent 60%),
+      linear-gradient(165deg, var(--green-800), #16281A 85%);
+    will-change: width, height, border-radius;
+  }
+  .aud-stage::before {
+    content: ""; position: absolute; inset: -40%;
+    background: radial-gradient(closest-side, rgba(139,175,143,0.18), transparent 70%);
+    animation: stage-drift 24s ease-in-out infinite alternate; pointer-events: none;
+  }
+  .aud-intro {
+    position: absolute; inset: 0; z-index: 6;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; pointer-events: none; padding: 0 24px;
+  }
+  .aud-intro .aud-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(232,240,233,0.14); color: var(--green-100);
+    border: 1px solid rgba(232,240,233,0.18);
+    font-size: 14px; font-weight: 550; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;
+  }
+  .aud-intro .aud-chip .aud-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-400); }
+  .aud-intro h2 { color: #FAF9F5; font-size: clamp(34px, 4vw, 54px); font-weight: 450; letter-spacing: -0.018em; max-width: 20ch; }
+  .aud-caption { position: absolute; top: 8%; left: 0; right: 0; text-align: center; z-index: 5; }
+  .aud-beat { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
+  .aud-beat .aud-kicker { font-size: 13px; font-weight: 650; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-400); }
+  .aud-beat h3 { color: #FAF9F5; font-size: clamp(26px, 2.8vw, 38px); font-weight: 500; letter-spacing: -0.014em; margin-top: 4px; }
+  .aud-dock {
+    position: absolute; top: 20%; left: 0; right: 0; z-index: 5;
+    display: flex; justify-content: center; gap: 10px;
+  }
+  .aud-dchip {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13.5px; font-weight: 600; padding: 7px 15px; border-radius: 999px;
+    border: 1px solid rgba(242,241,237,0.22); color: rgba(242,241,237,0.5);
+    background: rgba(30,53,34,0.35);
+    opacity: 0;
+    transition: color 300ms ease, background 300ms ease, border-color 300ms ease, transform 300ms cubic-bezier(0.23,1,0.32,1);
+  }
+  .aud-dchip.on { background: rgba(252,251,250,0.16); color: #FAF9F5; border-color: rgba(242,241,237,0.35); }
+  .aud-dchip.recv { background: var(--green-100); color: var(--green-800); border-color: transparent; transform: scale(1.08); }
+  .aud-dchip i { font-style: normal; font-size: 11.5px; opacity: 0; transform: scale(0.6); transition: opacity 250ms cubic-bezier(0.23,1,0.32,1), transform 250ms cubic-bezier(0.23,1,0.32,1); }
+  .aud-dchip.done i { opacity: 1; transform: scale(1); }
+  .aud-dchip i.w { color: #E7B36A; }
+  .aud-dchip i.k { color: var(--green-400); }
+  .aud-dchip.recv i.w { color: var(--green-800); }
+  .aud-scene { position: absolute; inset: 0; z-index: 2; }
+  .aud-anchor { position: absolute; left: 50%; top: 56%; }
+  .aud-hub {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: 124px; height: 124px; border-radius: 30px; overflow: hidden;
+    box-shadow: 0 28px 70px rgba(10,25,14,0.5); z-index: 4;
+  }
+  .aud-hub img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .aud-ring {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: 124px; height: 124px; border-radius: 34px;
+    border: 2px solid var(--green-400); opacity: 0; pointer-events: none; z-index: 4;
+  }
+  .aud-wires {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: 1100px; height: 700px; overflow: visible; pointer-events: none;
+  }
+  .aud-wires line { stroke: rgba(242,241,237,0.4); stroke-width: 1.5; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .aud-src { position: absolute; left: 0; top: 0; z-index: 4; }
+  .aud-src .aud-fl {
+    display: inline-block; transform: translate(-50%, -50%);
+    background: var(--cream-lifted); color: var(--charcoal);
+    font-size: 16px; font-weight: 600; padding: 13px 24px; border-radius: 999px;
+    box-shadow: 0 14px 34px rgba(10,25,14,0.4);
+    white-space: nowrap;
+    animation: aud-bob 5.5s ease-in-out infinite alternate;
+  }
+  @keyframes aud-bob { from { margin-top: -6px; } to { margin-top: 6px; } }
+  .aud-rolock {
+    position: absolute; left: 0; top: 96px; transform: translateX(-50%);
+    background: var(--green-100); color: var(--green-800);
+    font-size: 13.5px; font-weight: 650; padding: 7px 16px; border-radius: 999px;
+    white-space: nowrap; opacity: 0;
+  }
+  .aud-scrap {
+    position: absolute; left: 0; top: 0; width: 352px;
+    display: flex; justify-content: space-between; align-items: center; gap: 14px;
+    background: var(--cream-lifted); border-radius: 12px; padding: 13px 18px;
+    box-shadow: 0 14px 34px rgba(10,25,14,0.4);
+    opacity: 0; z-index: 3;
+    will-change: transform, opacity, filter;
+  }
+  .aud-scrap .aud-k { font-size: 14.5px; font-weight: 600; line-height: 1.3; }
+  .aud-scrap .aud-k small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
+  .aud-scrap .aud-n { position: relative; font-size: 17px; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; transition: color 350ms ease; }
+  .aud-scrap.flag .aud-n { color: var(--error); }
+  .aud-scrap.dim .aud-n, .aud-scrap.ref .aud-n { color: var(--muted); }
+  .aud-scrap .aud-delta {
+    position: absolute; right: 0; top: -25px;
+    display: inline-flex; font-size: 11.5px; font-weight: 650;
+    background: #F9E9E5; color: var(--error);
+    padding: 2px 8px; border-radius: 999px;
+    opacity: 0; transform: scale(0.8);
+    box-shadow: 0 10px 26px rgba(10,25,14,0.35);
+  }
+  .aud-pairb {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    box-shadow: 0 10px 26px rgba(10,25,14,0.35);
+    opacity: 0; z-index: 4;
+  }
+  .aud-pairb.w { background: #FBEFE3; color: var(--warning); }
+  .aud-pairb.k { background: var(--green-100); color: var(--green-800); }
+  .aud-proof {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: min(560px, 90vw);
+    background: var(--cream-lifted); border-radius: 16px; padding: 24px 30px;
+    box-shadow: 0 28px 70px rgba(10,25,14,0.5);
+    font-size: 16.5px; opacity: 0; z-index: 3;
+  }
+  .aud-proof .aud-rlabel { font-weight: 650; font-size: 13px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+  .aud-proof .aud-rrow { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--stroke); }
+  .aud-proof .aud-rrow:last-of-type { border-bottom: none; }
+  .aud-proof .aud-rrow > span:first-child { color: var(--muted); }
+  .aud-proof .aud-rrow b { color: var(--charcoal); font-weight: 600; }
+  .aud-proof .aud-rval { font-weight: 650; font-size: 20px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .aud-disp {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, 0);
+    width: 320px;
+    background: var(--white); border-radius: 14px; padding: 16px 20px;
+    box-shadow: 0 28px 70px rgba(10,25,14,0.5);
+    opacity: 0; z-index: 2;
+  }
+  .aud-disp .aud-nhead { font-weight: 650; font-size: 12px; color: var(--charcoal); letter-spacing: 0.05em; text-transform: uppercase; }
+  .aud-disp .aud-nline { height: 7px; border-radius: 4px; background: #E7E5DF; margin: 9px 0; }
+  .aud-sent {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    display: inline-flex; font-size: 14.5px; font-weight: 650;
+    background: var(--green-900); color: var(--cream);
+    border: 1px solid rgba(242,241,237,0.25);
+    padding: 6px 15px; border-radius: 999px;
+    opacity: 0; z-index: 3; white-space: nowrap;
+  }
+  .aud-money {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    display: inline-flex; font-size: 14.5px; font-weight: 650;
+    background: var(--green-100); color: var(--green-800);
+    padding: 6px 15px; border-radius: 999px;
+    box-shadow: 0 10px 26px rgba(10,25,14,0.35);
+    opacity: 0; z-index: 6; white-space: nowrap;
+  }
+  .aud-hint { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; font-size: 13px; color: rgba(242,241,237,0.55); z-index: 6; }
+  .aud-fallback { display: none; }
+  /* phone-fit choreography: same story, tighter geometry */
+  @media (max-width: 900px) {
+    .aud-intro h2 { font-size: 27px; }
+    .aud-intro .aud-chip { font-size: 12.5px; }
+    /* clear the fixed nav: captions and dock start below it */
+    .aud-caption { top: 88px; padding: 0 16px; }
+    .aud-beat h3 { font-size: 21px; }
+    .aud-dock { top: 158px; flex-wrap: wrap; gap: 6px; padding: 0 14px; }
+    .aud-wires { display: none; }
+    .aud-anchor { top: 54%; }
+    .aud-dchip { font-size: 11px; padding: 5px 10px; gap: 5px; }
+    .aud-src .aud-fl { font-size: 13px; padding: 9px 16px; }
+    .aud-hub { width: 92px; height: 92px; border-radius: 22px; }
+    .aud-ring { width: 92px; height: 92px; border-radius: 26px; }
+    .aud-rolock { font-size: 11.5px; top: 178px; width: max-content; max-width: 84vw; }
+    .aud-scrap { width: min(340px, calc(100vw - 44px)); padding: 12px 15px; }
+    .aud-scrap .aud-n { font-size: 15.5px; }
+    .aud-scrap .aud-k { font-size: 13.5px; }
+    .aud-proof { padding: 20px 22px; font-size: 15px; }
+    .aud-proof .aud-rval { font-size: 17px; }
+    .aud-disp { width: min(300px, 80vw); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .aud-track { display: none; }
+    .aud-fallback { display: block; }
+    .aud-fallback .aud-fstep { padding: 30px 0; border-top: 1px solid var(--stroke); }
+    .aud-fallback .aud-fstep:first-of-type { border-top: none; }
+    .aud-fallback .aud-fk { font-size: 13px; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-700); margin-bottom: 6px; }
+    .aud-fallback h3 { margin-bottom: 8px; }
+    .aud-fallback p { color: var(--muted); font-size: 16px; max-width: 52ch; }
+  }
+</style>
+<div class="aud-track" id="audTrack"><span id="how" style="position:absolute; top:0;"></span>
+  <div class="aud-pin">
+    <div class="aud-stage" id="audStage">
+      <div class="aud-intro" id="audIntro">
+        <div class="aud-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex:none;"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>How it works</div>
+        <h2>You run the restaurant. Reveal runs the audit.</h2>
+      </div>
+      <div class="aud-caption">
+        <div class="aud-beat" id="audB0">
+          <div class="aud-kicker">01 &middot; Connect</div>
+          <h3>Connect once. Read-only.</h3>
+        </div>
+        <div class="aud-beat" id="audB1">
+          <div class="aud-kicker">02 &middot; Audit</div>
+          <h3>Everything, reconciled.</h3>
+        </div>
+        <div class="aud-beat" id="audB2">
+          <div class="aud-kicker">03 &middot; Catch</div>
+          <h3>Caught with proof. Ready to send.</h3>
+        </div>
+      </div>
+      <div class="aud-dock" id="audDock">
+        <span class="aud-dchip" id="audD0">Delivery payouts<i class="w">&#9888;</i></span>
+        <span class="aud-dchip" id="audD1">Lease &amp; rent<i class="w">&#9888;</i></span>
+        <span class="aud-dchip" id="audD2">Deadlines &amp; renewals<i class="k">&#10003;</i></span>
+        <span class="aud-dchip" id="audD3">F&amp;B invoices<i class="w">&#9888;</i></span>
+      </div>
+      <div class="aud-scene">
+        <div class="aud-anchor" id="audAnchor">
+          <svg class="aud-wires" viewBox="-550 -350 1100 700" aria-hidden="true">
+            <line id="audW0" pathLength="1" x1="-72" y1="-33" x2="-380" y2="-172" />
+            <line id="audW1" pathLength="1" x1="74" y1="-24" x2="392" y2="-128" />
+            <line id="audW2" pathLength="1" x1="-71" y1="30" x2="-356" y2="152" />
+            <line id="audW3" pathLength="1" x1="69" y1="34" x2="404" y2="196" />
+          </svg>
+          <div class="aud-ring" id="audRing"></div>
+          <div class="aud-hub" id="audHub"><img src="../../../social-assets/reveal-logo.png" alt="Reveal" /></div>
+          <span class="aud-src" id="audS0"><span class="aud-fl">Bank</span></span>
+          <span class="aud-src" id="audS1"><span class="aud-fl" style="animation-delay:-1.4s">Point of sale</span></span>
+          <span class="aud-src" id="audS2"><span class="aud-fl" style="animation-delay:-2.7s">Delivery apps</span></span>
+          <span class="aud-src" id="audS3"><span class="aud-fl" style="animation-delay:-3.9s">Invoices &amp; contracts</span></span>
+          <span class="aud-rolock" id="audLock">&#128274; Read-only. Reveal can look, never touch.</span>
+          <div class="aud-scrap" data-i="0"><span class="aud-k">DoorDash payout<small>Mar 14 &middot; bank</small></span><b class="aud-n">$8,099.50<span class="aud-delta">&minus;$312.40</span></b></div>
+          <div class="aud-scrap" data-i="1"><span class="aud-k">Delivery sales<small>Mar 8&ndash;14 &middot; POS</small></span><b class="aud-n">$8,411.90</b></div>
+          <div class="aud-scrap" data-i="2"><span class="aud-k">Rent charge<small>Mar 1 &middot; Propco LLC</small></span><b class="aud-n">$2,199.12<span class="aud-delta">+$89.12</span></b></div>
+          <div class="aud-scrap" data-i="3"><span class="aud-k">Lease, &sect;4.2<small>Q1 monthly rent</small></span><b class="aud-n">$2,110.00</b></div>
+          <div class="aud-scrap" data-i="4"><span class="aud-k">Liquor license<small>City of Denver</small></span><b class="aud-n">Aug 30</b></div>
+          <div class="aud-scrap" data-i="5"><span class="aud-k">Reveal reminder<small>45 days ahead</small></span><b class="aud-n">Jul 16</b></div>
+          <div class="aud-scrap" data-i="6"><span class="aud-k">Onion, 50 lb<small>Invoice #48211</small></span><b class="aud-n">$1.82/lb<span class="aud-delta">+72%</span></b></div>
+          <div class="aud-scrap" data-i="7"><span class="aud-k">Agreed price<small>Nov &middot; price list</small></span><b class="aud-n">$1.06/lb</b></div>
+          <span class="aud-pairb w" data-p="0">&#9888;</span>
+          <span class="aud-pairb w" data-p="1">&#9888;</span>
+          <span class="aud-pairb k" data-p="2">&#10003;</span>
+          <span class="aud-pairb w" data-p="3">&#9888;</span>
+          <div class="aud-proof" id="audProof">
+            <div class="aud-rlabel">Finding &middot; onion 50 lb, invoice #48211</div>
+            <div class="aud-rrow"><span>You agreed</span><span class="aud-rval" style="color: var(--muted);">$1.06/lb</span></div>
+            <div class="aud-rrow"><span>You were charged</span><span class="aud-rval" style="color: var(--error);">$1.82/lb</span></div>
+            <div class="aud-rrow"><span><b>Overpaid, 3 invoices</b></span><span class="aud-rval" style="color: var(--error);">$214.60</span></div>
+          </div>
+          <div class="aud-disp" id="audDisp">
+            <div class="aud-nhead">Dispute &middot; invoice #48211</div>
+            <div class="aud-nline" style="width: 92%;"></div>
+            <div class="aud-nline" style="width: 74%;"></div>
+            <div class="aud-nline" style="width: 40%;"></div>
+          </div>
+          <span class="aud-sent" id="audSent">&#10003; Sent</span>
+          <span class="aud-money" id="audMoney">$214.60</span>
+        </div>
+        <div class="aud-hint" id="audHint">Scroll &darr;</div>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="inset aud-fallback" id="how-fallback">
+  <div class="sect-head">
+    <div class="chip chip--slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>How it works</div>
+    <h2>You run the restaurant. Reveal runs the audit.</h2>
+  </div>
+  <div style="max-width: 720px; margin: 0 auto;">
+    <div class="aud-fstep"><div class="aud-fk">01 &middot; Connect</div><h3>Connect once. Read-only.</h3><p>Bank, POS, delivery apps, and the paperwork you already keep. Reveal can look. It can never touch.</p></div>
+    <div class="aud-fstep"><div class="aud-fk">02 &middot; Audit</div><h3>Everything, reconciled.</h3><p>Reveal's AI reads your invoices, contracts, and payouts, and compares every number against what you agreed to pay and the sales you actually made.</p></div>
+    <div class="aud-fstep"><div class="aud-fk">03 &middot; Catch</div><h3>Caught with proof. Ready to send.</h3><p>The wrong number, the right number, and the note that gets your money back. You press send.</p></div>
+  </div>
+</section>
+<script>
+  (() => {
+    const el = id => document.getElementById(id);
+    const track = el('audTrack'), stage = el('audStage'), anchor = el('audAnchor');
+    if (!track) return;
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    const seg = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    const easeIO = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+    const bell = t => Math.sin(Math.PI * clamp(t, 0, 1));
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    const intro = el('audIntro');
+    const beats = [el('audB0'), el('audB1'), el('audB2')];
+    const chips = [el('audD0'), el('audD1'), el('audD2'), el('audD3')];
+    const hub = el('audHub'), ring = el('audRing'), lock = el('audLock');
+    const srcs = [el('audS0'), el('audS1'), el('audS2'), el('audS3')];
+    const wires = [el('audW0'), el('audW1'), el('audW2'), el('audW3')];
+    const scraps = [...track.querySelectorAll('.aud-scrap')];
+    const pairbs = [...track.querySelectorAll('.aud-pairb')];
+    const proof = el('audProof'), disp = el('audDisp'), sentpill = el('audSent'), money = el('audMoney');
+    const dockEl = el('audDock');
+
+    const T = {
+      inflate: [0, 0.045],
+      introOut: [0.055, 0.085],
+      p1: [0.065, 0.165],
+      p1out: [0.17, 0.22],
+      scatter: [0.23, 0.30],
+      organize: [0.31, 0.435],
+      check: [0.455, 0.65],
+      merge: [0.66, 0.71],
+      p3: [0.71, 0.935],
+      exhale: [0.95, 1],
+    };
+
+    const start = [{x:-0.55,y:-0.44},{x:0.55,y:-0.4},{x:-0.55,y:0.42},{x:0.55,y:0.46}];
+    const dockPos = [{x:-380,y:-172},{x:392,y:-128},{x:-356,y:152},{x:404,y:196}];
+    const scatter = [
+      {x:-0.34,y:-0.20,r:-7}, {x:0.26,y:-0.24,r:5},
+      {x:-0.12,y:-0.05,r:4},  {x:0.38,y:-0.03,r:-4},
+      {x:-0.31,y:0.14,r:6},   {x:0.09,y:0.08,r:-6},
+      {x:-0.04,y:0.26,r:-3},  {x:0.29,y:0.24,r:7},
+    ];
+    const COLX = 200, ROWY = [-138, -46, 46, 138];
+    const slot = i => ({ x: (i % 2 === 0 ? -COLX : COLX), y: ROWY[i >> 1] });
+    const chipAt = (i) => {
+      const a = anchor.getBoundingClientRect();
+      const c = chips[i].getBoundingClientRect();
+      return { x: c.left + c.width / 2 - a.left, y: c.top + c.height / 2 - a.top };
+    };
+
+    const update = () => {
+      const r = track.getBoundingClientRect();
+      const p = clamp(-r.top / (r.height - innerHeight), 0, 1);
+
+      // the inset breathes: inflates to full screen, exhales back at the end
+      const inflT = ease(seg(p, T.inflate[0], T.inflate[1]));
+      const exhT = ease(seg(p, T.exhale[0], T.exhale[1]));
+      const sizeT = Math.min(inflT, 1 - exhT);
+      const w0 = Math.min(1360, innerWidth - 32), h0 = innerHeight * 0.78;
+      stage.style.width = lerp(w0, innerWidth, sizeT) + 'px';
+      stage.style.height = lerp(h0, innerHeight, sizeT) + 'px';
+      stage.style.borderRadius = lerp(44, 0, sizeT) + 'px';
+      // everything inside quiets down before the exhale
+      const endFade = 1 - seg(p, 0.935, 0.955);
+
+      // the title opens the takeover and returns to close it (never an empty card)
+      const ioIn = 1 - seg(p, T.introOut[0], T.introOut[1]);
+      const ioOut = ease(seg(p, 0.94, 0.965));
+      const io = Math.max(ioIn, ioOut);
+      intro.style.opacity = io;
+      intro.style.transform = `translateY(${ioOut > 0 ? (1 - ioOut) * 20 : (1 - ioIn) * -26}px)`;
+
+      const c0 = seg(p, T.introOut[0] + 0.01, T.introOut[1] + 0.01) * (1 - seg(p, T.p1out[0], T.p1out[1]));
+      const c1 = seg(p, T.p1out[0] + 0.01, T.scatter[0]) * (1 - seg(p, T.merge[0], T.merge[1]));
+      const c2 = seg(p, T.merge[0] + 0.01, T.p3[0] + 0.01) * endFade;
+      [c0, c1, c2].forEach((o2, i) => {
+        beats[i].style.opacity = o2;
+        beats[i].style.transform = `translateY(${(1 - o2) * 8}px)`;
+      });
+      dockEl.style.opacity = endFade === 1 ? '' : endFade;
+
+      // ---- beat 1 ----
+      const mob = innerWidth <= 900;
+      const K = mob ? Math.max(0.34, innerWidth / 1100) : 1;   // geometry scale for small screens
+      const wiresEl = document.querySelector('.aud-wires');
+      if (wiresEl) wiresEl.style.transform = `translate(-50%, -50%) scale(${K})`;
+      const t1 = seg(p, T.p1[0], T.p1[1]);
+      const o = seg(p, T.p1out[0], T.p1out[1]);
+      const ht = ease(seg(t1, 0, 0.18));
+      const hubFade = seg(o, 0.2, 0.75);
+      hub.style.opacity = ht * (1 - hubFade);
+      hub.style.filter = `blur(${8 * hubFade}px)`;
+      hub.style.transform = `translate(-50%, -50%) scale(${(0.82 + 0.18 * ht) * (1 - 0.3 * hubFade)})`;
+      const b1fade = 1 - seg(o, 0.2, 0.75);
+      srcs.forEach((s, i) => {
+        const t = ease(seg(t1, 0.06 + i * 0.1, 0.46 + i * 0.1));
+        const sx = start[i].x * innerWidth, sy = start[i].y * innerHeight;
+        let tx = dockPos[i].x * K, ty = dockPos[i].y * K;
+        if (mob) tx = Math.sign(tx) * Math.min(Math.abs(tx), innerWidth / 2 - 96);
+        const px = sx + (tx - sx) * t, py = sy + (ty - sy) * t;
+        s.style.opacity = t * b1fade;
+        s.style.transform = `translate(${px}px, ${py}px)`;
+        chips[i].style.opacity = seg(o, 0.8, 1);
+      });
+      let pulse = 0;
+      wires.forEach((wl, i) => {
+        const wt = ease(seg(t1, 0.44 + i * 0.1, 0.58 + i * 0.1)) * (1 - ease(o));
+        wl.style.strokeDashoffset = 1 - wt;
+        wl.style.opacity = 1 - ease(o);
+        pulse += bell(seg(t1, 0.56 + i * 0.1, 0.7 + i * 0.1));
+      });
+      const lt = ease(seg(t1, 0.88, 1));
+      lock.style.opacity = lt * (1 - seg(o, 0, 0.35));
+      lock.style.transform = `translateX(-50%) translateY(${8 - 8 * lt}px)`;
+      pulse = Math.min(1, pulse) * (1 - ease(o));
+      ring.style.opacity = 0.6 * pulse;
+      ring.style.transform = `translate(-50%, -50%) scale(${(0.82 + 0.18 * ht) * (1 + 0.35 * pulse)})`;
+
+      // ---- beat 2 ----
+      const tScatter = seg(p, T.scatter[0], T.scatter[1]);
+      const tOrg = seg(p, T.organize[0], T.organize[1]);
+      const tChk = seg(p, T.check[0], T.check[1]);
+      const mT = ease(seg(p, T.merge[0], T.merge[1]));
+      const inB2 = p >= T.scatter[0] && p < T.p3[0];
+
+      // mobile: no room for two columns — each pair plays as its own stacked scene
+      const M_A = T.scatter[0], M_B = T.check[1], M_SP = (M_B - M_A) / 4;
+      const mIdx = Math.min(3, Math.max(0, Math.floor((p - M_A) / M_SP)));
+      const mt = clamp((p - M_A - mIdx * M_SP) / M_SP, 0, 1);
+      scraps.forEach((s, i) => {
+        const pair = i >> 1;
+        const warn = pair !== 2;
+        let x, y, rot = 0, op, scale = 1, blur = 0, cT, focus;
+        if (mob) {
+          // stacked pair: reality above, agreement below, one pair at a time
+          const active = p >= M_A && pair === mIdx;
+          const inT = easeIO(seg(mt, 0, 0.3));
+          const last = pair === 3;
+          const outT = last ? 0 : ease(seg(mt, 0.88, 1));
+          cT = active ? ease(seg(mt, 0.44, 0.6)) : (pair < mIdx || p >= T.merge[0] ? 1 : 0);
+          focus = active ? bell(seg(mt, 0.42, 0.72)) : 0;
+          const fromX = (i % 2 === 0 ? -1 : 1) * innerWidth * 0.65;
+          x = lerp(fromX, 0, inT);
+          y = i % 2 === 0 ? -58 : 58;
+          op = active ? Math.min(1, inT * 2.5) * (1 - outT) : 0;
+          if (p >= T.merge[0] && pair === 3) {
+            y = lerp(y, -52, mT);
+            op = (1 - seg(mT, 0.45, 0.85));
+            scale = lerp(1, 0.9, mT);
+            blur = 6 * seg(mT, 0.3, 1);
+          }
+        } else {
+          const eT = ease(seg(tScatter, i * 0.09, 0.55 + i * 0.05));
+          const oT = ease(seg(tOrg, pair * 0.16, pair * 0.16 + 0.4));
+          const sx = scatter[i].x * innerWidth, sy = scatter[i].y * innerHeight;
+          const sl = slot(i);
+          x = lerp(sx, sl.x, oT); y = lerp(sy, sl.y, oT); rot = lerp(scatter[i].r, 0, oT);
+          op = eT;
+          cT = ease(seg(tChk, pair * 0.22, pair * 0.22 + 0.16));
+          focus = bell(seg(tChk, pair * 0.22 - 0.02, pair * 0.22 + 0.26));
+          if (!warn) op *= lerp(1, 0.45, ease(seg(cT, 0.5, 1)));
+          if (p >= T.merge[0]) {
+            if (pair === 3) {
+              x = lerp(sl.x, (i % 2 === 0 ? -30 : 30), mT);
+              y = lerp(sl.y, -52, mT);
+              op = eT * (1 - seg(mT, 0.45, 0.85));
+              scale = lerp(1, 0.9, mT);
+              blur = 6 * seg(mT, 0.3, 1);
+            } else {
+              op = eT * (1 - seg(mT, 0, 0.5));
+            }
+          }
+        }
+        s.classList.toggle('flag', warn && i % 2 === 0 && cT > 0.5);
+        s.classList.toggle('dim', !warn && cT > 0.5 && !mob);
+        s.classList.toggle('ref', warn && i % 2 === 1 && cT > 0.5);
+        const dT = warn ? ease(seg(cT, 0.55, 1)) : 0;
+        const delta = s.querySelector('.aud-delta');
+        if (delta) { delta.style.opacity = dT; delta.style.transform = `scale(${0.8 + 0.2 * dT})`; }
+        s.style.opacity = inB2 || p >= T.p3[0] ? op : 0;
+        s.style.filter = `blur(${blur}px)`;
+        s.style.zIndex = focus > 0.05 ? 4 : 3;
+        s.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${rot}deg) scale(${scale * (1 + 0.06 * focus)})`;
+      });
+      pairbs.forEach((b, pair) => {
+        let cT, focus, by;
+        if (mob) {
+          const active = p >= M_A && pair === mIdx;
+          cT = active ? ease(seg(mt, 0.44, 0.6)) : 0;
+          focus = active ? bell(seg(mt, 0.42, 0.72)) : 0;
+          by = 0;
+        } else {
+          cT = ease(seg(tChk, pair * 0.22, pair * 0.22 + 0.16));
+          focus = bell(seg(tChk, pair * 0.22 - 0.02, pair * 0.22 + 0.26));
+          by = ROWY[pair];
+        }
+        const hide = p >= T.merge[0] ? 1 - seg(mT, 0, 0.5) : 1;
+        b.style.opacity = (inB2 ? cT : 0) * hide;
+        b.style.transform = `translate(-50%, -50%) translateY(${by}px) scale(${(0.7 + 0.3 * cT) * (1 + 0.1 * focus)})`;
+        const onNow = mob
+          ? (inB2 && p >= M_A && pair === mIdx)
+          : (inB2 && tChk > pair * 0.22 && tChk < pair * 0.22 + 0.22);
+        const doneNow = mob
+          ? ((inB2 && (pair < mIdx || (pair === mIdx && mt > 0.6))) || p >= T.merge[1])
+          : ((inB2 && cT > 0.6) || p >= T.merge[1]);
+        chips[pair].classList.toggle('on', onNow);
+        chips[pair].classList.toggle('done', doneNow);
+      });
+
+      // ---- beat 3 ----
+      const t3 = seg(p, T.p3[0], T.p3[1]);
+      const pT = ease(seg(mT, 0.55, 1));
+      proof.style.opacity = pT * endFade;
+      proof.style.filter = `blur(${(1 - pT) * 6}px)`;
+      proof.style.transform = `translate(-50%, -50%) translateY(-52px) scale(${0.9 + 0.1 * pT})`;
+      const dT2 = ease(seg(t3, 0.14, 0.3));
+      const wT = seg(t3, 0.38, 0.56);
+      const wE = easeIO(wT);
+      disp.style.opacity = dT2 * (1 - seg(wT, 0.82, 1));
+      disp.style.transform = `translate(calc(-50% + ${wE * innerWidth * 0.7}px), ${118 * dT2 - wE * 60}px) rotate(${-9 * wE}deg) scale(${1 - 0.15 * wE})`;
+      const sT = ease(seg(t3, 0.58, 0.66));
+      sentpill.style.opacity = sT * (1 - seg(t3, 0.8, 0.88));
+      sentpill.style.transform = `translate(-50%, -50%) translateY(150px) scale(${0.9 + 0.1 * sT})`;
+      const mfT = seg(t3, 0.72, 0.92);
+      if (mfT > 0 && mfT < 1) {
+        const from = { x: innerWidth * 0.6, y: 60 };
+        const to = chipAt(3);
+        const e = easeIO(mfT);
+        money.style.opacity = 1;
+        money.style.transform = `translate(calc(-50% + ${lerp(from.x, to.x, e)}px), calc(-50% + ${lerp(from.y, to.y, e)}px)) scale(${lerp(1, 0.6, e)})`;
+      } else {
+        money.style.opacity = 0;
+      }
+      const resolved = t3 > 0.93;
+      chips[3].classList.toggle('recv', resolved);
+      const fbBadge = chips[3].querySelector('i');
+      if (fbBadge) fbBadge.innerHTML = resolved ? '&#10003;' : '&#9888;';
+
+      el('audHint').style.opacity = (p > 0.9 ? 0 : 1) * (p > 0.02 ? 1 : 0);
+    };
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    update();
+  })();
+</script>
+
+<!-- ================= WHY REVEAL (bento grid, stat as hero cell) ================= -->
+<section class="inset" id="why">
+  <div class="sect-head reveal-in" style="max-width: 1200px;">
+    <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v12"/></svg>Why Reveal</div>
+    <h2 class="one-line">It pays for itself. Then it keeps paying.</h2>
+  </div>
+  <div class="bento">
+    <div class="bento-cell bento-hero reveal-in" style="--i: 0;">
+      <h4>Get your money back</h4>
+      <p>Money you were owed, found and returned to your account.</p>
+      <div class="big" data-count="1297.87" data-prefix="$" data-decimals="2" data-commas="1">$1,297.87</div>
+      <div class="biglabel">Recovered in month one, single location. The owner thought his numbers were fine.</div>
+      <div class="vig vig-recover" aria-hidden="true">
+        <div class="vrow2"><span><b>Delivery payout, Mar 14</b><br /><small>$312.40 short vs POS sales</small></span>
+          <span class="pill-stack"><span class="pill flag">Flagged</span><span class="pill rec">Recovered</span></span></div>
+        <div class="vrow2"><span><b>Lease CAM charge, Q1</b><br /><small>$89.12/mo over the lease terms</small></span>
+          <span class="pill rec">Recovered</span></div>
+        <div class="vrow2"><span><b>Produce Supplier &middot; credit</b><br /><small>+$214 credit memo issued</small></span>
+          <span class="pill rec">Recovered</span></div>
+      </div>
+    </div>
+    <div class="bento-cell bento-card reveal-in" style="--i: 1;">
+      <h4>Fix it, not just find it</h4>
+      <p>The proof is assembled, the note is written. You press send.</p>
+      <div class="vig vig-note" aria-hidden="true">
+        <b style="font-size:12px;">Dispute note, invoice #48211</b>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <span class="send">Send &rarr;</span>
+      </div>
+    </div>
+    <div class="bento-cell bento-card reveal-in" style="--i: 2;">
+      <h4>Know where every dollar goes</h4>
+      <p>Every payment in and out, checked in one place.</p>
+      <div class="vig vig-feed" aria-hidden="true">
+        <div class="vrow2"><span>Produce invoice #48211</span><span class="tick">&#10003;</span></div>
+        <div class="vrow2"><span>Delivery payout, Mar 12</span><span class="tick">&#10003;</span></div>
+        <div class="vrow2"><span>Card processing fees, Feb</span><span class="tick">&#10003;</span></div>
+      </div>
+    </div>
+    <div class="bento-cell bento-wide reveal-in" style="--i: 3;">
+      <div>
+        <h4>No new work for you</h4>
+        <p>Nothing to learn, nothing to reconcile. A few plain-English alerts a week.</p>
+      </div>
+      <div class="vig vig-alert" aria-hidden="true">
+        <div class="bubble">Onion price crept up 72% on today's invoice. Want it disputed?</div>
+        <div class="bubble"><b>Yes, send it.</b></div>
+      </div>
+    </div>
+  </div>
+  <p class="bento-foot reveal-in">Read-only. Fifteen minutes to connect. <b>If Reveal finds nothing, you've lost nothing.</b></p>
+</section>
+
+<!-- ================= CLOSER (dark bookend) ================= -->
+<section class="closer" id="closer">
+  <div class="reveal-in">
+    <h2>Stop paying for other people's mistakes.</h2>
+    <p class="sub">Join the waitlist and be first in line when Reveal opens up.</p>
+    <form class="waitlist" onsubmit="return false">
+      <input type="email" placeholder="Your email" aria-label="Email address" />
+      <button class="btn btn-primary" type="submit">Join the waitlist &nbsp;&rarr;</button>
+    </form>
+    <p class="closer-note">Started it because my parents own a restaurant. Watched them run on instinct for 20 years: sales in their POS, vendors in their phones, renewal dates in my mom's head. Building the tool I wish they'd had.</p>
+  </div>
+</section>
+
+<footer>
+  <a class="logo" href="#" style="font-size: 20px;">reveal<em>.</em></a>
+  <div>
+    <a href="our-story.html">Our story</a>
+    <a href="blog.html">Blog</a>
+    <a href="#">Privacy</a>
+    <span style="margin-left: 22px;">&copy; 2026 Reveal Labs</span>
+  </div>
+</footer>
+
+<script>
+  // scroll-entry reveals
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal-in').forEach(el => io.observe(el));
+
+  // count-up numbers (Supy's grow-on-scroll stats, money edition)
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt = (el, v) => {
+    const d = +(el.dataset.decimals || 0);
+    let s = v.toFixed(d);
+    if (el.dataset.commas) { const [i, f] = s.split('.'); s = (+i).toLocaleString('en-US') + (f ? '.' + f : ''); }
+    el.textContent = (el.dataset.prefix || '') + s + (el.dataset.suffix || '');
+  };
+  const runCount = (el) => {
+    const target = parseFloat(el.dataset.count);
+    if (reduce) { fmt(el, target); return; }
+    const t0 = performance.now(), dur = 1300;
+    const step = (t) => {
+      const p = Math.min((t - t0) / dur, 1);
+      fmt(el, target * (1 - Math.pow(1 - p, 4)));   /* ease-out quart */
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      countIO.unobserve(e.target);
+      runCount(e.target);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach(el => {
+    if (!el.closest('.dash-stage')) countIO.observe(el);   /* dash counters fire with the boot */
+  });
+
+  // dashboard boot: cascade the app to life once it scrolls into view
+  (function () {
+    const stage = document.querySelector('.dash-stage');
+    if (!stage) return;
+    const order = [
+      '.dash-side .dlogo', '.dash-side .dnav', '.workspace',
+      '.dash-head', '.kpi', '.panel-title', '.leak',
+      '.p-status', '.p-head', '.p-hero', '.p-listhead', '.p-leak', '.p-nav',
+    ];
+    let b = 0;
+    if (!reduce) order.forEach(sel => stage.querySelectorAll(sel).forEach(el => {
+      el.classList.add('boot-el');
+      el.style.setProperty('--b', b++);
+    }));
+    const bootIO = new IntersectionObserver((es) => {
+      es.forEach(e => {
+        if (!e.isIntersecting) return;
+        bootIO.unobserve(stage);
+        setTimeout(() => stage.classList.add('booted'), 150);
+        setTimeout(() => stage.querySelectorAll('[data-count]').forEach(runCount), 550);
+      });
+    }, { threshold: 0.25 });
+    // hold the boot until the intro has handed off and the glass panel has
+    // risen with the hero (dash-stage rise: 720ms delay + 950ms duration) —
+    // otherwise the cascade plays hidden behind the intro scrim.
+    const armBoot = () => setTimeout(() => bootIO.observe(stage), 1200);
+    if (document.documentElement.classList.contains('intro-pending')) {
+      addEventListener('reveal:introdone', armBoot, { once: true });
+    } else {
+      armBoot();
+    }
+  })();
+
+  // duplicate ticker content for a seamless -50% loop
+  const track = document.getElementById('tickerTrack');
+  if (track) track.innerHTML += track.innerHTML;
+
+  // nav shadow once scrolled past the top
+  const nav = document.querySelector('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+
+  // ---------- brand intro: food icons arrive, tumble into "reveal.", dock to the nav ----------
+  (function () {
+    const logo = document.querySelector('nav .logo');
+    let seen = false;
+    try { seen = sessionStorage.getItem('reveal_intro_seen') === '1'; } catch {}
+    const force = new URLSearchParams(location.search).get('intro') === '1';
+    if (reduce || !logo || (seen && !force)) {
+      document.documentElement.classList.remove('intro-pending');
+      dispatchEvent(new Event('reveal:introdone'));
+      return;
+    }
+    try { sessionStorage.setItem('reveal_intro_seen', '1'); } catch {}
+    const svg = (paths, sw) =>
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw || 1.75}" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+    const GLYPHS = [
+      { ch: 'r', accent: false, os: 1.15, icon: svg('<path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/>') },
+      { ch: 'e', accent: false, os: 1.0, icon: svg('<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>') },
+      { ch: 'v', accent: false, os: 1.05, icon: svg('<path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"/><path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7"/><path d="m2.1 21.8 6.4-6.3"/><path d="m19 5-7 7"/>') },
+      { ch: 'e', accent: false, os: 1.0, icon: svg('<path d="M2 12h20"/><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="m4 8 16-4"/><path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8"/>') },
+      { ch: 'a', accent: false, os: 1.15, icon: svg('<path d="M12 22c5.523 0 9-3.477 9-8.5S17.523 2 12 2 3 7.977 3 13.5 6.477 22 12 22z"/>') },
+      { ch: 'l', accent: false, os: 1.2, icon: svg('<path d="M2 22 16 8"/><path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z"/><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/>', 1.35) },
+      { ch: '.', accent: true, os: 1.2, icon: svg('<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>') },
+    ];
+
+    const overlay = document.createElement('div');
+    overlay.className = 'intro-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-label', 'Brand intro');
+    overlay.innerHTML =
+      '<div class="intro-scrim"></div>' +
+      '<div class="intro-row">' +
+      GLYPHS.map((g, i) =>
+        `<div class="intro-glyph" style="animation-delay: ${i * 55}ms">
+          <div class="intro-breathe">
+            <div class="intro-tumbler${g.accent ? ' is-accent' : ''}" style="--tumble-dur: 800ms">
+              <div class="intro-content intro-icon" style="transform: scale(${g.os})">${g.icon}</div>
+              <div class="intro-content intro-letter${g.accent ? ' accent' : ''}">${g.ch}</div>
+            </div>
+          </div>
+        </div>`).join('') +
+      '</div>' +
+      '<button type="button" class="intro-skip">Skip intro</button>';
+    document.body.appendChild(overlay);
+
+    const row = overlay.querySelector('.intro-row');
+    const glyphs = [...overlay.querySelectorAll('.intro-glyph')];
+    const skip = overlay.querySelector('.intro-skip');
+    logo.style.visibility = 'hidden';
+
+    const timers = [];
+    const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+
+    const finish = () => {
+      timers.forEach(clearTimeout);
+      document.documentElement.classList.remove('intro-pending');
+      logo.style.visibility = '';
+      overlay.remove();
+      dispatchEvent(new Event('reveal:introdone'));
+    };
+    skip.addEventListener('click', finish);
+
+    // arrive (staggered via inline animation-delay)
+    glyphs.forEach(g => g.classList.add('arrive'));
+    // breathe once each glyph has landed
+    glyphs.forEach((g, i) => at(400 + i * 55, () =>
+      g.querySelector('.intro-breathe').classList.add('is-breathing')));
+    // tumble + dissolve into letters
+    glyphs.forEach((g, i) => at(700 + i * 80, () =>
+      g.querySelector('.intro-tumbler').classList.add('is-tumbling')));
+    // settle: stop breathing, compact each glyph box to its letter's true width
+    at(2020, () => {
+      glyphs.forEach(g => g.querySelector('.intro-breathe').classList.remove('is-breathing'));
+      const letterEl = overlay.querySelector('.intro-letter');
+      const cs = getComputedStyle(letterEl);
+      const probe = document.createElement('span');
+      probe.style.cssText = `position:absolute;visibility:hidden;white-space:pre;top:-9999px;font-family:${cs.fontFamily};font-size:${cs.fontSize};font-weight:${cs.fontWeight};letter-spacing:${cs.letterSpacing};`;
+      probe.innerHTML = GLYPHS.map(g => `<span>${g.ch}</span>`).join('');
+      document.body.appendChild(probe);
+      const widths = [...probe.querySelectorAll('span')].map(s => s.getBoundingClientRect().width);
+      document.body.removeChild(probe);
+      row.style.gap = '0px';
+      glyphs.forEach((g, i) => { g.style.width = widths[i] + 'px'; });
+    });
+    // dock: fly the compacted word to the nav logo slot
+    at(2380, () => {
+      const rr = row.getBoundingClientRect();
+      // the nav-drop entrance is paused at translateY(-18px) while the intro
+      // runs — measure the logo where it will actually land, not where it is
+      const navEl = logo.closest('nav');
+      const prevAnim = navEl.style.animation;
+      navEl.style.animation = 'none';
+      const lr = logo.getBoundingClientRect();
+      navEl.style.animation = prevAnim;
+      const introFS = parseFloat(getComputedStyle(overlay.querySelector('.intro-letter')).fontSize) || 72;
+      const logoFS = parseFloat(getComputedStyle(logo).fontSize) || 24;
+      const s = logoFS / introFS;
+      const dx = (lr.left + lr.width / 2) - (rr.left + rr.width / 2);
+      const dy = (lr.top + lr.height / 2) - (rr.top + rr.height / 2);
+      row.style.transform = `translate(${dx}px, ${dy}px) scale(${s})`;
+      skip.style.opacity = '0';
+    });
+    // hand off: page rises behind the docking word, scrim dissolves
+    at(2620, () => {
+      document.documentElement.classList.remove('intro-pending');
+      overlay.classList.add('is-leaving');
+      dispatchEvent(new Event('reveal:introdone'));
+    });
+    at(3080, () => { row.style.opacity = '0'; logo.style.visibility = ''; });
+    at(3220, () => overlay.remove());
+  })();
+
+  // ---------- hero → page transition: video recedes into a rounded card ----------
+  (function () {
+    const video = document.querySelector('.hero-video');
+    const wash = document.querySelector('.hero-wash');
+    const heroTop = document.querySelector('.hero-top');
+    if (reduce || !video || !heroTop) return;
+    let tick = false;
+    const update = () => {
+      tick = false;
+      const p = Math.min(1, Math.max(0, scrollY / (innerHeight * 0.85)));
+      const r = (p * 40).toFixed(1) + 'px';
+      const s = (1 - p * 0.045).toFixed(4);
+      video.style.borderRadius = r; video.style.transform = `scale(${s})`;
+      wash.style.borderRadius = r; wash.style.transform = `scale(${s})`;
+      heroTop.style.transform = `translateY(${(-44 * p).toFixed(1)}px)`;
+      heroTop.style.opacity = String(1 - 0.55 * p);
+    };
+    addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  })();
+
+  // how-it-works pinned walkthrough: the step crossing the viewport's
+  // center band becomes active — text lights up, stage card swaps,
+  // progress dot stretches.
+  const hiwSteps = [...document.querySelectorAll('.hiw-step')];
+  const hiwCards = [...document.querySelectorAll('.hiw-card')];
+  const hiwDots = [...document.querySelectorAll('.hiw-dots i')];
+  if (hiwSteps.length && !reduce) {
+    const setStep = (idx) => {
+      hiwSteps.forEach((s, i) => s.classList.toggle('active', i === idx));
+      hiwCards.forEach((c, i) => c.classList.toggle('active', i === idx));
+      hiwDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    };
+    const stepIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) setStep(+e.target.dataset.step); });
+    }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+    hiwSteps.forEach(s => stepIO.observe(s));
+    setStep(0);
+  }
+
+  // mobile hero: keep the desktop dashboard, scaled to fit (Supy-style)
+  (() => {
+    const desk = document.querySelector('.dash-desk');
+    const glass = document.querySelector('.dash-glass');
+    if (!desk || !glass) return;
+    const DESKW = 920;
+    const scaleDash = () => {
+      if (innerWidth > 900) {
+        desk.style.width = ''; desk.style.transform = ''; glass.style.height = '';
+        return;
+      }
+      desk.style.width = DESKW + 'px';
+      const s = (glass.clientWidth - 24) / DESKW;
+      desk.style.transformOrigin = 'top left';
+      desk.style.transform = `scale(${s})`;
+      glass.style.height = (desk.offsetHeight * s + 24) + 'px';
+    };
+    addEventListener('resize', scaleDash);
+    addEventListener('load', scaleDash);
+    scaleDash();
+    setTimeout(scaleDash, 300);
+  })();
+
+  // screenshot/debug aid: ?static reveals all scroll-triggered content instantly
+  if (location.search.includes('static')) {
+    document.documentElement.classList.remove('intro-pending');
+    document.querySelectorAll('.reveal-in').forEach(e => e.classList.add('vis'));
+    document.querySelectorAll('.dash-stage').forEach(e => e.classList.add('booted'));
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How it works — the mess, reconciled</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --shadow-lg: 0 28px 70px rgba(10,25,14,0.5);
+    --shadow-md: 0 14px 34px rgba(10,25,14,0.4);
+    --shadow-sm: 0 10px 26px rgba(10,25,14,0.35);
+    --cream: #F2F1ED;
+    --cream-lifted: #FCFBFA;
+    --white: #FFFFFF;
+    --charcoal: #2E2E2E;
+    --muted: #797979;
+    --stroke: rgba(46, 46, 46, 0.10);
+    --green-900: #1E3522;
+    --green-800: #2A4B30;
+    --green-700: #355E3B;
+    --green-400: #8BAF8F;
+    --green-100: #E8F0E9;
+    --green-50: #F3F8F4;
+    --error: #C23B22;
+    --warning: #C08532;
+    --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Fustat", Arial, sans-serif;
+    background: var(--cream); color: var(--charcoal);
+    font-size: 18px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .spacer { height: 60vh; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 15px; }
+
+  .track { height: 680vh; position: relative; }
+  .pin {
+    position: sticky; top: 0; height: 100vh; overflow: hidden;
+    background: linear-gradient(160deg, var(--green-800), var(--green-900) 72%);
+  }
+  .pin::before {
+    content: ""; position: absolute; inset: -40%;
+    background: radial-gradient(closest-side, rgba(139,175,143,0.18), transparent 70%);
+    animation: drift 24s ease-in-out infinite alternate; pointer-events: none;
+  }
+  @keyframes drift { from { transform: translate(-12%, -10%); } to { transform: translate(12%, 14%); } }
+
+  .intro {
+    position: absolute; inset: 0; z-index: 6;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; pointer-events: none;
+  }
+  .intro .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(232,240,233,0.14); color: var(--green-100);
+    border: 1px solid rgba(232,240,233,0.18);
+    font-size: 14px; font-weight: 550; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;
+  }
+  .intro .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-400); }
+  .intro h2 { color: #FAF9F5; font-size: clamp(34px, 4vw, 54px); font-weight: 450; letter-spacing: -0.018em; max-width: 20ch; }
+
+  .caption { position: absolute; top: 8vh; left: 0; right: 0; text-align: center; z-index: 5; }
+  .beat { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
+  .beat .kicker { font-size: 13px; font-weight: 650; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-400); }
+  .beat h3 { color: #FAF9F5; font-size: clamp(26px, 2.8vw, 38px); font-weight: 500; letter-spacing: -0.014em; margin-top: 4px; }
+
+  .dock {
+    position: absolute; top: 20vh; left: 0; right: 0; z-index: 5;
+    display: flex; justify-content: center; gap: 10px;
+  }
+  .dchip {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13.5px; font-weight: 600; padding: 7px 15px; border-radius: 999px;
+    border: 1px solid rgba(242,241,237,0.22); color: rgba(242,241,237,0.5);
+    background: rgba(30,53,34,0.35);
+    opacity: 0;
+    transition: color 300ms ease, background 300ms ease, border-color 300ms ease, transform 300ms var(--ease);
+  }
+  .dchip.on { background: rgba(252,251,250,0.16); color: #FAF9F5; border-color: rgba(242,241,237,0.35); }
+  .dchip.recv { background: var(--green-100); color: var(--green-800); border-color: transparent; transform: scale(1.08); }
+  .dchip i { font-style: normal; font-size: 11.5px; opacity: 0; transform: scale(0.6); transition: opacity 250ms var(--ease), transform 250ms var(--ease); }
+  .dchip.done i { opacity: 1; transform: scale(1); }
+  .dchip i.w { color: #E7B36A; }
+  .dchip i.k { color: var(--green-400); }
+  .dchip.recv i.w { color: var(--green-800); }
+
+  .scene { position: absolute; inset: 0; z-index: 2; }
+  .anchor { position: absolute; left: 50%; top: 56%; }
+
+  /* beat 1 (unchanged) */
+  .hub {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: 124px; height: 124px; border-radius: 30px; overflow: hidden;
+    box-shadow: var(--shadow-lg); z-index: 4;
+  }
+  .hub img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .ring {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: 124px; height: 124px; border-radius: 34px;
+    border: 2px solid var(--green-400); opacity: 0; pointer-events: none; z-index: 4;
+  }
+  .wires {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: 1100px; height: 700px; overflow: visible; pointer-events: none;
+  }
+  .wires line { stroke: rgba(242,241,237,0.4); stroke-width: 1.5; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .src { position: absolute; left: 0; top: 0; z-index: 4; }
+  .src .fl {
+    display: inline-block; transform: translate(-50%, -50%);
+    background: var(--cream-lifted); color: var(--charcoal);
+    font-size: 16px; font-weight: 600; padding: 13px 24px; border-radius: 999px;
+    box-shadow: var(--shadow-md);
+    white-space: nowrap;
+    animation: bob 5.5s ease-in-out infinite alternate;
+  }
+  @keyframes bob { from { margin-top: -6px; } to { margin-top: 6px; } }
+  .rolock {
+    position: absolute; left: 0; top: 96px; transform: translateX(-50%);
+    background: var(--green-100); color: var(--green-800);
+    font-size: 13.5px; font-weight: 650; padding: 7px 16px; border-radius: 999px;
+    white-space: nowrap; opacity: 0;
+  }
+
+  /* beat 2: the scraps — one uniform tile, numbers on a shared right edge */
+  .scrap {
+    position: absolute; left: 0; top: 0; width: 352px;
+    display: flex; justify-content: space-between; align-items: center; gap: 14px;
+    background: var(--cream-lifted); border-radius: 12px; padding: 13px 18px;
+    box-shadow: var(--shadow-md);
+    opacity: 0; z-index: 3;
+  }
+  .scrap { will-change: transform, opacity, filter; }
+  .scrap .k { font-size: 14.5px; font-weight: 600; line-height: 1.3; }
+  .scrap .k small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
+  .scrap .n { position: relative; font-size: 17px; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; transition: color 350ms ease; }
+  .scrap.flag .n { color: var(--error); }
+  .scrap.dim .n, .scrap.ref .n { color: var(--muted); }
+  /* delta floats above the number so every figure stays on the same right edge */
+  .scrap .delta {
+    position: absolute; right: 0; top: -25px;
+    display: inline-flex; font-size: 11.5px; font-weight: 650;
+    background: #F9E9E5; color: var(--error);
+    padding: 2px 8px; border-radius: 999px;
+    opacity: 0; transform: scale(0.8);
+    box-shadow: var(--shadow-sm);
+  }
+  /* the row verdict between the two columns */
+  .pairb {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    box-shadow: var(--shadow-sm);
+    opacity: 0; z-index: 4;
+  }
+  .pairb.w { background: #FBEFE3; color: var(--warning); }
+  .pairb.k { background: var(--green-100); color: var(--green-800); }
+
+  /* beat 3 */
+  .proof {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    width: min(560px, 90vw);
+    background: var(--cream-lifted); border-radius: 16px; padding: 24px 30px;
+    box-shadow: var(--shadow-lg);
+    font-size: 16.5px; opacity: 0; z-index: 3;
+  }
+  .proof .rlabel { font-weight: 650; font-size: 13px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+  .proof .rrow { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--stroke); }
+  .proof .rrow:last-of-type { border-bottom: none; }
+  .proof .rrow > span:first-child { color: var(--muted); }
+  .proof .rrow b { color: var(--charcoal); font-weight: 600; }
+  .proof .rval { font-weight: 650; font-size: 20px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  /* the dispute card: skeleton lines only, it represents the letter */
+  .disp {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, 0);
+    width: 320px;
+    background: var(--white); border-radius: 14px; padding: 16px 20px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0; z-index: 2;
+  }
+  .disp .nhead { font-weight: 650; font-size: 12px; color: var(--charcoal); letter-spacing: 0.05em; text-transform: uppercase; }
+  .disp .nline { height: 7px; border-radius: 4px; background: #E7E5DF; margin: 9px 0; }
+  .sentpill {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    display: inline-flex; font-size: 14.5px; font-weight: 650;
+    background: var(--green-900); color: var(--cream);
+    border: 1px solid rgba(242,241,237,0.25);
+    padding: 6px 15px; border-radius: 999px;
+    opacity: 0; z-index: 3; white-space: nowrap;
+  }
+  .money {
+    position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
+    display: inline-flex; font-size: 14.5px; font-weight: 650;
+    background: var(--green-100); color: var(--green-800);
+    padding: 6px 15px; border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    opacity: 0; z-index: 6; white-space: nowrap;
+  }
+  .hint { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; font-size: 13px; color: rgba(242,241,237,0.55); z-index: 6; }
+</style>
+</head>
+<body>
+
+<div class="spacer">Scroll down — the section pins and the story plays &darr;</div>
+
+<div class="track" id="track">
+  <div class="pin">
+    <div class="intro" id="intro">
+      <div class="chip"><span class="dot"></span>How it works</div>
+      <h2>You run the restaurant. Reveal runs the audit.</h2>
+    </div>
+
+    <div class="caption">
+      <div class="beat" id="b0">
+        <div class="kicker">01 &middot; Connect</div>
+        <h3>Connect once. Read-only.</h3>
+      </div>
+      <div class="beat" id="b1">
+        <div class="kicker">02 &middot; Audit</div>
+        <h3>Everything, reconciled.</h3>
+      </div>
+      <div class="beat" id="b2">
+        <div class="kicker">03 &middot; Catch</div>
+        <h3>Caught with proof. Ready to send.</h3>
+      </div>
+    </div>
+
+    <div class="dock" id="dock">
+      <span class="dchip" id="d0">Delivery payouts<i class="w">&#9888;</i></span>
+      <span class="dchip" id="d1">Lease &amp; rent<i class="w">&#9888;</i></span>
+      <span class="dchip" id="d2">Deadlines &amp; renewals<i class="k">&#10003;</i></span>
+      <span class="dchip" id="d3">F&amp;B invoices<i class="w">&#9888;</i></span>
+    </div>
+
+    <div class="scene">
+      <div class="anchor" id="anchor">
+        <svg class="wires" id="wires" viewBox="-550 -350 1100 700" aria-hidden="true">
+          <line id="w0" pathLength="1" x1="-72" y1="-33" x2="-380" y2="-172" />
+          <line id="w1" pathLength="1" x1="74" y1="-24" x2="392" y2="-128" />
+          <line id="w2" pathLength="1" x1="-71" y1="30" x2="-356" y2="152" />
+          <line id="w3" pathLength="1" x1="69" y1="34" x2="404" y2="196" />
+        </svg>
+        <div class="ring" id="ring"></div>
+        <div class="hub" id="hub"><img src="../../../social-assets/reveal-logo.png" alt="Reveal" /></div>
+        <span class="src" id="s0"><span class="fl">Bank</span></span>
+        <span class="src" id="s1"><span class="fl" style="animation-delay:-1.4s">Point of sale</span></span>
+        <span class="src" id="s2"><span class="fl" style="animation-delay:-2.7s">Delivery apps</span></span>
+        <span class="src" id="s3"><span class="fl" style="animation-delay:-3.9s">Invoices &amp; contracts</span></span>
+        <span class="rolock" id="rolock">&#128274; Read-only &mdash; Reveal can look, never touch</span>
+
+        <!-- the collage: 4 pairs, left = what happened, right = what you agreed -->
+        <div class="scrap" data-i="0"><span class="k">DoorDash payout<small>Mar 14 &middot; bank</small></span><b class="n">$8,099.50<span class="delta">&minus;$312.40</span></b></div>
+        <div class="scrap" data-i="1"><span class="k">Delivery sales<small>Mar 8&ndash;14 &middot; POS</small></span><b class="n">$8,411.90</b></div>
+        <div class="scrap" data-i="2"><span class="k">Rent charge<small>Mar 1 &middot; Propco LLC</small></span><b class="n">$2,199.12<span class="delta">+$89.12</span></b></div>
+        <div class="scrap" data-i="3"><span class="k">Lease, &sect;4.2<small>Q1 monthly rent</small></span><b class="n">$2,110.00</b></div>
+        <div class="scrap" data-i="4"><span class="k">Liquor license<small>City of Denver</small></span><b class="n">Aug 30</b></div>
+        <div class="scrap" data-i="5"><span class="k">Reveal reminder<small>45 days ahead</small></span><b class="n">Jul 16</b></div>
+        <div class="scrap" data-i="6"><span class="k">Onion, 50 lb<small>Invoice #48211</small></span><b class="n">$1.82/lb<span class="delta">+72%</span></b></div>
+        <div class="scrap" data-i="7"><span class="k">Agreed price<small>Nov &middot; price list</small></span><b class="n">$1.06/lb</b></div>
+        <span class="pairb w" data-p="0">&#9888;</span>
+        <span class="pairb w" data-p="1">&#9888;</span>
+        <span class="pairb k" data-p="2">&#10003;</span>
+        <span class="pairb w" data-p="3">&#9888;</span>
+
+        <!-- beat 3 -->
+        <div class="proof" id="proof">
+          <div class="rlabel">Finding &mdash; onion 50 lb, invoice #48211</div>
+          <div class="rrow"><span>You agreed</span><span class="rval" style="color: var(--muted);">$1.06/lb</span></div>
+          <div class="rrow"><span>You were charged</span><span class="rval" style="color: var(--error);">$1.82/lb</span></div>
+          <div class="rrow"><span><b>Overpaid, 3 invoices</b></span><span class="rval" style="color: var(--error);">$214.60</span></div>
+        </div>
+        <div class="disp" id="disp">
+          <div class="nhead">Dispute &middot; invoice #48211</div>
+          <div class="nline" style="width: 92%;"></div>
+          <div class="nline" style="width: 74%;"></div>
+          <div class="nline" style="width: 40%;"></div>
+        </div>
+        <span class="sentpill" id="sentpill">&#10003; Sent</span>
+        <span class="money" id="money">$214.60</span>
+      </div>
+      <div class="hint" id="hint">Scroll &darr;</div>
+    </div>
+  </div>
+</div>
+
+<div class="spacer">End of section &uarr; scroll back up to rewind</div>
+
+<script>
+  (() => {
+    const el = id => document.getElementById(id);
+    const track = el('track'), anchor = el('anchor');
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    const seg = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    const easeIO = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+    const bell = t => Math.sin(Math.PI * clamp(t, 0, 1));
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    const intro = el('intro');
+    const beats = [el('b0'), el('b1'), el('b2')];
+    const chips = [el('d0'), el('d1'), el('d2'), el('d3')];
+    const hub = el('hub'), ring = el('ring'), lock = el('rolock');
+    const srcs = [el('s0'), el('s1'), el('s2'), el('s3')];
+    const wires = [el('w0'), el('w1'), el('w2'), el('w3')];
+    const scraps = [...document.querySelectorAll('.scrap')];
+    const pairbs = [...document.querySelectorAll('.pairb')];
+    const proof = el('proof'), disp = el('disp'), sentpill = el('sentpill'), money = el('money');
+
+    const T = {
+      introOut: [0.04, 0.075],
+      p1: [0.05, 0.155],
+      p1out: [0.16, 0.215],
+      scatter: [0.225, 0.30],   // the mess tumbles in
+      organize: [0.31, 0.44],   // it sorts itself into the ledger
+      check: [0.46, 0.66],      // Reveal walks the rows
+      merge: [0.67, 0.72],      // flagged pair becomes the proof
+      p3: [0.72, 0.985],
+    };
+
+    // beat 1 geometry
+    const start = [{x:-0.55,y:-0.44},{x:0.55,y:-0.4},{x:-0.55,y:0.42},{x:0.55,y:0.46}];
+    const dockPos = [{x:-380,y:-172},{x:392,y:-128},{x:-356,y:152},{x:404,y:196}];
+
+    // scatter poses (fractions of viewport) and ledger slots
+    const scatter = [
+      {x:-0.34,y:-0.20,r:-7}, {x:0.26,y:-0.24,r:5},
+      {x:-0.12,y:-0.05,r:4},  {x:0.38,y:-0.03,r:-4},
+      {x:-0.31,y:0.14,r:6},   {x:0.09,y:0.08,r:-6},
+      {x:-0.04,y:0.26,r:-3},  {x:0.29,y:0.24,r:7},
+    ];
+    const COLX = 200, ROWY = [-138, -46, 46, 138];
+    const slot = i => ({ x: (i % 2 === 0 ? -COLX : COLX), y: ROWY[i >> 1] });
+
+    const chipAt = (i) => {
+      const a = anchor.getBoundingClientRect();
+      const c = chips[i].getBoundingClientRect();
+      return { x: c.left + c.width / 2 - a.left, y: c.top + c.height / 2 - a.top };
+    };
+
+    const update = () => {
+      const r = track.getBoundingClientRect();
+      const p = clamp(-r.top / (r.height - innerHeight), 0, 1);
+
+      const io = 1 - seg(p, T.introOut[0], T.introOut[1]);
+      intro.style.opacity = io;
+      intro.style.transform = `translateY(${(1 - io) * -26}px)`;
+
+      const c0 = seg(p, T.introOut[0] + 0.01, T.introOut[1] + 0.01) * (1 - seg(p, T.p1out[0], T.p1out[1]));
+      const c1 = seg(p, T.p1out[0] + 0.01, T.scatter[0]) * (1 - seg(p, T.merge[0], T.merge[1]));
+      const c2 = seg(p, T.merge[0] + 0.01, T.p3[0] + 0.01);
+      [c0, c1, c2].forEach((o2, i) => {
+        beats[i].style.opacity = o2;
+        beats[i].style.transform = `translateY(${(1 - o2) * 8}px)`;
+      });
+
+      // ---- beat 1 (unchanged: in place, then fades as one) ----
+      const t1 = seg(p, T.p1[0], T.p1[1]);
+      const o = seg(p, T.p1out[0], T.p1out[1]);
+      const ht = ease(seg(t1, 0, 0.18));
+      const hubFade = seg(o, 0.2, 0.75);
+      hub.style.opacity = ht * (1 - hubFade);
+      hub.style.filter = `blur(${8 * hubFade}px)`;
+      hub.style.transform = `translate(-50%, -50%) scale(${(0.82 + 0.18 * ht) * (1 - 0.3 * hubFade)})`;
+      const b1fade = 1 - seg(o, 0.2, 0.75);
+      srcs.forEach((s, i) => {
+        const t = ease(seg(t1, 0.06 + i * 0.1, 0.46 + i * 0.1));
+        const sx = start[i].x * innerWidth, sy = start[i].y * innerHeight;
+        const px = sx + (dockPos[i].x - sx) * t, py = sy + (dockPos[i].y - sy) * t;
+        s.style.opacity = t * b1fade;
+        s.style.transform = `translate(${px}px, ${py}px)`;
+        chips[i].style.opacity = seg(o, 0.8, 1);
+      });
+      let pulse = 0;
+      wires.forEach((w, i) => {
+        const wt = ease(seg(t1, 0.44 + i * 0.1, 0.58 + i * 0.1)) * (1 - ease(o));
+        w.style.strokeDashoffset = 1 - wt;
+        w.style.opacity = 1 - ease(o);
+        pulse += bell(seg(t1, 0.56 + i * 0.1, 0.7 + i * 0.1));
+      });
+      const lt = ease(seg(t1, 0.88, 1));
+      lock.style.opacity = lt * (1 - seg(o, 0, 0.35));
+      lock.style.transform = `translateX(-50%) translateY(${8 - 8 * lt}px)`;
+      pulse = Math.min(1, pulse) * (1 - ease(o));
+      ring.style.opacity = 0.6 * pulse;
+      ring.style.transform = `translate(-50%, -50%) scale(${(0.82 + 0.18 * ht) * (1 + 0.35 * pulse)})`;
+
+      // ---- beat 2 ----
+      const tScatter = seg(p, T.scatter[0], T.scatter[1]);
+      const tOrg = seg(p, T.organize[0], T.organize[1]);
+      const tChk = seg(p, T.check[0], T.check[1]);
+      const mT = ease(seg(p, T.merge[0], T.merge[1]));
+      const inB2 = p >= T.scatter[0] && p < T.p3[0];
+
+      scraps.forEach((s, i) => {
+        const pair = i >> 1;
+        // tumble in, staggered
+        const eT = ease(seg(tScatter, i * 0.09, 0.55 + i * 0.05));
+        // organize: row by row, top to bottom
+        const oT = ease(seg(tOrg, pair * 0.16, pair * 0.16 + 0.4));
+        const sx = scatter[i].x * innerWidth, sy = scatter[i].y * innerHeight;
+        const sl = slot(i);
+        let x = lerp(sx, sl.x, oT), y = lerp(sy, sl.y, oT), rot = lerp(scatter[i].r, 0, oT);
+        let op = eT, scale = 1, blur = 0;
+        // check phase: verdicts land row by row
+        const cT = ease(seg(tChk, pair * 0.22, pair * 0.22 + 0.16));
+        // the row under review leans in, then settles back as the audit moves on
+        const focus = bell(seg(tChk, pair * 0.22 - 0.02, pair * 0.22 + 0.26));
+        const warn = pair !== 2;
+        s.classList.toggle('flag', warn && i % 2 === 0 && cT > 0.5);
+        s.classList.toggle('dim', !warn && cT > 0.5);
+        s.classList.toggle('ref', warn && i % 2 === 1 && cT > 0.5);
+        // matched rows recede smoothly (scrubbed, no !important fights)
+        if (!warn) op *= lerp(1, 0.45, ease(seg(cT, 0.5, 1)));
+        // matched pair + resolved rows grey out; flagged pairs keep weight
+        // beat 3: pairs 0-2 fade away, pair 3 merges into the proof card
+        if (p >= T.merge[0]) {
+          if (pair === 3) {
+            x = lerp(sl.x, (i % 2 === 0 ? -30 : 30), mT);
+            y = lerp(sl.y, -52, mT);
+            op = eT * (1 - seg(mT, 0.45, 0.85));
+            scale = lerp(1, 0.9, mT);
+            blur = 6 * seg(mT, 0.3, 1);
+          } else {
+            op = eT * (1 - seg(mT, 0, 0.5));
+          }
+        }
+        const dT = warn ? ease(seg(cT, 0.55, 1)) : 0;
+        const delta = s.querySelector('.delta');
+        if (delta) { delta.style.opacity = dT; delta.style.transform = `scale(${0.8 + 0.2 * dT})`; }
+        s.style.opacity = inB2 || p >= T.p3[0] ? op : 0;
+        s.style.filter = `blur(${blur}px)`;
+        s.style.zIndex = focus > 0.05 ? 4 : 3;
+        s.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${rot}deg) scale(${scale * (1 + 0.06 * focus)})`;
+      });
+      // row verdicts between the columns
+      pairbs.forEach((b, pair) => {
+        const cT = ease(seg(tChk, pair * 0.22, pair * 0.22 + 0.16));
+        const focus = bell(seg(tChk, pair * 0.22 - 0.02, pair * 0.22 + 0.26));
+        const hide = p >= T.merge[0] ? 1 - seg(mT, 0, 0.5) : 1;
+        b.style.opacity = (inB2 ? cT : 0) * hide;
+        b.style.transform = `translate(-50%, -50%) translateY(${ROWY[pair]}px) scale(${(0.7 + 0.3 * cT) * (1 + 0.1 * focus)})`;
+        chips[pair].classList.toggle('on', inB2 && tChk > pair * 0.22 && tChk < pair * 0.22 + 0.22);
+        chips[pair].classList.toggle('done', (inB2 && cT > 0.6) || p >= T.merge[1]);
+      });
+
+      // ---- beat 3: proof, then the dispute folds and flies, then the money comes home ----
+      const t3 = seg(p, T.p3[0], T.p3[1]);
+      const pT = ease(seg(mT, 0.55, 1));
+      proof.style.opacity = pT * (t3 < 1 ? 1 : 1);
+      proof.style.filter = `blur(${(1 - pT) * 6}px)`;
+      proof.style.transform = `translate(-50%, -50%) translateY(-52px) scale(${0.9 + 0.1 * pT})`;
+      // dispute card slides out from under the proof...
+      const dT = ease(seg(t3, 0.14, 0.3));
+      // ...then folds up and whooshes off-screen right
+      const wT = seg(t3, 0.38, 0.56);
+      const wE = easeIO(wT);
+      const dx = wE * innerWidth * 0.7;
+      const dy = 118 * dT - wE * 60;
+      const drot = -9 * wE;
+      disp.style.opacity = dT * (1 - seg(wT, 0.82, 1));
+      disp.style.transform = `translate(calc(-50% + ${dx}px), ${dy}px) rotate(${drot}deg) scale(${1 - 0.15 * wE})`;
+      // Sent stamps where it left
+      const sT = ease(seg(t3, 0.58, 0.66));
+      sentpill.style.opacity = sT * (1 - seg(t3, 0.8, 0.88));
+      sentpill.style.transform = `translate(-50%, -50%) translateY(150px) scale(${0.9 + 0.1 * sT})`;
+      // the money flies back in from the same edge, home to the flagged category
+      const mfT = seg(t3, 0.72, 0.92);
+      if (mfT > 0 && mfT < 1) {
+        const from = { x: innerWidth * 0.6, y: 60 };
+        const to = chipAt(3);
+        const e = easeIO(mfT);
+        money.style.opacity = 1;
+        money.style.transform = `translate(calc(-50% + ${lerp(from.x, to.x, e)}px), calc(-50% + ${lerp(from.y, to.y, e)}px)) scale(${lerp(1, 0.6, e)})`;
+      } else {
+        money.style.opacity = 0;
+      }
+      const resolved = t3 > 0.93;
+      chips[3].classList.toggle('recv', resolved);
+      const fbBadge = chips[3].querySelector('i');
+      if (fbBadge) fbBadge.innerHTML = resolved ? '&#10003;' : '&#9888;';
+
+      el('hint').style.opacity = p > 0.94 ? 0 : 1;
+    };
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    update();
+  })();
+</script>
+
+</body>
+</html>

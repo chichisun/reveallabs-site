@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Why Reveal — layout variants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #F2F1ED;
+    --cream-lifted: #FCFBFA;
+    --white: #FFFFFF;
+    --charcoal: #2E2E2E;
+    --charcoal-soft: #3D3D3D;
+    --muted: #797979;
+    --stroke: rgba(46, 46, 46, 0.10);
+    --green-900: #1E3522;
+    --green-800: #2A4B30;
+    --green-700: #355E3B;
+    --green-500: #5F9568;
+    --green-400: #8BAF8F;
+    --green-100: #E8F0E9;
+    --green-50: #F3F8F4;
+    --error: #C23B22;
+    --warning: #C08532;
+    --r-section: 44px;
+    --r-card: 16px;
+    --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Fustat", Arial, sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 18px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 120px;
+  }
+  h2 {
+    font-size: clamp(34px, 4.4vw, 54px);
+    font-weight: 450; line-height: 1.08; letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+  .variant-label {
+    max-width: 1360px; margin: 70px auto 14px; padding: 0 28px;
+    font-size: 15px; font-weight: 650; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--green-700);
+  }
+  .variant-label small { display: block; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--muted); margin-top: 2px; }
+  .inset {
+    background: var(--cream-lifted);
+    border: 1px solid var(--stroke);
+    border-radius: var(--r-section);
+    margin: 0 auto; max-width: 1360px;
+    padding: 96px 24px;
+  }
+  .sect-head { max-width: 720px; margin: 0 auto 56px; text-align: center; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-100); color: var(--green-800);
+    font-size: 14px; font-weight: 550;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+  }
+  .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-700); }
+
+  /* shared card chrome */
+  .wcard {
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: var(--r-card);
+    transition: transform 250ms var(--ease-out-strong), box-shadow 250ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .wcard:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(46,46,46,0.08); }
+  }
+  .wcard h4 { font-size: 19px; font-weight: 600; margin: 0 0 8px; }
+  .wcard p { font-size: 15.5px; color: var(--muted); }
+
+  /* ---------- shared micro-vignettes (each loops on an 7s cycle) ---------- */
+  .vig {
+    background: var(--green-50); border: 1px solid var(--stroke);
+    border-radius: 12px; padding: 14px; margin-bottom: 18px;
+    font-size: 13px; overflow: hidden; position: relative;
+  }
+  .vrow {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: 9px; padding: 8px 10px;
+  }
+  .vrow + .vrow { margin-top: 7px; }
+  .vrow b { font-weight: 600; }
+  .vrow small { color: var(--muted); }
+  .pill { font-size: 11px; font-weight: 650; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+  .pill.flag { background: #FBEFE3; color: var(--warning); }
+  .pill.rec { background: var(--green-100); color: var(--green-800); }
+  .pill.ok { color: var(--green-700); background: transparent; padding: 0; }
+
+  /* vignette 1: flagged -> recovered flip */
+  .vig-recover .pill-stack { position: relative; width: 82px; height: 22px; }
+  .vig-recover .pill-stack .pill { position: absolute; right: 0; top: 0; }
+  .vig-recover .pill.flag { animation: flipA 7s infinite; }
+  .vig-recover .pill.rec  { animation: flipB 7s infinite; }
+  @keyframes flipA { 0%, 42% { opacity: 1; transform: scale(1); } 50%, 100% { opacity: 0; transform: scale(0.95); } }
+  @keyframes flipB { 0%, 46% { opacity: 0; transform: scale(0.95); } 54%, 92% { opacity: 1; transform: scale(1); } 100% { opacity: 1; } }
+
+  /* vignette 2: dispute note writes itself */
+  .vig-note .line { height: 7px; border-radius: 4px; background: #E7E5DF; margin: 8px 0; transform-origin: left; animation: grow 7s infinite var(--ease-out-strong); }
+  .vig-note .line:nth-child(2) { width: 92%; animation-delay: 0.25s; }
+  .vig-note .line:nth-child(3) { width: 70%; animation-delay: 0.5s; }
+  @keyframes grow { 0% { transform: scaleX(0); } 12%, 88% { transform: scaleX(1); } 100% { transform: scaleX(1); } }
+  .vig-note .send {
+    display: inline-flex; margin-top: 8px; font-size: 12px; font-weight: 650;
+    background: var(--green-700); color: var(--cream);
+    padding: 5px 12px; border-radius: 999px;
+    opacity: 0; transform: scale(0.95) translateY(4px);
+    animation: pop 7s infinite var(--ease-out-strong); animation-delay: 0.9s;
+  }
+  @keyframes pop { 0% { opacity: 0; transform: scale(0.95) translateY(4px); } 10%, 85% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; transform: scale(0.95) translateY(4px); } }
+
+  /* vignette 3: ticks cascade down a payment feed */
+  .vig-feed .tick { color: var(--green-700); font-weight: 700; opacity: 0; animation: tickIn 7s infinite var(--ease-out-strong); }
+  .vig-feed .vrow:nth-child(1) .tick { animation-delay: 0.15s; }
+  .vig-feed .vrow:nth-child(2) .tick { animation-delay: 0.45s; }
+  .vig-feed .vrow:nth-child(3) .tick { animation-delay: 0.75s; }
+  @keyframes tickIn { 0% { opacity: 0; transform: scale(0.8); } 8%, 88% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+
+  /* vignette 4: plain-english alert bubble pops in */
+  .vig-alert { background: var(--green-50); }
+  .vig-alert .bubble {
+    background: var(--white); border: 1px solid var(--stroke);
+    border-radius: 12px 12px 12px 4px; padding: 9px 12px; max-width: 92%;
+    opacity: 0; transform: translateY(8px) scale(0.97); transform-origin: bottom left;
+    animation: bubbleIn 7s infinite var(--ease-out-strong);
+  }
+  .vig-alert .bubble + .bubble { margin-top: 7px; animation-delay: 0.6s; border-radius: 12px 12px 4px 12px; transform-origin: bottom right; margin-left: auto; background: var(--green-100); border-color: transparent; }
+  @keyframes bubbleIn { 0% { opacity: 0; transform: translateY(8px) scale(0.97); } 9%, 87% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vig * { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .wcard, .wcard:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= VARIANT A: BENTO ================= -->
+<style>
+  .bento { display: grid; grid-template-columns: 1.15fr 1fr 1fr; grid-auto-rows: minmax(0, auto); gap: 16px; max-width: 1180px; margin: 0 auto; }
+  .bento-hero {
+    grid-row: 1 / 3;
+    background: linear-gradient(150deg, var(--green-800), var(--green-900));
+    border: none; color: var(--cream);
+    padding: 34px 32px; display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .bento-hero::before {
+    content: ""; position: absolute; inset: -40%;
+    background: radial-gradient(closest-side, rgba(139,175,143,0.20), transparent 70%);
+    animation: drift 22s ease-in-out infinite alternate; pointer-events: none;
+  }
+  @keyframes drift { from { transform: translate(-12%, -10%); } to { transform: translate(12%, 14%); } }
+  .bento-hero > * { position: relative; }
+  .bento-hero h4 { color: #FAF9F5; font-size: 20px; }
+  .bento-hero p { color: rgba(242,241,237,0.72); }
+  .bento-hero .big {
+    font-size: clamp(44px, 4.6vw, 62px); font-weight: 650; letter-spacing: -0.02em;
+    color: #FAF9F5; margin: 18px 0 2px; line-height: 1;
+  }
+  .bento-hero .biglabel { font-size: 14px; color: var(--green-400); margin-bottom: 22px; }
+  .bento-hero .vig { background: rgba(252,251,250,0.08); border-color: rgba(242,241,237,0.14); margin: auto 0 0; }
+  .bento-hero .vrow { background: rgba(252,251,250,0.10); border-color: rgba(242,241,237,0.10); color: var(--cream); }
+  .bento-hero .vrow small { color: rgba(242,241,237,0.55); }
+  .bento-card { padding: 26px 26px 28px; display: flex; flex-direction: column; }
+  .bento-card .vig { margin-top: auto; margin-bottom: 0; margin-top: 18px; }
+  .bento-wide { grid-column: 2 / 4; padding: 26px 28px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: center; }
+  .bento-wide .vig { margin: 0; }
+  @media (max-width: 900px) {
+    .bento { grid-template-columns: 1fr; }
+    .bento-hero { grid-row: auto; }
+    .bento-wide { grid-column: auto; grid-template-columns: 1fr; }
+  }
+</style>
+<div class="variant-label">Option A — Bento grid<small>Stat becomes the hero cell; every card shows the product doing the job</small></div>
+<section class="inset">
+  <div class="sect-head">
+    <div class="chip"><span class="dot"></span>Why Reveal</div>
+    <h2>What Reveal does for your restaurant.</h2>
+  </div>
+  <div class="bento">
+    <div class="wcard bento-hero">
+      <h4>Get your money back</h4>
+      <p>Overcharges, short payouts and wrong fees stop quietly disappearing into the bank statement.</p>
+      <div class="big" data-count="1297.87" data-prefix="$" data-decimals="2" data-commas="1">$0.00</div>
+      <div class="biglabel">Recovered in month one, single location</div>
+      <div class="vig vig-recover">
+        <div class="vrow"><span><b>Delivery payout, Mar 14</b><br /><small>$312.40 short vs POS sales</small></span>
+          <span class="pill-stack"><span class="pill flag">Flagged</span><span class="pill rec">Recovered</span></span></div>
+        <div class="vrow"><span><b>Lease CAM charge, Q1</b><br /><small>$89.12/mo over the lease terms</small></span>
+          <span class="pill rec">Recovered</span></div>
+      </div>
+    </div>
+    <div class="wcard bento-card">
+      <h4>Fix it, not just find it</h4>
+      <p>Every finding comes with the fix started: proof assembled, note written. You send one email.</p>
+      <div class="vig vig-note">
+        <b style="font-size:12px;">Dispute note, invoice #48211</b>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <span class="send">Send &rarr;</span>
+      </div>
+    </div>
+    <div class="wcard bento-card">
+      <h4>Know where every dollar goes</h4>
+      <p>Every payment in and out, in one place, checked. No more running on instinct.</p>
+      <div class="vig vig-feed">
+        <div class="vrow"><span>Produce invoice #48211</span><span class="tick">&#10003;</span></div>
+        <div class="vrow"><span>Delivery payout, Mar 12</span><span class="tick">&#10003;</span></div>
+        <div class="vrow"><span>Card processing fees, Feb</span><span class="tick">&#10003;</span></div>
+      </div>
+    </div>
+    <div class="wcard bento-wide">
+      <div>
+        <h4>No new work for you</h4>
+        <p>No spreadsheets, no reconciling, nothing to learn. A few plain-English alerts a week.</p>
+      </div>
+      <div class="vig vig-alert">
+        <div class="bubble">Onion price crept up 72% on today's invoice. Want it disputed?</div>
+        <div class="bubble"><b>Yes, send it.</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VARIANT B: EDITORIAL ROWS ================= -->
+<style>
+  .frows { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; }
+  .frow-item {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    padding: 52px 0; border-top: 1px solid var(--stroke);
+  }
+  .frow-item:first-child { border-top: none; padding-top: 0; }
+  .frow-item h3 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 500; letter-spacing: -0.012em; line-height: 1.15; margin-bottom: 12px; }
+  .frow-item .body { font-size: 17px; color: var(--muted); max-width: 44ch; }
+  .frow-item .num { font-size: 14px; font-weight: 650; letter-spacing: 0.06em; color: var(--green-700); margin-bottom: 12px; }
+  .frow-stage {
+    background: linear-gradient(150deg, var(--green-50), var(--green-100));
+    border: 1px solid var(--stroke); border-radius: 18px; padding: 30px;
+  }
+  .frow-item:nth-child(even) .frow-stage { order: -1; }
+  .frow-stage .vig { background: var(--white); margin: 0; box-shadow: 0 14px 34px rgba(20,40,24,0.10); }
+  .statband {
+    max-width: 1040px; margin: 40px auto 0;
+    background: linear-gradient(150deg, var(--green-800), var(--green-900));
+    color: var(--cream); border-radius: var(--r-card);
+    padding: 36px 34px; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
+  }
+  .statband .big { font-size: clamp(40px, 5vw, 58px); font-weight: 650; letter-spacing: -0.02em; color: #FAF9F5; }
+  .statband .label { font-size: 16px; color: rgba(242,241,237,0.78); }
+  @media (max-width: 900px) {
+    .frow-item { grid-template-columns: 1fr; gap: 24px; }
+    .frow-item:nth-child(even) .frow-stage { order: 0; }
+  }
+</style>
+<div class="variant-label">Option B — Editorial rows<small>Supy's own feature-row rhythm: one benefit at a time, big and unhurried</small></div>
+<section class="inset">
+  <div class="sect-head">
+    <div class="chip"><span class="dot"></span>Why Reveal</div>
+    <h2>What Reveal does for your restaurant.</h2>
+  </div>
+  <div class="frows">
+    <div class="frow-item">
+      <div>
+        <div class="num">01</div>
+        <h3>Get your money back</h3>
+        <p class="body">Overcharges, short payouts and wrong fees stop quietly disappearing into the bank statement and start coming back to you.</p>
+      </div>
+      <div class="frow-stage"><div class="vig vig-recover" style="border:none;">
+        <div class="vrow"><span><b>Delivery payout, Mar 14</b><br /><small>$312.40 short vs POS sales</small></span>
+          <span class="pill-stack"><span class="pill flag">Flagged</span><span class="pill rec">Recovered</span></span></div>
+        <div class="vrow"><span><b>Lease CAM charge, Q1</b><br /><small>$89.12/mo over the lease terms</small></span>
+          <span class="pill rec">Recovered</span></div>
+      </div></div>
+    </div>
+    <div class="frow-item">
+      <div>
+        <div class="num">02</div>
+        <h3>Fix it, not just find it</h3>
+        <p class="body">Every finding comes with the fix started: the proof assembled and the note written. You send one email, the money comes back.</p>
+      </div>
+      <div class="frow-stage"><div class="vig vig-note" style="border:none;">
+        <b style="font-size:12px;">Dispute note, invoice #48211</b>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <span class="send">Send &rarr;</span>
+      </div></div>
+    </div>
+    <div class="frow-item">
+      <div>
+        <div class="num">03</div>
+        <h3>Know where every dollar goes</h3>
+        <p class="body">Every payment in and out of your restaurant, in one place, checked. Full control, no more running on instinct.</p>
+      </div>
+      <div class="frow-stage"><div class="vig vig-feed" style="border:none;">
+        <div class="vrow"><span>Produce invoice #48211</span><span class="tick">&#10003;</span></div>
+        <div class="vrow"><span>Delivery payout, Mar 12</span><span class="tick">&#10003;</span></div>
+        <div class="vrow"><span>Card processing fees, Feb</span><span class="tick">&#10003;</span></div>
+      </div></div>
+    </div>
+    <div class="frow-item">
+      <div>
+        <div class="num">04</div>
+        <h3>No new work for you</h3>
+        <p class="body">No spreadsheets, no reconciling, nothing to learn. A few plain-English alerts a week.</p>
+      </div>
+      <div class="frow-stage"><div class="vig vig-alert" style="border:none;">
+        <div class="bubble">Onion price crept up 72% on today's invoice. Want it disputed?</div>
+        <div class="bubble"><b>Yes, send it.</b></div>
+      </div></div>
+    </div>
+  </div>
+  <div class="statband">
+    <span class="big" data-count="1297.87" data-prefix="$" data-decimals="2" data-commas="1">$0.00</span>
+    <span class="label">Recovered in month one, single location</span>
+  </div>
+</section>
+
+<!-- ================= VARIANT C: CARDS + LIVE VIGNETTES ================= -->
+<style>
+  .cgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 1180px; margin: 0 auto; }
+  .cgrid .wcard { padding: 22px 22px 26px; }
+  .cgrid .vig { margin: -4px -4px 18px; }
+  @media (max-width: 1100px) { .cgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 700px) { .cgrid { grid-template-columns: 1fr; } }
+</style>
+<div class="variant-label">Option C — Cards with live vignettes<small>Same grid as now, but each card demos its own benefit on loop</small></div>
+<section class="inset">
+  <div class="sect-head">
+    <div class="chip"><span class="dot"></span>Why Reveal</div>
+    <h2>What Reveal does for your restaurant.</h2>
+  </div>
+  <div class="cgrid">
+    <div class="wcard">
+      <div class="vig vig-recover">
+        <div class="vrow"><span><b>Payout, Mar 14</b><br /><small>$312.40 short</small></span>
+          <span class="pill-stack"><span class="pill flag">Flagged</span><span class="pill rec">Recovered</span></span></div>
+      </div>
+      <h4>Get your money back</h4>
+      <p>Overcharges, short payouts and wrong fees start coming back to you.</p>
+    </div>
+    <div class="wcard">
+      <div class="vig vig-note">
+        <b style="font-size:12px;">Dispute note</b>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <span class="send">Send &rarr;</span>
+      </div>
+      <h4>Fix it, not just find it</h4>
+      <p>Proof assembled, note written. You send one email, the money comes back.</p>
+    </div>
+    <div class="wcard">
+      <div class="vig vig-feed">
+        <div class="vrow"><span>Invoice #48211</span><span class="tick">&#10003;</span></div>
+        <div class="vrow"><span>Payout, Mar 12</span><span class="tick">&#10003;</span></div>
+        <div class="vrow"><span>Card fees, Feb</span><span class="tick">&#10003;</span></div>
+      </div>
+      <h4>Know where every dollar goes</h4>
+      <p>Every payment in and out, in one place, checked. No more instinct.</p>
+    </div>
+    <div class="wcard">
+      <div class="vig vig-alert">
+        <div class="bubble">Onion price up 72% today. Want it disputed?</div>
+        <div class="bubble"><b>Yes, send it.</b></div>
+      </div>
+      <h4>No new work for you</h4>
+      <p>Nothing to learn, nothing to reconcile. A few plain-English alerts a week.</p>
+    </div>
+  </div>
+  <div class="statband" style="max-width:1180px;">
+    <span class="big" data-count="1297.87" data-prefix="$" data-decimals="2" data-commas="1">$0.00</span>
+    <span class="label">Recovered in month one, single location</span>
+  </div>
+</section>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt = (el, v) => {
+    const d = +(el.dataset.decimals || 0);
+    let s = v.toFixed(d);
+    if (el.dataset.commas) { const [i, f] = s.split('.'); s = (+i).toLocaleString('en-US') + (f ? '.' + f : ''); }
+    el.textContent = (el.dataset.prefix || '') + s + (el.dataset.suffix || '');
+  };
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      countIO.unobserve(e.target);
+      const el = e.target, target = parseFloat(el.dataset.count);
+      if (reduce) { fmt(el, target); return; }
+      const t0 = performance.now(), dur = 1300;
+      const step = (t) => {
+        const p = Math.min((t - t0) / dur, 1);
+        fmt(el, target * (1 - Math.pow(1 - p, 4)));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach(el => countIO.observe(el));
+</script>
+
+</body>
+</html>

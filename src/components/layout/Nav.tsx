@@ -11,6 +11,11 @@ export function Nav() {
   const isStory = pathname === "/our-story";
   const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
 
+  // The home-v2 homepage renders its own floating glass nav (ported from the
+  // approved mockup, incl. the brand-intro dock target). Skip the global nav
+  // there so the page doesn't show two navs; all other routes keep this one.
+  if (isHome) return null;
+
   return (
     <header
       className={`nav${isHome ? " nav--home" : " nav--solid"}`}
