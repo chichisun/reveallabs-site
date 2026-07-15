@@ -1,8 +1,8 @@
 import {
   INTERMISSION_VIDEO_URL,
   INTERMISSION_POSTER_URL,
-} from "@/lib/site-config";
-import { HeroWaitlist } from "@/components/sections/HeroWaitlist";
+} from "../lib/site-config";
+import { HeroWaitlist } from "./HeroWaitlist";
 
 export function Hero() {
   return (

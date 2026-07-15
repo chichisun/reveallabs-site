@@ -407,12 +407,20 @@ html[data-theme="dark"] .eyebrow {
 .nav--home .nav-link:hover {
   opacity: 0.8;
 }
-/* Push the CTA left of the fixed theme toggle — needed on every
-   route since the toggle is top-right on all pages. The green glass
-   pill works identically on both hero video and cream bg, so no
-   per-theme override is needed any more. */
-.nav-cta {
+/* Right cluster (desktop Log in + waitlist CTA) sits top-right and is
+   pushed left of the fixed theme toggle — needed on every route since the
+   toggle is top-right on all pages. */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
   margin-right: 56px;
+}
+/* Desktop shows the Log in in .nav-right (next to the toggle); the inline
+   copy inside .nav-links is for mobile only (toggled in the responsive
+   block below). */
+.nav-login-m {
+  display: none;
 }
 .nav--home .wordmark {
   color: #F2F1ED;
@@ -1072,6 +1080,10 @@ html[data-theme="dark"] .hero-waitlist-input::placeholder {
 @media (max-width: 900px) {
   .nav { padding: 20px 20px; }
   .nav .wordmark { font-size: 30px; letter-spacing: -1.2px; }
+  /* Mobile/tablet: hide the top-right Log in, show the inline one in the
+     links row (the fixed toggle leaves no room beside it on small screens). */
+  .nav-login-d { display: none; }
+  .nav-login-m { display: inline-flex; }
   .hero { padding: 96px 20px 72px; min-height: 88vh; }
   .hero h1 { font-size: 48px; letter-spacing: -1.8px; }
   .what-we-do { margin: 0 0 80px; padding: 0 60px; }
@@ -1107,6 +1119,30 @@ html[data-theme="dark"] .hero-waitlist-input::placeholder {
   .fc-stat { padding: 12px 0; }
   .fc-stat .num { font-size: 36px; }
   .site-footer { padding: 40px 24px 24px; }
+}
+
+/* Mobile nav fit: the theme toggle is fixed top-right, so the inline links
+   (Our Story / Blog / Log in) must clear it. Toggle is right-anchored while
+   the links are left-anchored, so the squeeze tightens as the viewport
+   narrows — tighten the gaps, then shrink the type + wordmark on the
+   smallest phones so all three links stay left of the toggle. Placed after
+   the responsive blocks above so these win by source order. */
+@media (max-width: 560px) {
+  .nav { padding: 20px 18px; }
+  .nav-left { gap: 20px; }
+  .nav-links { gap: 16px; }
+}
+@media (max-width: 400px) {
+  .nav-left { gap: 16px; }
+  .nav-links { gap: 13px; }
+  .nav-link { font-size: 12px; letter-spacing: 0.02em; }
+}
+@media (max-width: 360px) {
+  .nav { padding: 16px 12px; }
+  .nav .wordmark { font-size: 24px; }
+  .nav-left { gap: 10px; }
+  .nav-links { gap: 9px; }
+  .nav-link { font-size: 11px; }
 }
 
 /* ── Brand intro overlay ── */
@@ -3487,6 +3523,130 @@ html[data-theme="dark"] .waitlist-card::before {
 }
 [data-theme="dark"] .blog-subscribe-dot {
   color: var(--green-400);
+}
+
+/* ------------------------------------------------------------------ */
+/* Byline primitive (used by BlogCard / NewsCard / NewsWidget)        */
+/* ------------------------------------------------------------------ */
+.blog-byline {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+  margin: 0;
+}
+.blog-byline-name {
+  color: var(--charcoal);
+  font-weight: 500;
+}
+[data-theme="dark"] .blog-byline-name {
+  color: var(--cream);
+}
+
+/* Inline author callout in the post page meta row */
+.blog-article-meta-row .meta-author {
+  color: var(--charcoal);
+  font-weight: 500;
+}
+[data-theme="dark"] .blog-article-meta-row .meta-author {
+  color: var(--cream);
+}
+
+/* ------------------------------------------------------------------ */
+/* Subscribe form — receipt-paper layout                              */
+/* ------------------------------------------------------------------ */
+/* Lives inside `.ticket-paper-content` (290–380px wide). Stacks
+   vertically: tiny mono label, hairline-underlined input, liquid
+   glass primary button. */
+.subscribe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.subscribe-form-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: -4px;
+}
+.subscribe-form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--stroke);
+  border-radius: 0;
+  padding: 8px 0 10px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--charcoal);
+  caret-color: var(--green-700);
+  transition: border-color 180ms ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.subscribe-form-input::placeholder {
+  color: var(--muted);
+  opacity: 0.65;
+}
+.subscribe-form-input:hover {
+  border-bottom-color: rgba(46, 46, 46, 0.25);
+}
+.subscribe-form-input:focus {
+  outline: none;
+  border-bottom-color: var(--green-700);
+}
+.subscribe-form-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+[data-theme="dark"] .subscribe-form-input {
+  color: var(--cream);
+}
+[data-theme="dark"] .subscribe-form-input:focus {
+  border-bottom-color: var(--green-400);
+}
+.subscribe-form-button {
+  width: 100%;
+  margin-top: 6px;
+  /* Reuse .btn .btn-primary base — only override the box model the
+     pill needs to fit the receipt width. */
+  padding: 12px 24px;
+  font-size: 14px;
+  justify-content: center;
+}
+.subscribe-form-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+.subscribe-form-success {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--charcoal-soft);
+  margin: 4px 0 0;
+}
+.subscribe-form-success::before {
+  content: "✓";
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--green-700);
+  font-weight: 700;
+}
+[data-theme="dark"] .subscribe-form-success::before {
+  color: var(--green-400);
+}
+.subscribe-form-error {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+  color: #c23b22;
+  margin: 4px 0 0;
 }
 
 /* News widget — empty state (engine running, no live items yet) */

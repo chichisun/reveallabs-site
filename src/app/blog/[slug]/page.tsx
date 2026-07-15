@@ -83,6 +83,8 @@ export default async function BlogPostPage({ params }: Props) {
             )}
           </span>
           <span className="meta-mid">
+            By <span className="meta-author">{frontmatter.author}</span>
+            <span aria-hidden="true"> · </span>
             <time dateTime={frontmatter.publishDate}>
               {formatPublishDate(frontmatter.publishDate)}
             </time>

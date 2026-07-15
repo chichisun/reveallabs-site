@@ -31,6 +31,7 @@ export interface PublicNewsItem {
   id: string;
   slug: string;
   source_id: string;
+  source_name: string | null; // resolved from news_sources join; null if source row missing
   source_url: string;
   headline_verbatim: string;
   headline_friendly: string | null;
@@ -52,8 +53,27 @@ export interface PublicNewsSource {
   unhealthy: boolean;
 }
 
+// Base columns on news_items; also join news_sources to get the human-readable
+// source name for bylines. Supabase PostgREST returns the joined rows as an
+// array (even for many-to-one); we flatten via normalizeItem().
 const ITEM_COLS =
-  "id, slug, source_id, source_url, headline_verbatim, headline_friendly, what_it_means, what_to_do, category, region, tier, published_at";
+  "id, slug, source_id, source_url, headline_verbatim, headline_friendly, what_it_means, what_to_do, category, region, tier, published_at, news_sources(name)";
+
+// Supabase infers news_sources as an array; cast through unknown so we can
+// handle both the array form (FK join) and null gracefully.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function normalizeItem(raw: any): PublicNewsItem {
+  const { news_sources, ...rest } = raw as Record<string, unknown> & {
+    news_sources: Array<{ name: string }> | { name: string } | null;
+  };
+  let source_name: string | null = null;
+  if (Array.isArray(news_sources)) {
+    source_name = news_sources[0]?.name ?? null;
+  } else if (news_sources && typeof news_sources === "object") {
+    source_name = (news_sources as { name: string }).name ?? null;
+  }
+  return { ...(rest as Omit<PublicNewsItem, "source_name">), source_name };
+}
 
 export async function getTopLiveItems(limit = 3): Promise<PublicNewsItem[]> {
   const { data } = await newsDb()
@@ -62,7 +82,7 @@ export async function getTopLiveItems(limit = 3): Promise<PublicNewsItem[]> {
     .eq("status", "live")
     .order("published_at", { ascending: false })
     .limit(limit);
-  return (data ?? []) as PublicNewsItem[];
+  return (data ?? []).map(normalizeItem);
 }
 
 export async function getLiveItemsPaged(opts: {
@@ -75,7 +95,10 @@ export async function getLiveItemsPaged(opts: {
     .eq("status", "live")
     .order("published_at", { ascending: false })
     .range(opts.offset, opts.offset + opts.limit - 1);
-  return { items: (data ?? []) as PublicNewsItem[], total: count ?? 0 };
+  return {
+    items: (data ?? []).map(normalizeItem),
+    total: count ?? 0,
+  };
 }
 
 export async function getItemBySlug(
@@ -87,7 +110,7 @@ export async function getItemBySlug(
     .eq("slug", slug)
     .eq("status", "live")
     .maybeSingle();
-  return (data ?? null) as PublicNewsItem | null;
+  return data ? normalizeItem(data) : null;
 }
 
 export async function getAllSources(): Promise<PublicNewsSource[]> {

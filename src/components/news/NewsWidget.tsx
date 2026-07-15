@@ -7,6 +7,7 @@ import {
   getMostRecentLiveAt,
   getAllSources,
 } from "@/lib/news-db";
+import { Byline } from "@/components/blog/Byline";
 
 const getCached = unstable_cache(
   async () => {
@@ -108,14 +109,11 @@ export async function NewsWidget() {
             </h3>
             <p className="news-widget-hook">{firstSentence(item.what_it_means)}</p>
             <p className="news-widget-source">
-              <span>via</span> <span className="news-widget-source-name">{item.source_id}</span>
-              <span className="news-widget-source-sep">·</span>
-              <time dateTime={item.published_at}>
-                {new Date(item.published_at)
-                  .toISOString()
-                  .slice(0, 10)
-                  .replace(/-/g, ".")}
-              </time>
+              <Byline
+                kind="news"
+                sourceName={item.source_name ?? item.source_id}
+                capturedAt={item.published_at}
+              />
               <span className="news-widget-source-sep">·</span>
               <span className="news-widget-readmore">Read it →</span>
             </p>
