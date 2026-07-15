@@ -11,10 +11,11 @@ export function Nav() {
   const isStory = pathname === "/our-story";
   const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
 
-  // The home-v2 homepage renders its own floating glass nav (ported from the
-  // approved mockup, incl. the brand-intro dock target). Skip the global nav
-  // there so the page doesn't show two navs; all other routes keep this one.
-  if (isHome) return null;
+  // The home-v2 homepage, story-v2 /our-story page, and blog-v2 /blog index
+  // render their own floating nav (the shared <SiteNav />, ported from the
+  // approved mockups). Skip the global nav there so those pages don't show
+  // two navs. /blog/[slug] and other nested blog routes keep this one.
+  if (isHome || isStory || pathname === "/blog") return null;
 
   return (
     <header

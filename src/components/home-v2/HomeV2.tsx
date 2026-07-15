@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { HomeWaitlist } from "./HomeWaitlist";
+import { SiteNav } from "./SiteNav";
 
 /**
  * Supy visual pass homepage, ported 1:1 from
@@ -12,6 +13,36 @@ import { HomeWaitlist } from "./HomeWaitlist";
  * The two dummy waitlist forms are replaced by <HomeWaitlist /> (real
  * /api/waitlist submission, identical pill markup).
  */
+
+const ICN_CHECK = '<svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+const ICN_WARN = '<svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 20h16a2 2 0 0 0 1.73-2z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>';
+
+/* stroke icons: replace raw emoji glyphs so badges read as designed UI, not chat text */
+function IcCheck() {
+  return (
+    <svg className="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+function IcWarn() {
+  return (
+    <svg className="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 20h16a2 2 0 0 0 1.73-2z" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </svg>
+  );
+}
+function IcLock() {
+  return (
+    <svg className="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3.5" y="11" width="17" height="10" rx="2.5" />
+      <path d="M7.5 11V7a4.5 4.5 0 0 1 9 0v4" />
+    </svg>
+  );
+}
+
 export function HomeV2() {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -22,23 +53,7 @@ export function HomeV2() {
     const cleanups: Array<() => void> = [];
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* ---------- nav burger (mockup IIFE #1) ---------- */
-    (() => {
-      const b = document.getElementById("navBurger");
-      const m = document.getElementById("navMenu");
-      if (!b || !m) return;
-      const onBurger = () => {
-        const open = m.classList.toggle("open");
-        b.setAttribute("aria-expanded", String(open));
-      };
-      b.addEventListener("click", onBurger);
-      cleanups.push(() => b.removeEventListener("click", onBurger));
-      const closeMenu = () => m.classList.remove("open");
-      m.querySelectorAll("a").forEach((a) => {
-        a.addEventListener("click", closeMenu);
-        cleanups.push(() => a.removeEventListener("click", closeMenu));
-      });
-    })();
+    /* nav burger + scrolled state now live in <SiteNav /> */
 
     /* ---------- how-it-works scroll takeover (mockup IIFE #2) ---------- */
     (() => {
@@ -319,7 +334,7 @@ export function HomeV2() {
         const resolved = t3 > 0.93;
         chips[3].classList.toggle("recv", resolved);
         const fbBadge = chips[3].querySelector("i");
-        if (fbBadge) fbBadge.innerHTML = resolved ? "✓" : "⚠";
+        if (fbBadge) fbBadge.innerHTML = resolved ? ICN_CHECK : ICN_WARN;
 
         el("audHint")!.style.opacity = String((p > 0.9 ? 0 : 1) * (p > 0.02 ? 1 : 0));
       };
@@ -458,12 +473,6 @@ export function HomeV2() {
       tickerTrack.dataset.duped = "1";
       tickerTrack.innerHTML += tickerTrack.innerHTML;
     }
-
-    // nav shadow once scrolled past the top
-    const navEl = root.querySelector("nav");
-    const onNavScroll = () => navEl && navEl.classList.toggle("scrolled", scrollY > 40);
-    addEventListener("scroll", onNavScroll, { passive: true });
-    cleanups.push(() => removeEventListener("scroll", onNavScroll));
 
     // ---------- brand intro: food icons arrive, tumble into "reveal.", dock to the nav ----------
     (function () {
@@ -697,29 +706,7 @@ export function HomeV2() {
 
   return (
     <div className="homev2" ref={rootRef}>
-      <nav aria-label="Main">
-        <a className="logo" href="#">
-          reveal<em>.</em>
-        </a>
-        <div className="nav-links">
-          <a href="#how">How it works</a>
-          <a href="/our-story">Our story</a>
-          <a href="/blog">Blog</a>
-          <a className="btn btn-primary" href="#closer">
-            Join the waitlist
-          </a>
-          <button className="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-          </button>
-        </div>
-        <div className="nav-menu" id="navMenu">
-          <a href="#how">How it works</a>
-          <a href="/our-story">Our story</a>
-          <a href="/blog">Blog</a>
-        </div>
-      </nav>
+      <SiteNav page="home" />
 
       {/* ================= HERO ================= */}
       <header className="hero">
@@ -746,7 +733,7 @@ export function HomeV2() {
           </p>
           <HomeWaitlist source="hero_inline" />
           <div className="proof-chip">
-            <span className="tick">✓</span>
+            <span className="tick"><IcCheck /></span>
             <span>
               <strong>$1,297.87</strong> caught at Tuk Tuk Thai Grill in month one.
             </span>
@@ -946,7 +933,7 @@ export function HomeV2() {
                 <div className="amt tnum">
                   $1,240<span className="unit">leaking</span>
                 </div>
-                <div className="recovered tnum">✓ $1,247 recovered</div>
+                <div className="recovered tnum"><IcCheck /> $1,247 recovered</div>
               </div>
               <div className="p-listhead">
                 <span>OPEN LEAKS</span>
@@ -1012,28 +999,28 @@ export function HomeV2() {
         <div className="ticker-band" aria-hidden="true" style={{ marginBottom: "70px" }}>
           <div className="ticker-track" id="tickerTrack">
             <span className="tick-item">
-              <span className="ok">✓</span> Produce invoice #48211 <small>checked against your price list</small>
+              <span className="ok"><IcCheck /></span> Produce invoice #48211 <small>checked against your price list</small>
             </span>
             <span className="tick-item">
-              <span className="warn-i">⚠</span> Onion, 50 lb <small>+72% vs last three invoices</small>
+              <span className="warn-i"><IcWarn /></span> Onion, 50 lb <small>+72% vs last three invoices</small>
             </span>
             <span className="tick-item">
-              <span className="ok">✓</span> Delivery payout, Mar 12 <small>matched POS sales</small>
+              <span className="ok"><IcCheck /></span> Delivery payout, Mar 12 <small>matched POS sales</small>
             </span>
             <span className="tick-item">
-              <span className="warn-i">⚠</span> Delivery payout, Mar 14 <small>$312.40 short</small>
+              <span className="warn-i"><IcWarn /></span> Delivery payout, Mar 14 <small>$312.40 short</small>
             </span>
             <span className="tick-item">
-              <span className="ok">✓</span> Linen service invoice <small>matched your contract</small>
+              <span className="ok"><IcCheck /></span> Linen service invoice <small>matched your contract</small>
             </span>
             <span className="tick-item">
-              <span className="ok">✓</span> Card processing fees, Feb <small>matched your agreement</small>
+              <span className="ok"><IcCheck /></span> Card processing fees, Feb <small>matched your agreement</small>
             </span>
             <span className="tick-item">
-              <span className="warn-i">⚠</span> Lease CAM charge, Q1 <small>escalation math off by $89.12/mo</small>
+              <span className="warn-i"><IcWarn /></span> Lease CAM charge, Q1 <small>escalation math off by $89.12/mo</small>
             </span>
             <span className="tick-item">
-              <span className="ok">✓</span> Dairy invoice #4471 <small>checked against your price list</small>
+              <span className="ok"><IcCheck /></span> Dairy invoice #4471 <small>checked against your price list</small>
             </span>
           </div>
         </div>
@@ -1054,7 +1041,7 @@ export function HomeV2() {
           <div className="pain-card reveal-in" style={{ "--i": 0 } as React.CSSProperties}>
             <div className="pc-top">
               <span className="pc-id">Finding 03 · Vendor</span>
-              <span className="pc-real">✓ Real</span>
+              <span className="pc-real"><IcCheck /> Real</span>
             </div>
             <div className="num" data-count="72" data-prefix="+" data-suffix="%">
               +72%
@@ -1068,7 +1055,7 @@ export function HomeV2() {
           <div className="pain-card reveal-in" style={{ "--i": 1 } as React.CSSProperties}>
             <div className="pc-top">
               <span className="pc-id">Finding 11 · Payout</span>
-              <span className="pc-real">✓ Real</span>
+              <span className="pc-real"><IcCheck /> Real</span>
             </div>
             <div className="num" data-count="312.40" data-prefix="$" data-decimals="2">
               $312.40
@@ -1082,7 +1069,7 @@ export function HomeV2() {
           <div className="pain-card reveal-in" style={{ "--i": 2 } as React.CSSProperties}>
             <div className="pc-top">
               <span className="pc-id">Finding 17 · Lease</span>
-              <span className="pc-real">✓ Real</span>
+              <span className="pc-real"><IcCheck /> Real</span>
             </div>
             <div className="num" data-count="89.12" data-prefix="$" data-decimals="2" data-suffix="/mo">
               $89.12/mo
@@ -1150,16 +1137,16 @@ export function HomeV2() {
             </div>
             <div className="aud-dock" id="audDock">
               <span className="aud-dchip" id="audD0">
-                Delivery payouts<i className="w">⚠</i>
+                Delivery payouts<i className="w"><IcWarn /></i>
               </span>
               <span className="aud-dchip" id="audD1">
-                Lease &amp; rent<i className="w">⚠</i>
+                Lease &amp; rent<i className="w"><IcWarn /></i>
               </span>
               <span className="aud-dchip" id="audD2">
-                Deadlines &amp; renewals<i className="k">✓</i>
+                Deadlines &amp; renewals<i className="k"><IcCheck /></i>
               </span>
               <span className="aud-dchip" id="audD3">
-                F&amp;B invoices<i className="w">⚠</i>
+                F&amp;B invoices<i className="w"><IcWarn /></i>
               </span>
             </div>
             <div className="aud-scene">
@@ -1193,7 +1180,7 @@ export function HomeV2() {
                   </span>
                 </span>
                 <span className="aud-rolock" id="audLock">
-                  🔒 Read-only. Reveal can look, never touch.
+                  <IcLock /> Read-only. Reveal can look, never touch.
                 </span>
                 <div className="aud-scrap" data-i="0">
                   <span className="aud-k">
@@ -1250,16 +1237,16 @@ export function HomeV2() {
                   <b className="aud-n">$1.06/lb</b>
                 </div>
                 <span className="aud-pairb w" data-p="0">
-                  ⚠
+                  <IcWarn />
                 </span>
                 <span className="aud-pairb w" data-p="1">
-                  ⚠
+                  <IcWarn />
                 </span>
                 <span className="aud-pairb k" data-p="2">
-                  ✓
+                  <IcCheck />
                 </span>
                 <span className="aud-pairb w" data-p="3">
-                  ⚠
+                  <IcWarn />
                 </span>
                 <div className="aud-proof" id="audProof">
                   <div className="aud-rlabel">Finding · onion 50 lb, invoice #48211</div>
@@ -1291,7 +1278,7 @@ export function HomeV2() {
                   <div className="aud-nline" style={{ width: "40%" }}></div>
                 </div>
                 <span className="aud-sent" id="audSent">
-                  ✓ Sent
+                  <IcCheck /> Sent
                 </span>
                 <span className="aud-money" id="audMoney">
                   $214.60
@@ -1403,15 +1390,15 @@ export function HomeV2() {
             <div className="vig vig-feed" aria-hidden="true">
               <div className="vrow2">
                 <span>Produce invoice #48211</span>
-                <span className="tick">✓</span>
+                <span className="tick"><IcCheck /></span>
               </div>
               <div className="vrow2">
                 <span>Delivery payout, Mar 12</span>
-                <span className="tick">✓</span>
+                <span className="tick"><IcCheck /></span>
               </div>
               <div className="vrow2">
                 <span>Card processing fees, Feb</span>
-                <span className="tick">✓</span>
+                <span className="tick"><IcCheck /></span>
               </div>
             </div>
           </div>

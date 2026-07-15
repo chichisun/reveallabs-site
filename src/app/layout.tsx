@@ -11,6 +11,8 @@ import { Nav } from "@/components/layout/Nav";
 import { AnalyticsBoot } from "@/components/layout/AnalyticsBoot";
 import "./globals.css";
 import "@/styles/home-v2.css";
+import "@/styles/story-v2.css";
+import "@/styles/blog-v2.css";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
