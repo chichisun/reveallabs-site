@@ -14,10 +14,10 @@
 .homev2 {
   --cream: #F2F1ED;
   --cream-lifted: #FCFBFA;
-  --white: #FFFFFF;
+  --white: #FEFDFB;
   --charcoal: #2E2E2E;
   --charcoal-soft: #3D3D3D;
-  --muted: #797979;
+  --muted: #6F6E69;
   --light: #B5AFA6;
   --stroke: rgba(46, 46, 46, 0.10);
   --green-900: #1E3522;
@@ -947,8 +947,21 @@
   display: flex; align-items: center; justify-content: space-between;
   color: var(--muted); font-size: 15px;
 }
-.homev2 footer a { color: var(--muted); text-decoration: none; margin-left: 22px; }
+.homev2 footer a { color: var(--muted); text-decoration: none; margin-left: 22px; white-space: nowrap; }
 .homev2 footer a:hover { color: var(--charcoal); }
+.homev2 footer span { white-space: nowrap; }
+@media (max-width: 900px) {
+  .homev2 footer {
+    flex-direction: column; gap: 18px; text-align: center;
+    padding: 30px 20px 40px;
+  }
+  .homev2 footer > div {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
+    column-gap: 22px; row-gap: 8px;
+  }
+  .homev2 footer a { margin-left: 0; }
+  .homev2 footer span { margin-left: 0 !important; flex-basis: 100%; }
+}
 
 /* ---------- motion ---------- */
 /* scroll entry (staggered via --i) */
@@ -1443,4 +1456,30 @@ html.intro-pending .homev2 .hero .dash-stage { animation-play-state: paused; }
   margin: 10px auto 0;
   font-size: 13.5px;
   color: #F3B3A3;
+}
+
+
+/* ---------- polish: keyboard focus, touch targets ---------- */
+.homev2 a:focus-visible,
+.homev2 button:focus-visible,
+.homev2 input:focus-visible {
+  outline: 2px solid var(--green-700);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.homev2 .hero a:focus-visible,
+.homev2 .hero button:focus-visible,
+.homev2 .hero input:focus-visible,
+.homev2 .aud-stage a:focus-visible,
+.homev2 .closer a:focus-visible,
+.homev2 .closer button:focus-visible,
+.homev2 .closer input:focus-visible,
+.homev2 nav:not(.scrolled) a:focus-visible,
+.homev2 nav:not(.scrolled) button:focus-visible {
+  outline-color: var(--cream);
+}
+.homev2 .waitlist input:focus-visible { outline: none; } /* the pill's focus-within border carries it */
+.homev2 .nav-burger { padding: 11px; margin: -4px 0; }
+@media (max-width: 900px) {
+  .homev2 footer a { padding: 6px 2px; }
 }

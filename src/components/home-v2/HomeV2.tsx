@@ -874,7 +874,7 @@ export function HomeV2() {
                     <span className="mono">PS</span>
                     <div className="what">
                       <b>Produce Supplier</b>
-                      <span>Case price crept up — $48 vs the $39 you usually pay</span>
+                      <span>Case price crept up: $48 vs the $39 you usually pay</span>
                     </div>
                     <span className="amt tnum">
                       −$184<small>today</small>
@@ -887,7 +887,7 @@ export function HomeV2() {
                     <span className="mono dp">DP</span>
                     <div className="what">
                       <b>Delivery Platform</b>
-                      <span>Payout was $4,210 — your orders say $4,552</span>
+                      <span>Payout was $4,210. Your orders say $4,552</span>
                     </div>
                     <span className="amt tnum">
                       −$342<small>May 15</small>
