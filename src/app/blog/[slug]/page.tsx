@@ -5,15 +5,16 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { Footer } from "../../../components/Footer";
-import { BlogSubscribeBlock } from "../../../components/BlogSubscribeBlock";
-import { WaitlistDialog } from "../../../components/WaitlistDialog";
+import { Footer } from "@/components/layout/Footer";
+import { BlogSubscribeBlock } from "@/components/blog/BlogSubscribeBlock";
+import { WaitlistDialog } from "@/components/waitlist/WaitlistDialog";
+import { NewsSubscribeDialog } from "@/components/news/NewsSubscribeDialog";
 import {
   getAllPostSlugs,
   getPostBySlug,
   formatPublishDate,
-} from "../../../lib/blog";
-import { SITE_URL } from "../../../lib/site-config";
+} from "@/lib/blog";
+import { SITE_URL } from "@/lib/site-config";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -143,6 +144,7 @@ export default async function BlogPostPage({ params }: Props) {
       <BlogSubscribeBlock />
       <Footer />
       <WaitlistDialog />
+      <NewsSubscribeDialog source="blog-post" />
     </>
   );
 }

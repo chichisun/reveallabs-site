@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { POLICY_EFFECTIVE_DATE } from "../../lib/site-config";
+import { POLICY_EFFECTIVE_DATE } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Privacy — reveal.",

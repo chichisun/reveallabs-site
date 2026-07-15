@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Space_Mono } from "next/font/google";
+import { Space_Grotesk, Space_Mono, Inter, Fustat } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import {
   SITE_URL,
   SITE_TITLE,
   SITE_DESCRIPTION,
   SITE_NAME,
-} from "../lib/site-config";
-import { Nav } from "../components/Nav";
+} from "@/lib/site-config";
+import { Nav } from "@/components/layout/Nav";
+import { AnalyticsBoot } from "@/components/layout/AnalyticsBoot";
 import "./globals.css";
+import "@/styles/home-v2.css";
+import "@/styles/story-v2.css";
+import "@/styles/blog-v2.css";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -21,6 +25,27 @@ const spaceMono = Space_Mono({
   variable: "--font-space-mono",
   subsets: ["latin"],
   weight: ["400", "700"],
+  display: "swap",
+});
+
+// Inter is loaded only so the dashboard preview's phone interior can use the
+// real product font. Exposed as a CSS variable and applied ONLY inside
+// `.reveal-app-preview` (see dashboard-preview/preview.css) — the rest of the
+// site keeps Space Grotesk.
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+// Fustat is the homepage (home-v2) typeface — a variable font, loaded across
+// its full 200..800 weight range and exposed as --font-fustat. Applied only
+// inside `.homev2` (see src/styles/home-v2.css).
+const fustat = Fustat({
+  variable: "--font-fustat",
+  subsets: ["latin"],
+  weight: "variable",
   display: "swap",
 });
 
@@ -90,7 +115,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${spaceMono.variable} antialiased`}
+      className={`${spaceGrotesk.variable} ${spaceMono.variable} ${inter.variable} ${fustat.variable} antialiased`}
       suppressHydrationWarning
     >
       <head>
@@ -100,6 +125,7 @@ export default function RootLayout({
         <Nav />
         {children}
         <Analytics />
+        <AnalyticsBoot />
       </body>
     </html>
   );

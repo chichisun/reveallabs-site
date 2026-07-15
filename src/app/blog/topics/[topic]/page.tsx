@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Footer } from "../../../../components/Footer";
-import { BlogSubscribeBlock } from "../../../../components/BlogSubscribeBlock";
-import { WaitlistDialog } from "../../../../components/WaitlistDialog";
+import { Footer } from "@/components/layout/Footer";
+import { BlogSubscribeBlock } from "@/components/blog/BlogSubscribeBlock";
+import { WaitlistDialog } from "@/components/waitlist/WaitlistDialog";
+import { NewsSubscribeDialog } from "@/components/news/NewsSubscribeDialog";
 import {
   BLOG_TOPICS,
   getTopic,
   topicSlugs,
-} from "../../../../lib/blog-topics";
-import { getPostsByTopic, formatPublishDate } from "../../../../lib/blog";
-import { SITE_URL } from "../../../../lib/site-config";
+} from "@/lib/blog-topics";
+import { getPostsByTopic, formatPublishDate } from "@/lib/blog";
+import { SITE_URL } from "@/lib/site-config";
 
 type Props = {
   params: Promise<{ topic: string }>;
@@ -134,6 +135,7 @@ export default async function BlogTopicPage({ params }: Props) {
       <BlogSubscribeBlock />
       <Footer />
       <WaitlistDialog />
+      <NewsSubscribeDialog source="blog-topic" />
     </>
   );
 }

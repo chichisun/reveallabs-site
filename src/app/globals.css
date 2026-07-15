@@ -754,130 +754,8 @@ html[data-theme="dark"] .hero-waitlist-input::placeholder {
 .what-we-do-inner {
   width: 100%;
 }
-/* SCROLL-DRIVEN ANIMATION COMBO:
-   - Each lede line wipes L→R as you scroll past it (clip-path)
-   - Green rule draws after both lines complete
-   - Body paragraphs each wipe as they enter view
-   - Native scroll-timeline where supported; IntersectionObserver fallback */
 .what-we-do-lede {
   position: relative;
-}
-.what-we-do-lede .lede-line {
-  display: block;
-  clip-path: inset(0 100% 0 0);
-  will-change: clip-path;
-}
-.what-we-do-lede::after {
-  content: "";
-  display: block;
-  width: 160px;
-  height: 2px;
-  background: var(--green-700);
-  margin-top: 32px;
-  transform: scaleX(0);
-  transform-origin: left;
-  will-change: transform;
-}
-.what-we-do-body {
-  clip-path: inset(0 100% 0 0);
-  will-change: clip-path;
-}
-
-/* Modern browsers: each element animates over a long scroll range so the
-   reveal continues throughout the user's scroll past it — completing only
-   as the section settles into its natural reading position. */
-@supports (animation-timeline: view()) {
-  .what-we-do-lede .lede-line:nth-child(1) {
-    animation: wipe-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 18%;
-  }
-  .what-we-do-lede .lede-line:nth-child(2) {
-    animation: wipe-in linear both;
-    animation-timeline: view();
-    animation-range: entry 5% cover 25%;
-  }
-  .what-we-do-lede::after {
-    animation: rule-draw linear both;
-    animation-timeline: view();
-    animation-range: entry 15% cover 32%;
-  }
-  .what-we-do-body:nth-of-type(1) {
-    animation: wipe-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 28%;
-  }
-  .what-we-do-body:nth-of-type(2) {
-    animation: wipe-in linear both;
-    animation-timeline: view();
-    animation-range: entry 5% cover 35%;
-  }
-  .what-we-do-body:nth-of-type(3) {
-    animation: wipe-in linear both;
-    animation-timeline: view();
-    animation-range: entry 10% cover 42%;
-  }
-  .what-we-do-body:nth-of-type(4) {
-    animation: wipe-in linear both;
-    animation-timeline: view();
-    animation-range: entry 15% cover 49%;
-  }
-}
-@keyframes wipe-in {
-  to { clip-path: inset(0 0 0 0); }
-}
-@keyframes rule-draw {
-  to { transform: scaleX(1); }
-}
-
-/* Fallback for browsers without scroll-timeline support */
-@supports not (animation-timeline: view()) {
-  .what-we-do-lede .lede-line {
-    transition: clip-path 900ms cubic-bezier(0.77, 0, 0.18, 1);
-  }
-  .what-we-do-body {
-    transition: clip-path 800ms cubic-bezier(0.77, 0, 0.18, 1);
-  }
-  .what-we-do-lede::after {
-    transition: transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .what-we-do.is-visible .lede-line:nth-child(1) { clip-path: inset(0 0 0 0); }
-  .what-we-do.is-visible .lede-line:nth-child(2) {
-    clip-path: inset(0 0 0 0);
-    transition-delay: 220ms;
-  }
-  .what-we-do.is-visible .what-we-do-lede::after {
-    transform: scaleX(1);
-    transition-delay: 420ms;
-  }
-  .what-we-do.is-visible .what-we-do-body:nth-of-type(1) {
-    clip-path: inset(0 0 0 0);
-    transition-delay: 580ms;
-  }
-  .what-we-do.is-visible .what-we-do-body:nth-of-type(2) {
-    clip-path: inset(0 0 0 0);
-    transition-delay: 720ms;
-  }
-  .what-we-do.is-visible .what-we-do-body:nth-of-type(3) {
-    clip-path: inset(0 0 0 0);
-    transition-delay: 860ms;
-  }
-  .what-we-do.is-visible .what-we-do-body:nth-of-type(4) {
-    clip-path: inset(0 0 0 0);
-    transition-delay: 1000ms;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .what-we-do-lede .lede-line,
-  .what-we-do-lede::after,
-  .what-we-do-body {
-    clip-path: none !important;
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
-  }
-}
-.what-we-do-lede {
   font-family: var(--font-space-grotesk), sans-serif;
   font-size: 64px;
   font-weight: 700;
@@ -887,6 +765,17 @@ html[data-theme="dark"] .hero-waitlist-input::placeholder {
   margin: 0 0 88px;
   text-wrap: balance;
   text-align: left;
+}
+.what-we-do-lede .lede-line {
+  display: block;
+}
+.what-we-do-lede::after {
+  content: "";
+  display: block;
+  width: 160px;
+  height: 2px;
+  background: var(--green-700);
+  margin-top: 32px;
 }
 .what-we-do-body-wrap {
   display: grid;
@@ -1491,6 +1380,51 @@ html.intro-pending .theme-toggle { visibility: hidden; }
   }
 }
 
+/* ── Log in link (fixed, sits just left of the theme toggle) ── */
+.nav-login {
+  position: fixed;
+  top: 20px;
+  right: 76px; /* 24 (toggle right) + 40 (toggle width) + 12 (gap) */
+  z-index: 100;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  background: var(--cream-lifted);
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  box-shadow: 0 2px 12px rgba(46, 46, 46, 0.08);
+}
+.nav-login:hover {
+  border-color: var(--charcoal);
+  transform: scale(1.05);
+}
+.nav-login:focus-visible {
+  outline: 2px solid var(--green-700);
+  outline-offset: 3px;
+}
+html.intro-pending .nav-login { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  html.intro-pending .nav-login { visibility: visible; }
+}
+@media (max-width: 560px) {
+  .nav-login {
+    top: 16px;
+    right: 62px; /* 16 + 36 + 10 */
+    height: 36px;
+    padding: 0 12px;
+    font-size: 0.8125rem;
+  }
+}
 .intro-replay svg {
   width: 18px;
   height: 18px;
@@ -3727,6 +3661,101 @@ html[data-theme="dark"] .waitlist-card::before {
   max-width: 56ch;
   margin: 0 auto 16px;
   line-height: 1.55;
+}
+
+/* ---------------------------------------------------------------- */
+/* News subscribe — confirm pages + archive callout                  */
+/* ---------------------------------------------------------------- */
+
+.news-confirm-page {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  background: var(--cream);
+  color: var(--ink);
+}
+[data-theme="dark"] .news-confirm-page {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.news-confirm-card {
+  max-width: 480px;
+  text-align: center;
+  font-family: var(--font-sans);
+}
+.news-confirm-card h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 1.15;
+  margin: 0 0 16px;
+}
+.news-confirm-card p {
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+.news-confirm-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--green-500) 18%, transparent);
+  color: var(--green-700);
+  margin: 0 auto 24px;
+}
+[data-theme="dark"] .news-confirm-check {
+  color: var(--green-300);
+}
+.news-confirm-link {
+  font-size: 15px;
+  color: var(--ink);
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+}
+[data-theme="dark"] .news-confirm-link {
+  color: var(--cream);
+}
+.news-confirm-link:hover {
+  color: var(--green-700);
+}
+[data-theme="dark"] .news-confirm-link:hover {
+  color: var(--green-300);
+}
+
+.news-subscribe-callout {
+  padding: 56px 24px;
+  background: color-mix(in srgb, var(--green-500) 8%, var(--cream));
+  border-top: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+}
+[data-theme="dark"] .news-subscribe-callout {
+  background: color-mix(in srgb, var(--green-500) 14%, var(--ink));
+  border-top-color: color-mix(in srgb, var(--cream) 10%, transparent);
+}
+.news-subscribe-callout-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-sans);
+}
+.news-subscribe-callout h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+.news-subscribe-callout p {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0 0 20px;
 }
 
 /* ============================================================================

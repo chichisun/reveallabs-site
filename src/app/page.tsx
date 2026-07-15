@@ -1,25 +1,5 @@
-import { Hero } from "../components/Hero";
-import { DashboardPreview } from "../components/dashboard-preview/DashboardPreview";
-import { Scrollytelling } from "../components/Scrollytelling";
-import { WhatWeDo } from "../components/WhatWeDo";
-import { FinalCTA } from "../components/FinalCTA";
-import { Footer } from "../components/Footer";
-import { Intro } from "../components/Intro";
-import { IntroReplay } from "../components/IntroReplay";
-import { WaitlistDialog } from "../components/WaitlistDialog";
+import { HomeV2 } from "@/components/home-v2/HomeV2";
 
 export default function Home() {
-  return (
-    <>
-      <Intro />
-      <IntroReplay />
-      <Hero />
-      <DashboardPreview />
-      <Scrollytelling />
-      <WhatWeDo />
-      <FinalCTA />
-      <Footer />
-      <WaitlistDialog />
-    </>
-  );
+  return <HomeV2 />;
 }

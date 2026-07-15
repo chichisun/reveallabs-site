@@ -1,5 +1,5 @@
-import { getAllPosts } from "../../../lib/blog";
-import { SITE_URL } from "../../../lib/site-config";
+import { getAllPosts } from "@/lib/blog";
+import { SITE_URL } from "@/lib/site-config";
 
 /**
  * RSS 2.0 feed for the blog at /blog/rss.xml.

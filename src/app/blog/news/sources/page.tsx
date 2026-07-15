@@ -6,9 +6,9 @@ import { unstable_cache } from "next/cache";
 import {
   getAllSources,
   type PublicNewsSource,
-} from "../../../../lib/news-db";
-import { Footer } from "../../../../components/Footer";
-import { SITE_URL } from "../../../../lib/site-config";
+} from "@/lib/news-db";
+import { Footer } from "@/components/layout/Footer";
+import { SITE_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "What we monitor · Restaurant Insights — reveal.",

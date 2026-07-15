@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Footer } from "../../components/Footer";
-import { OurStory } from "../../components/OurStory";
+import { Footer } from "@/components/layout/Footer";
+import { StoryV2 } from "@/components/story-v2/StoryV2";
 
 export const metadata: Metadata = {
   title: "Our Story — reveal.",
@@ -11,17 +11,7 @@ export const metadata: Metadata = {
 export default function OurStoryPage() {
   return (
     <>
-      <header className="our-story-header">
-        <div className="our-story-header-inner">
-          <h1 className="our-story-heading">Our Story</h1>
-          <p className="our-story-lede">Three generations, one kitchen.</p>
-        </div>
-      </header>
-      <main className="our-story-main">
-        <div className="our-story-main-inner">
-          <OurStory />
-        </div>
-      </main>
+      <StoryV2 />
       <Footer />
     </>
   );

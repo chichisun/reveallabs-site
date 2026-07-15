@@ -3,9 +3,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { unstable_cache } from "next/cache";
-import { getLiveItemsPaged, type PublicNewsItem } from "../../../lib/news-db";
-import { Footer } from "../../../components/Footer";
-import { SITE_URL } from "../../../lib/site-config";
+import { getLiveItemsPaged, type PublicNewsItem } from "@/lib/news-db";
+import { Footer } from "@/components/layout/Footer";
+import { NewsSubscribeDialog } from "@/components/news/NewsSubscribeDialog";
+import { NewsSubscribeTrigger } from "@/components/news/NewsSubscribeTrigger";
+import { SITE_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "News · Restaurant Insights — reveal.",
@@ -188,7 +190,21 @@ export default async function NewsArchivePage(props: {
           )}
         </div>
       </main>
+
+      <section className="news-subscribe-callout">
+        <div className="news-subscribe-callout-inner">
+          <h2>Get this in your inbox.</h2>
+          <p>
+            One email when something useful happens. No drip. No padding.
+          </p>
+          <NewsSubscribeTrigger className="btn btn-primary">
+            Subscribe to reveal. news
+          </NewsSubscribeTrigger>
+        </div>
+      </section>
+
       <Footer />
+      <NewsSubscribeDialog source="news-archive" />
     </>
   );
 }

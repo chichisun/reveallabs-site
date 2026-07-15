@@ -2,7 +2,7 @@
 // Renders the pending item exactly as it would appear on the widget,
 // with Approve / Reject buttons that POST through /api/news/decide.
 import { createClient } from "@supabase/supabase-js";
-import { verifyReviewToken } from "../../../../../lib/news-jwt";
+import { verifyReviewToken } from "@/lib/news-jwt";
 
 export const dynamic = "force-dynamic";
 
