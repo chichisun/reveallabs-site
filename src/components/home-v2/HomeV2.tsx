@@ -82,6 +82,11 @@ export function HomeV2() {
       const wires = [el("audW0")!, el("audW1")!, el("audW2")!, el("audW3")!];
       const scraps = [...track.querySelectorAll<HTMLElement>(".aud-scrap")];
       const pairbs = [...track.querySelectorAll<HTMLElement>(".aud-pairb")];
+      // Audit beat shows this many reconcile examples (derived from the DOM so
+      // it stays in sync with the markup). The last pair is the "hero" that
+      // merges into the beat-3 payoff.
+      const NPAIR = pairbs.length;
+      const LAST = NPAIR - 1;
       const proof = el("audProof")!;
       const disp = el("audDisp")!;
       const sentpill = el("audSent")!;
@@ -118,16 +123,12 @@ export function HomeV2() {
       ];
       const scatter = [
         { x: -0.34, y: -0.2, r: -7 },
-        { x: 0.26, y: -0.24, r: 5 },
-        { x: -0.12, y: -0.05, r: 4 },
-        { x: 0.38, y: -0.03, r: -4 },
-        { x: -0.31, y: 0.14, r: 6 },
-        { x: 0.09, y: 0.08, r: -6 },
-        { x: -0.04, y: 0.26, r: -3 },
-        { x: 0.29, y: 0.24, r: 7 },
+        { x: 0.3, y: -0.16, r: 5 },
+        { x: -0.27, y: 0.16, r: 6 },
+        { x: 0.3, y: 0.22, r: 7 },
       ];
       const COLX = 200;
-      const ROWY = [-138, -46, 46, 138];
+      const ROWY = [-70, 70];
       const slot = (i: number) => ({ x: i % 2 === 0 ? -COLX : COLX, y: ROWY[i >> 1] });
       // chip centres relative to the anchor. These only shift on resize, so
       // cache them — reading getBoundingClientRect mid-render (after hundreds
@@ -234,12 +235,11 @@ export function HomeV2() {
         // mobile: no room for two columns — each pair plays as its own stacked scene
         const M_A = T.scatter[0];
         const M_B = T.check[1];
-        const M_SP = (M_B - M_A) / 4;
-        const mIdx = Math.min(3, Math.max(0, Math.floor((p - M_A) / M_SP)));
+        const M_SP = (M_B - M_A) / NPAIR;
+        const mIdx = Math.min(LAST, Math.max(0, Math.floor((p - M_A) / M_SP)));
         const mt = clamp((p - M_A - mIdx * M_SP) / M_SP, 0, 1);
         scraps.forEach((s, i) => {
           const pair = i >> 1;
-          const warn = pair !== 2;
           let x: number,
             y: number,
             rot = 0,
@@ -252,7 +252,7 @@ export function HomeV2() {
             // stacked pair: reality above, agreement below, one pair at a time
             const active = p >= M_A && pair === mIdx;
             const inT = easeIO(seg(mt, 0, 0.3));
-            const last = pair === 3;
+            const last = pair === LAST;
             const outT = last ? 0 : ease(seg(mt, 0.88, 1));
             cT = active ? ease(seg(mt, 0.44, 0.6)) : pair < mIdx || p >= T.merge[0] ? 1 : 0;
             focus = active ? bell(seg(mt, 0.42, 0.72)) : 0;
@@ -260,15 +260,15 @@ export function HomeV2() {
             x = lerp(fromX, 0, inT);
             y = i % 2 === 0 ? -58 : 58;
             op = active ? Math.min(1, inT * 2.5) * (1 - outT) : 0;
-            if (p >= T.merge[0] && pair === 3) {
+            if (p >= T.merge[0] && pair === LAST) {
               y = lerp(y, -52, mT);
               op = 1 - seg(mT, 0.45, 0.85);
               scale = lerp(1, 0.9, mT);
               blur = 6 * seg(mT, 0.3, 1);
             }
           } else {
-            const eT = ease(seg(tScatter, i * 0.09, 0.55 + i * 0.05));
-            const oT = ease(seg(tOrg, pair * 0.16, pair * 0.16 + 0.4));
+            const eT = ease(seg(tScatter, i * 0.18, 0.55 + i * 0.1));
+            const oT = ease(seg(tOrg, pair * 0.32, pair * 0.32 + 0.55));
             const sx = scatter[i].x * innerWidth;
             const sy = scatter[i].y * innerHeight;
             const sl = slot(i);
@@ -276,11 +276,10 @@ export function HomeV2() {
             y = lerp(sy, sl.y, oT);
             rot = lerp(scatter[i].r, 0, oT);
             op = eT;
-            cT = ease(seg(tChk, pair * 0.22, pair * 0.22 + 0.16));
-            focus = bell(seg(tChk, pair * 0.22 - 0.02, pair * 0.22 + 0.26));
-            if (!warn) op *= lerp(1, 0.45, ease(seg(cT, 0.5, 1)));
+            cT = ease(seg(tChk, pair * 0.5, pair * 0.5 + 0.32));
+            focus = bell(seg(tChk, pair * 0.5 - 0.04, pair * 0.5 + 0.52));
             if (p >= T.merge[0]) {
-              if (pair === 3) {
+              if (pair === LAST) {
                 x = lerp(sl.x, i % 2 === 0 ? -30 : 30, mT);
                 y = lerp(sl.y, -52, mT);
                 op = eT * (1 - seg(mT, 0.45, 0.85));
@@ -291,10 +290,9 @@ export function HomeV2() {
               }
             }
           }
-          s.classList.toggle("flag", warn && i % 2 === 0 && cT > 0.5);
-          s.classList.toggle("dim", !warn && cT > 0.5 && !mob);
-          s.classList.toggle("ref", warn && i % 2 === 1 && cT > 0.5);
-          const dT = warn ? ease(seg(cT, 0.55, 1)) : 0;
+          s.classList.toggle("flag", i % 2 === 0 && cT > 0.5);
+          s.classList.toggle("ref", i % 2 === 1 && cT > 0.5);
+          const dT = ease(seg(cT, 0.55, 1));
           const delta = s.querySelector<HTMLElement>(".aud-delta");
           if (delta) {
             delta.style.opacity = String(dT);
@@ -313,21 +311,22 @@ export function HomeV2() {
             focus = active ? bell(seg(mt, 0.42, 0.72)) : 0;
             by = 0;
           } else {
-            cT = ease(seg(tChk, pair * 0.22, pair * 0.22 + 0.16));
-            focus = bell(seg(tChk, pair * 0.22 - 0.02, pair * 0.22 + 0.26));
+            cT = ease(seg(tChk, pair * 0.5, pair * 0.5 + 0.32));
+            focus = bell(seg(tChk, pair * 0.5 - 0.04, pair * 0.5 + 0.52));
             by = ROWY[pair];
           }
           const hide = p >= T.merge[0] ? 1 - seg(mT, 0, 0.5) : 1;
           b.style.opacity = String((inB2 ? cT : 0) * hide);
           b.style.transform = `translate(-50%, -50%) translateY(${by}px) scale(${(0.7 + 0.3 * cT) * (1 + 0.1 * focus)})`;
-          const onNow = mob
-            ? inB2 && p >= M_A && pair === mIdx
-            : inB2 && tChk > pair * 0.22 && tChk < pair * 0.22 + 0.22;
-          const doneNow = mob
-            ? (inB2 && (pair < mIdx || (pair === mIdx && mt > 0.6))) || p >= T.merge[1]
-            : (inB2 && cT > 0.6) || p >= T.merge[1];
-          chips[pair].classList.toggle("on", onNow);
-          chips[pair].classList.toggle("done", doneNow);
+        });
+        // Dock chips check off on their own stagger — decoupled from the (now
+        // fewer) reconcile examples, so "we audit everything" still reads as
+        // four categories sweeping green while only two are shown in detail.
+        const aT = seg(p, T.organize[0], T.check[1]);
+        chips.forEach((chip, i) => {
+          const c0 = 0.1 + i * 0.2;
+          chip.classList.toggle("on", inB2 && aT >= c0 && aT < c0 + 0.24);
+          chip.classList.toggle("done", (inB2 && aT >= c0 + 0.16) || p >= T.merge[1]);
         });
 
         // ---- beat 3 ----
@@ -1271,39 +1270,13 @@ export function HomeV2() {
                 </div>
                 <div className="aud-scrap" data-i="2">
                   <span className="aud-k">
-                    Rent charge<small>Mar 1 · Propco LLC</small>
-                  </span>
-                  <b className="aud-n">
-                    $2,199.12<span className="aud-delta">+$89.12</span>
-                  </b>
-                </div>
-                <div className="aud-scrap" data-i="3">
-                  <span className="aud-k">
-                    Lease, §4.2<small>Q1 monthly rent</small>
-                  </span>
-                  <b className="aud-n">$2,110.00</b>
-                </div>
-                <div className="aud-scrap" data-i="4">
-                  <span className="aud-k">
-                    Liquor license<small>City of Denver</small>
-                  </span>
-                  <b className="aud-n">Aug 30</b>
-                </div>
-                <div className="aud-scrap" data-i="5">
-                  <span className="aud-k">
-                    Reveal reminder<small>45 days ahead</small>
-                  </span>
-                  <b className="aud-n">Jul 16</b>
-                </div>
-                <div className="aud-scrap" data-i="6">
-                  <span className="aud-k">
                     Onion, 50 lb<small>Invoice #48211</small>
                   </span>
                   <b className="aud-n">
                     $1.82/lb<span className="aud-delta">+72%</span>
                   </b>
                 </div>
-                <div className="aud-scrap" data-i="7">
+                <div className="aud-scrap" data-i="3">
                   <span className="aud-k">
                     Agreed price<small>Nov · price list</small>
                   </span>
@@ -1313,12 +1286,6 @@ export function HomeV2() {
                   <IcWarn />
                 </span>
                 <span className="aud-pairb w" data-p="1">
-                  <IcWarn />
-                </span>
-                <span className="aud-pairb k" data-p="2">
-                  <IcCheck />
-                </span>
-                <span className="aud-pairb w" data-p="3">
                   <IcWarn />
                 </span>
                 <div className="aud-proof" id="audProof">
