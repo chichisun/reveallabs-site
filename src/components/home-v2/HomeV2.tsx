@@ -96,16 +96,20 @@ export function HomeV2() {
       const wiresEl = root.querySelector<SVGSVGElement>(".aud-wires");
       const hint = el("audHint")!;
 
+      // Timeline (fractions of scroll progress p). Connect (p1/p1out) and Catch
+      // (p3) get a wider slice than before so they don't rush by; the audit
+      // window (scatter→merge) keeps roughly its previous absolute pace because
+      // the track is a bit taller to compensate (see .aud-track height).
       const T = {
-        inflate: [0, 0.045],
-        introOut: [0.055, 0.085],
-        p1: [0.065, 0.165],
-        p1out: [0.17, 0.22],
-        scatter: [0.23, 0.3],
-        organize: [0.31, 0.435],
-        check: [0.455, 0.65],
-        merge: [0.66, 0.71],
-        p3: [0.71, 0.935],
+        inflate: [0, 0.04],
+        introOut: [0.05, 0.08],
+        p1: [0.06, 0.2],
+        p1out: [0.21, 0.28],
+        scatter: [0.29, 0.35],
+        organize: [0.36, 0.46],
+        check: [0.47, 0.61],
+        merge: [0.62, 0.66],
+        p3: [0.66, 0.935],
         exhale: [0.95, 1],
       };
 
