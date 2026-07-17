@@ -360,49 +360,61 @@ export function HomeV2() {
         if (fbBadge) fbBadge.innerHTML = resolved ? ICN_CHECK : ICN_WARN;
 
         hint.style.opacity = String((p > 0.9 ? 0 : 1) * (p > 0.02 ? 1 : 0));
+
+        // Belt-and-suspenders: iOS can keep a stale compositor layer for a
+        // transformed element after its opacity returns to 0 (a ghost box that
+        // "stays"). Flipping visibility:hidden once it's invisible drops the
+        // layer and forces the repaint, so it's guaranteed gone.
+        for (const e of [hub, ring, lock, ...srcs, ...scraps, ...pairbs, proof, disp, sentpill, money]) {
+          e.style.visibility = (parseFloat(e.style.opacity) || 0) < 0.01 ? "hidden" : "visible";
+        }
       };
-      // Smooth the scrub. Rather than snapping the scene to the raw scroll
-      // position — which arrives in coarse, uneven bursts on mobile and reads
-      // as choppy — ease a "current" progress toward the scroll-derived target
-      // each frame. Jerky input becomes continuous motion. The loop parks
-      // itself once it catches up, so it costs nothing while idle.
-      let target = readTarget();
-      let current = target;
-      let running = false;
-      let rafId = 0;
+      // Smooth the scrub with a continuous rAF loop that reads the scroll
+      // position ITSELF every frame and eases "current" toward it. This is
+      // deliberately not driven by scroll events: iOS Safari coalesces and
+      // defers scroll events during momentum scrolling, so an event-driven
+      // version can miss the final resting position — leaving a late beat (the
+      // dispute note) frozen on screen after you fling past and back. Reading
+      // scrollY each frame can't miss it. The loop only runs while the section
+      // is on-screen (IntersectionObserver gate), so it's idle-free otherwise.
+      let current = readTarget();
+      let raf = 0;
+      let looping = false;
       const SMOOTH = 0.16; // per-frame catch-up; higher = tighter to the finger
-      const frame = () => {
+      const loop = () => {
+        const target = readTarget();
         const diff = target - current;
-        if (Math.abs(diff) < 0.0004) {
-          current = target;
+        if (Math.abs(diff) > 0.00008) {
+          current += diff * SMOOTH;
+          if (Math.abs(target - current) < 0.0004) current = target;
           render(current);
-          running = false;
-          return;
         }
-        current += diff * SMOOTH;
-        render(current);
-        rafId = requestAnimationFrame(frame);
+        raf = requestAnimationFrame(loop);
       };
-      const kick = () => {
-        if (!running) {
-          running = true;
-          rafId = requestAnimationFrame(frame);
-        }
+      const startLoop = () => {
+        if (looping) return;
+        looping = true;
+        raf = requestAnimationFrame(loop);
       };
-      const onAudScroll = () => {
-        target = readTarget();
-        kick();
+      const stopLoop = () => {
+        looping = false;
+        cancelAnimationFrame(raf);
       };
+      // run the loop only while the (tall) track overlaps the viewport
+      const vis = new IntersectionObserver(
+        (es) => (es.some((e) => e.isIntersecting) ? startLoop() : stopLoop()),
+        { rootMargin: "150px 0px 150px 0px" },
+      );
+      vis.observe(track);
       const onAudResize = () => {
         chipCache = null; // layout moved — chip centres are stale
-        target = current = readTarget();
-        render(current); // snap to the corrected state, no slide
+        current = readTarget();
+        render(current);
       };
-      addEventListener("scroll", onAudScroll, { passive: true });
       addEventListener("resize", onAudResize);
       cleanups.push(() => {
-        cancelAnimationFrame(rafId);
-        removeEventListener("scroll", onAudScroll);
+        stopLoop();
+        vis.disconnect();
         removeEventListener("resize", onAudResize);
       });
       render(current);
