@@ -62,6 +62,9 @@ export function HomeV2() {
       const stage = el("audStage");
       const anchor = el("audAnchor");
       if (!track || !stage || !anchor) return;
+      // reduced-motion shows the static fallback (.aud-track is display:none),
+      // so there's nothing to scrub here.
+      if (reduce) return;
       const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
       const seg = (p: number, a: number, b: number) => clamp((p - a) / (b - a), 0, 1);
       const ease = (t: number) => 1 - Math.pow(1 - t, 3);
@@ -126,15 +129,26 @@ export function HomeV2() {
       const COLX = 200;
       const ROWY = [-138, -46, 46, 138];
       const slot = (i: number) => ({ x: i % 2 === 0 ? -COLX : COLX, y: ROWY[i >> 1] });
+      // chip centres relative to the anchor. These only shift on resize, so
+      // cache them — reading getBoundingClientRect mid-render (after hundreds
+      // of style writes) forces a synchronous reflow every frame it runs.
+      let chipCache: Array<{ x: number; y: number }> | null = null;
       const chipAt = (i: number) => {
-        const a = anchor.getBoundingClientRect();
-        const c = chips[i].getBoundingClientRect();
-        return { x: c.left + c.width / 2 - a.left, y: c.top + c.height / 2 - a.top };
+        if (!chipCache) {
+          const a = anchor.getBoundingClientRect();
+          chipCache = chips.map((chip) => {
+            const c = chip.getBoundingClientRect();
+            return { x: c.left + c.width / 2 - a.left, y: c.top + c.height / 2 - a.top };
+          });
+        }
+        return chipCache[i];
       };
 
-      const update = () => {
+      const readTarget = () => {
         const r = track.getBoundingClientRect();
-        const p = clamp(-r.top / (r.height - innerHeight), 0, 1);
+        return clamp(-r.top / (r.height - innerHeight), 0, 1);
+      };
+      const render = (p: number) => {
 
         // the inset breathes: inflates to full screen, exhales back at the end
         const inflT = ease(seg(p, T.inflate[0], T.inflate[1]));
@@ -340,26 +354,51 @@ export function HomeV2() {
 
         hint.style.opacity = String((p > 0.9 ? 0 : 1) * (p > 0.02 ? 1 : 0));
       };
-      // Coalesce scroll/resize into a single update per animation frame. Without
-      // this, update() — heavy layout reads + hundreds of style writes — ran
-      // synchronously on every scroll event, which is what made the takeover
-      // choppy on mobile. (The hero transition below already does this.)
-      let auTick = false;
+      // Smooth the scrub. Rather than snapping the scene to the raw scroll
+      // position — which arrives in coarse, uneven bursts on mobile and reads
+      // as choppy — ease a "current" progress toward the scroll-derived target
+      // each frame. Jerky input becomes continuous motion. The loop parks
+      // itself once it catches up, so it costs nothing while idle.
+      let target = readTarget();
+      let current = target;
+      let running = false;
+      let rafId = 0;
+      const SMOOTH = 0.16; // per-frame catch-up; higher = tighter to the finger
+      const frame = () => {
+        const diff = target - current;
+        if (Math.abs(diff) < 0.0004) {
+          current = target;
+          render(current);
+          running = false;
+          return;
+        }
+        current += diff * SMOOTH;
+        render(current);
+        rafId = requestAnimationFrame(frame);
+      };
+      const kick = () => {
+        if (!running) {
+          running = true;
+          rafId = requestAnimationFrame(frame);
+        }
+      };
       const onAudScroll = () => {
-        if (auTick) return;
-        auTick = true;
-        requestAnimationFrame(() => {
-          auTick = false;
-          update();
-        });
+        target = readTarget();
+        kick();
+      };
+      const onAudResize = () => {
+        chipCache = null; // layout moved — chip centres are stale
+        target = current = readTarget();
+        render(current); // snap to the corrected state, no slide
       };
       addEventListener("scroll", onAudScroll, { passive: true });
-      addEventListener("resize", onAudScroll);
+      addEventListener("resize", onAudResize);
       cleanups.push(() => {
+        cancelAnimationFrame(rafId);
         removeEventListener("scroll", onAudScroll);
-        removeEventListener("resize", onAudScroll);
+        removeEventListener("resize", onAudResize);
       });
-      update();
+      render(current);
     })();
 
     /* ---------- bottom script block ---------- */
