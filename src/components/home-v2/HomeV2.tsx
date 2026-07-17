@@ -150,15 +150,22 @@ export function HomeV2() {
       };
       const render = (p: number) => {
 
-        // the inset breathes: inflates to full screen, exhales back at the end
+        // the inset breathes: inflates to full screen, exhales back at the end.
+        // The stage stays full-viewport; we reveal it with clip-path insets
+        // instead of animating width/height. clip-path animates on paint — no
+        // per-frame reflow — which is what made the grow/shrink choppy. At full
+        // inflate the inset is 0, so the whole middle of the scene is identical
+        // to a plain full-bleed stage.
         const inflT = ease(seg(p, T.inflate[0], T.inflate[1]));
         const exhT = ease(seg(p, T.exhale[0], T.exhale[1]));
         const sizeT = Math.min(inflT, 1 - exhT);
         const w0 = Math.min(1360, innerWidth - 32);
         const h0 = innerHeight * 0.78;
-        stage.style.width = lerp(w0, innerWidth, sizeT) + "px";
-        stage.style.height = lerp(h0, innerHeight, sizeT) + "px";
-        stage.style.borderRadius = lerp(44, 0, sizeT) + "px";
+        const insetX = Math.max(0, (innerWidth - lerp(w0, innerWidth, sizeT)) / 2);
+        const insetY = Math.max(0, (innerHeight - lerp(h0, innerHeight, sizeT)) / 2);
+        const clip = `inset(${insetY}px ${insetX}px round ${lerp(44, 0, sizeT)}px)`;
+        stage.style.clipPath = clip;
+        stage.style.setProperty("-webkit-clip-path", clip);
         // everything inside quiets down before the exhale
         const endFade = 1 - seg(p, 0.935, 0.955);
 

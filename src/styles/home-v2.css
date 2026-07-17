@@ -1254,11 +1254,16 @@ html.intro-pending .homev2 .hero .dash-stage { animation-play-state: paused; }
 .homev2 .aud-pin { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
 .homev2 .aud-stage {
   position: relative; overflow: hidden;
+  /* full-viewport; the inset-card look is a clip-path the JS animates.
+     Animating clip-path (paint) instead of width/height (layout) keeps the
+     grow/shrink transition off the layout path, so it stays smooth. */
+  width: 100%; height: 100%;
+  clip-path: inset(11vh calc((100% - min(1360px, 100% - 32px)) / 2) round 44px);
   background:
     radial-gradient(110% 80% at 68% 6%, rgba(95,149,104,0.45), transparent 55%),
     radial-gradient(80% 65% at 8% 96%, rgba(53,94,59,0.5), transparent 60%),
     linear-gradient(165deg, var(--green-800), #16281A 85%);
-  will-change: width, height, border-radius;
+  will-change: clip-path;
 }
 .homev2 .aud-stage::before {
   content: ""; position: absolute; inset: -40%;
