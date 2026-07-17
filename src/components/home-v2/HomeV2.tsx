@@ -84,6 +84,9 @@ export function HomeV2() {
       const sentpill = el("audSent")!;
       const money = el("audMoney")!;
       const dockEl = el("audDock")!;
+      // hoisted refs: these were re-queried every frame inside update()
+      const wiresEl = root.querySelector<SVGSVGElement>(".aud-wires");
+      const hint = el("audHint")!;
 
       const T = {
         inflate: [0, 0.045],
@@ -164,14 +167,13 @@ export function HomeV2() {
         // ---- beat 1 ----
         const mob = innerWidth <= 900;
         const K = mob ? Math.max(0.34, innerWidth / 1100) : 1; // geometry scale for small screens
-        const wiresEl = root.querySelector<SVGSVGElement>(".aud-wires");
         if (wiresEl) wiresEl.style.transform = `translate(-50%, -50%) scale(${K})`;
         const t1 = seg(p, T.p1[0], T.p1[1]);
         const o = seg(p, T.p1out[0], T.p1out[1]);
         const ht = ease(seg(t1, 0, 0.18));
         const hubFade = seg(o, 0.2, 0.75);
         hub.style.opacity = String(ht * (1 - hubFade));
-        hub.style.filter = `blur(${8 * hubFade}px)`;
+        hub.style.filter = hubFade > 0 ? `blur(${8 * hubFade}px)` : "";
         hub.style.transform = `translate(-50%, -50%) scale(${(0.82 + 0.18 * ht) * (1 - 0.3 * hubFade)})`;
         const b1fade = 1 - seg(o, 0.2, 0.75);
         srcs.forEach((s, i) => {
@@ -278,7 +280,7 @@ export function HomeV2() {
             delta.style.transform = `scale(${0.8 + 0.2 * dT})`;
           }
           s.style.opacity = inB2 || p >= T.p3[0] ? String(op) : "0";
-          s.style.filter = `blur(${blur}px)`;
+          s.style.filter = blur > 0 ? `blur(${blur}px)` : "";
           s.style.zIndex = focus > 0.05 ? "4" : "3";
           s.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${rot}deg) scale(${scale * (1 + 0.06 * focus)})`;
         });
@@ -311,7 +313,7 @@ export function HomeV2() {
         const t3 = seg(p, T.p3[0], T.p3[1]);
         const pT = ease(seg(mT, 0.55, 1));
         proof.style.opacity = String(pT * endFade);
-        proof.style.filter = `blur(${(1 - pT) * 6}px)`;
+        proof.style.filter = pT < 1 ? `blur(${(1 - pT) * 6}px)` : "";
         proof.style.transform = `translate(-50%, -50%) translateY(-52px) scale(${0.9 + 0.1 * pT})`;
         const dT2 = ease(seg(t3, 0.14, 0.3));
         const wT = seg(t3, 0.38, 0.56);
@@ -336,13 +338,26 @@ export function HomeV2() {
         const fbBadge = chips[3].querySelector("i");
         if (fbBadge) fbBadge.innerHTML = resolved ? ICN_CHECK : ICN_WARN;
 
-        el("audHint")!.style.opacity = String((p > 0.9 ? 0 : 1) * (p > 0.02 ? 1 : 0));
+        hint.style.opacity = String((p > 0.9 ? 0 : 1) * (p > 0.02 ? 1 : 0));
       };
-      addEventListener("scroll", update, { passive: true });
-      addEventListener("resize", update);
+      // Coalesce scroll/resize into a single update per animation frame. Without
+      // this, update() — heavy layout reads + hundreds of style writes — ran
+      // synchronously on every scroll event, which is what made the takeover
+      // choppy on mobile. (The hero transition below already does this.)
+      let auTick = false;
+      const onAudScroll = () => {
+        if (auTick) return;
+        auTick = true;
+        requestAnimationFrame(() => {
+          auTick = false;
+          update();
+        });
+      };
+      addEventListener("scroll", onAudScroll, { passive: true });
+      addEventListener("resize", onAudScroll);
       cleanups.push(() => {
-        removeEventListener("scroll", update);
-        removeEventListener("resize", update);
+        removeEventListener("scroll", onAudScroll);
+        removeEventListener("resize", onAudScroll);
       });
       update();
     })();
