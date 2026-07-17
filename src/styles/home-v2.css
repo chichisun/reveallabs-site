@@ -1250,7 +1250,7 @@ html.intro-pending .homev2 .hero .dash-stage { animation-play-state: paused; }
    Ported inline <style> block (the aud-* scroll takeover)
    ========================================================================== */
 
-.homev2 .aud-track { height: 460vh; position: relative; margin: 28px 0; }
+.homev2 .aud-track { height: 420vh; position: relative; margin: 28px 0; }
 .homev2 .aud-pin { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
 .homev2 .aud-stage {
   position: relative; overflow: hidden;
