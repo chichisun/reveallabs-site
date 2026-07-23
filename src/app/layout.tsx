@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Space_Mono, Inter, Fustat } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
   SITE_URL,
   SITE_TITLE,
@@ -125,6 +126,7 @@ export default function RootLayout({
         <Nav />
         {children}
         <Analytics />
+        <SpeedInsights />
         <AnalyticsBoot />
       </body>
     </html>
