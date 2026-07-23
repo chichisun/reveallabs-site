@@ -23,6 +23,7 @@ export function Footer() {
             LinkedIn
           </a>
           <a href="https://app.reveallabs.co/login">Log in</a>
+          <a href="https://dash.reveallabs.co">Marketing</a>
         </nav>
       </div>
       <div className="footer-row2">
