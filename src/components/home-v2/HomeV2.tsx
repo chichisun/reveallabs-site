@@ -801,8 +801,8 @@ export function HomeV2() {
         <div className="hero-wash" aria-hidden="true"></div>
         <div className="hero-top">
           <h1>
-            The auditing system <br />
-            for independent restaurants.
+            The auditing solution <br />
+            for single and multi-unit operations.
           </h1>
           <p className="sub">
             AI that checks every payment in and out of your restaurant, and recovers the ones that are wrong.
@@ -1108,7 +1108,7 @@ export function HomeV2() {
             </svg>
             Where it hides
           </div>
-          <h2>You&apos;re paying for other people&apos;s mistakes.</h2>
+          <h2>Reveal is the automated solution working 24/7 to validate accuracy, trends, and critical dates.</h2>
           <p className="sub" style={{ margin: "18px auto 0" }}>
             A vendor&apos;s price creeps. A payout comes in short. A lease charge doesn&apos;t match the lease. Real findings from Tuk Tuk Thai Grill in Denver, month one:
           </p>
@@ -1163,7 +1163,7 @@ export function HomeV2() {
       <section className="plain">
         <div className="dale reveal-in">
           <h2>
-            Big chains have audit teams checking every invoice and payout. Independents have nobody. <b>Reveal is that team, automated.</b>
+            Big chains have audit teams checking every invoice and payout. <b>Reveal is that team and the solution.</b>
           </h2>
           <div className="byline">
             <img className="avatar" src="/founder-chayadol.png" alt="Chayadol Sundarapura" />

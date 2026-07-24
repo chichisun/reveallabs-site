@@ -1,7 +1,7 @@
 # PRODUCT.md — reveal.
 
 ## Product Purpose
-Reveal is the auditing system for independent restaurants. It connects read-only to a restaurant's bank, POS, delivery apps, and the paperwork the owner already keeps (invoices, leases, contracts), then checks every payment in and out against what was agreed. When a number is wrong (a short delivery payout, a vendor price creep, a lease charge over the escalation terms), Reveal flags it with proof and helps recover the money. Pre-launch: the site's only conversion is an email waitlist.
+Reveal is the auditing solution for single and multi-unit restaurant operations. It connects read-only to a restaurant's bank, POS, delivery apps, and the paperwork the owner already keeps (invoices, leases, contracts), then checks every payment in and out against what was agreed. When a number is wrong (a short delivery payout, a vendor price creep, a lease charge over the escalation terms), Reveal flags it with proof and helps recover the money. Pre-launch: the site's only conversion is an email waitlist.
 
 ## Users
 Non-technical independent restaurant owners (single location or a few). They run on instinct: sales in the POS, vendors in their phones, renewal dates in their heads. They skim on a phone between services, late at night. They distrust software jargon and respect plain talk about money. Proof beats promises: one real number ($1,297.87 recovered at Tuk Tuk Thai Grill in month one) carries more weight than any adjective.
@@ -30,4 +30,4 @@ brand
 - Feel the problem, then visualize the solution. Problem section comes before features.
 - Every benefit shows what Reveal DOES about a problem, not just that it detects it.
 - Risk reversal closes: "Read-only. Fifteen minutes to connect. If Reveal finds nothing, you've lost nothing."
-- Bookend: the problem opens "You're paying for other people's mistakes" and the closer commands "Stop paying for other people's mistakes."
+- Bookend (revised 2026-07-24 per Mike Speck's read-through): the problem section now opens "Reveal is the automated solution working 24/7 to validate accuracy, trends, and critical dates." The closer still commands "Stop paying for other people's mistakes." Mike's rationale: the old opener was accurate but left a negative thought.
