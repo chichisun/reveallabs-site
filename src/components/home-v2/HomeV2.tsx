@@ -801,8 +801,8 @@ export function HomeV2() {
         <div className="hero-wash" aria-hidden="true"></div>
         <div className="hero-top">
           <h1>
-            An audit team for restaurants <br />
-            that don&apos;t have one.
+            The auditing solution <br />
+            for single and multi-unit operations.
           </h1>
           <p className="sub">
             AI that checks every payment in and out of your restaurants, one location or twenty, and recovers the ones that are wrong.
@@ -1108,7 +1108,7 @@ export function HomeV2() {
             </svg>
             Where it hides
           </div>
-          <h2>Reveal checks every charge that hits your restaurant against what you agreed to pay.</h2>
+          <h2>Reveal is the automated solution working 24/7 to validate accuracy, trends, and critical dates.</h2>
           <p className="sub" style={{ margin: "18px auto 0" }}>
             Three real findings from Tuk Tuk Thai Grill in Denver, month one:
           </p>
