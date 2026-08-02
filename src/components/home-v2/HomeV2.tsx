@@ -801,11 +801,11 @@ export function HomeV2() {
         <div className="hero-wash" aria-hidden="true"></div>
         <div className="hero-top">
           <h1>
-            The auditing solution <br />
-            for single and multi-unit operations.
+            An audit team for restaurants <br />
+            that don&apos;t have one.
           </h1>
           <p className="sub">
-            AI that checks every payment in and out of your restaurant, and recovers the ones that are wrong.
+            AI that checks every payment in and out of your restaurants, one location or twenty, and recovers the ones that are wrong.
           </p>
           <HomeWaitlist source="hero_inline" />
           <div className="proof-chip">
@@ -1108,9 +1108,9 @@ export function HomeV2() {
             </svg>
             Where it hides
           </div>
-          <h2>Reveal is the automated solution working 24/7 to validate accuracy, trends, and critical dates.</h2>
+          <h2>Reveal checks every charge that hits your restaurant against what you agreed to pay.</h2>
           <p className="sub" style={{ margin: "18px auto 0" }}>
-            A vendor&apos;s price creeps. A payout comes in short. A lease charge doesn&apos;t match the lease. Real findings from Tuk Tuk Thai Grill in Denver, month one:
+            Three real findings from Tuk Tuk Thai Grill in Denver, month one:
           </p>
         </div>
         <div className="pain-grid">
@@ -1163,7 +1163,7 @@ export function HomeV2() {
       <section className="plain">
         <div className="dale reveal-in">
           <h2>
-            Big chains have audit teams checking every invoice and payout. <b>Reveal is that team and the solution.</b>
+            Big chains have audit teams checking every invoice and payout. <b>Reveal does that job for everyone else.</b>
           </h2>
           <div className="byline">
             <img className="avatar" src="/founder-chayadol.png" alt="Chayadol Sundarapura" />
@@ -1200,15 +1200,15 @@ export function HomeV2() {
             <div className="aud-caption">
               <div className="aud-beat" id="audB0">
                 <div className="aud-kicker">01 · Connect</div>
-                <h3>Connect once. Read-only.</h3>
+                <h3>Connect once, read-only.</h3>
               </div>
               <div className="aud-beat" id="audB1">
                 <div className="aud-kicker">02 · Audit</div>
-                <h3>Everything, reconciled.</h3>
+                <h3>Every number gets checked.</h3>
               </div>
               <div className="aud-beat" id="audB2">
                 <div className="aud-kicker">03 · Catch</div>
-                <h3>Caught with proof. Ready to send.</h3>
+                <h3>Problems arrive with proof.</h3>
               </div>
             </div>
             <div className="aud-dock" id="audDock">
@@ -1348,20 +1348,20 @@ export function HomeV2() {
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <div className="aud-fstep">
             <div className="aud-fk">01 · Connect</div>
-            <h3>Connect once. Read-only.</h3>
-            <p>Bank, POS, delivery apps, and the paperwork you already keep. Reveal can look. It can never touch.</p>
+            <h3>Connect once, read-only.</h3>
+            <p>Bank, POS, delivery apps, and the paperwork you already keep. Reveal can look but never touch.</p>
           </div>
           <div className="aud-fstep">
             <div className="aud-fk">02 · Audit</div>
-            <h3>Everything, reconciled.</h3>
+            <h3>Every number gets checked.</h3>
             <p>
               Reveal&apos;s AI reads your invoices, contracts, and payouts, and compares every number against what you agreed to pay and the sales you actually made.
             </p>
           </div>
           <div className="aud-fstep">
             <div className="aud-fk">03 · Catch</div>
-            <h3>Caught with proof. Ready to send.</h3>
-            <p>The wrong number, the right number, and the note that gets your money back. You press send.</p>
+            <h3>Problems arrive with proof.</h3>
+            <p>Reveal shows the wrong number next to the right one and writes the note that gets your money back. You press send.</p>
           </div>
         </div>
       </section>
@@ -1377,7 +1377,7 @@ export function HomeV2() {
             </svg>
             Why Reveal
           </div>
-          <h2 className="one-line">It pays for itself. Then it keeps paying.</h2>
+          <h2 className="one-line">It pays for itself in found money.</h2>
         </div>
         <div className="bento">
           <div className="bento-cell bento-hero reveal-in" style={{ "--i": 0 } as React.CSSProperties}>
@@ -1418,7 +1418,7 @@ export function HomeV2() {
             </div>
           </div>
           <div className="bento-cell bento-card reveal-in" style={{ "--i": 1 } as React.CSSProperties}>
-            <h4>Fix it, not just find it</h4>
+            <h4>The fix comes included</h4>
             <p>The proof is assembled, the note is written. You press send.</p>
             <div className="vig vig-note" aria-hidden="true">
               <b style={{ fontSize: 12 }}>Dispute note, invoice #48211</b>
@@ -1449,7 +1449,7 @@ export function HomeV2() {
           <div className="bento-cell bento-wide reveal-in" style={{ "--i": 3 } as React.CSSProperties}>
             <div>
               <h4>No new work for you</h4>
-              <p>Nothing to learn, nothing to reconcile. A few plain-English alerts a week.</p>
+              <p>There&apos;s nothing to learn and nothing to reconcile. You get a few plain-English alerts a week.</p>
             </div>
             <div className="vig vig-alert" aria-hidden="true">
               <div className="bubble">Onion price crept up 72% on today&apos;s invoice. Want it disputed?</div>
@@ -1460,7 +1460,7 @@ export function HomeV2() {
           </div>
         </div>
         <p className="bento-foot reveal-in">
-          Read-only. Fifteen minutes to connect. <b>If Reveal finds nothing, you&apos;ve lost nothing.</b>
+          It&apos;s read-only and takes about fifteen minutes to connect. <b>If Reveal finds nothing, you&apos;ve lost nothing.</b>
         </p>
       </section>
 

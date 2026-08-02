@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           <p className="privacy-page-lede">
             Reveal Labs LLC (&ldquo;Reveal,&rdquo; &ldquo;we,&rdquo;
             &ldquo;us&rdquo;) operates the reveal. website and SaaS application
-            that helps independent restaurants reconcile sales,
+            that helps restaurants reconcile sales,
             delivery-marketplace payouts, banking activity, and vendor
             commitments. This policy describes what we collect, why, how long
             we keep it, and the rights you have over it. If anything below is

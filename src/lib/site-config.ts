@@ -4,7 +4,7 @@ export const SITE_TITLE =
   "reveal. — A second set of eyes for single and multi-unit restaurants";
 
 export const SITE_DESCRIPTION =
-  "Reveal connects to your bank, POS, delivery apps, and the invoices and contracts you already keep — then checks every bill and payout against what you agreed to pay, flags the vendor who overcharged you and the payout that came up short, and helps you recover the money.";
+  "Reveal connects to your bank, POS, delivery apps, and the invoices and contracts you already keep, then checks every bill and payout against what you agreed to pay. When a vendor overcharges or a payout comes up short, you get the proof to recover the money.";
 
 export const SITE_NAME = "reveal.";
 
