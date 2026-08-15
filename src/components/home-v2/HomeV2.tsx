@@ -801,11 +801,11 @@ export function HomeV2() {
         <div className="hero-wash" aria-hidden="true"></div>
         <div className="hero-top">
           <h1>
-            The auditing solution <br />
+            The audit and insight solution <br />
             for single and multi-unit operations.
           </h1>
           <p className="sub">
-            AI that checks every payment in and out of your restaurants, one location or twenty, and recovers the ones that are wrong.
+            AI that validates every transaction &amp; payment in and out of your restaurants, one location or twenty, and identifies exceptions along with solutions.
           </p>
           <HomeWaitlist source="hero_inline" />
           <div className="proof-chip">
