@@ -17,7 +17,7 @@ import { useEffect, useRef } from "react";
 export function SiteNav({
   page = "home",
 }: {
-  page?: "home" | "story" | "blog";
+  page?: "home" | "story" | "blog" | "join";
 }) {
   const navRef = useRef<HTMLElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -83,6 +83,9 @@ export function SiteNav({
         <a href="/blog" className={page === "blog" ? "active" : undefined}>
           Blog
         </a>
+        <a href="/join" className={page === "join" ? "active" : undefined}>
+          We&apos;re hiring
+        </a>
         <a className="btn btn-primary" href={ctaHref}>
           Join the waitlist
         </a>
@@ -101,6 +104,7 @@ export function SiteNav({
         <a href={howHref}>How it works</a>
         <a href="/our-story">Our story</a>
         <a href="/blog">Blog</a>
+        <a href="/join">We&apos;re hiring</a>
       </div>
     </nav>
   );

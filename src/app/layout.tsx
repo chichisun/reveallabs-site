@@ -13,6 +13,7 @@ import "./globals.css";
 import "@/styles/home-v2.css";
 import "@/styles/story-v2.css";
 import "@/styles/blog-v2.css";
+import "@/styles/join.css";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",

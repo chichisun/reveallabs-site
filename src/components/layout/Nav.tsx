@@ -20,7 +20,8 @@ export function Nav() {
     (pathname.startsWith("/blog/") &&
       !pathname.startsWith("/blog/news") &&
       !pathname.startsWith("/blog/subscribe"));
-  if (isHome || isStory || isNewBlog) return null;
+  // /join renders its own <SiteNav />, same as home/story/blog-v2.
+  if (isHome || isStory || isNewBlog || pathname === "/join") return null;
 
   return (
     <header

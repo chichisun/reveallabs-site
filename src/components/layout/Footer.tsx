@@ -13,6 +13,7 @@ export function Footer() {
         </div>
         <nav className="footer-links" aria-label="Footer">
           <a href="/our-story">Our Story</a>
+          <a href="/join">We&apos;re hiring</a>
           <a href="/privacy">Privacy</a>
           <a href="mailto:chayadol@reveallabs.co">Contact</a>
           <a
