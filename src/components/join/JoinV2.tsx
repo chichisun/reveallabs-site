@@ -7,26 +7,27 @@ import { JoinReveals } from "@/components/join/JoinReveals";
 /**
  * /join — the permanent careers page.
  *
- * Wears `homev2` so it inherits the site's own type, tokens, nav and button
- * styling straight from home-v2.css rather than restating them. `joinv2` adds
- * only what is specific to this page (see src/styles/join.css). Section class
- * names are all `join-` prefixed so none of the homepage's hero or bento
- * choreography leaks in.
+ * Wears `homev2` so it inherits the site's type scale, nav pill and button
+ * geometry from home-v2.css. It does NOT inherit that file's colours: /join
+ * commits to one dark world regardless of the theme toggle (see join.css).
+ *
+ * The photographs are one continuous ground rather than a hero image with an
+ * edge. `.join-bg` holds four overlapping bands, each masked to transparent at
+ * both ends, so they dissolve into each other and into the black.
  */
 export function JoinV2() {
   return (
     <div className="homev2 joinv2">
+      <div className="join-bg" aria-hidden="true">
+        <span className="b1" />
+        <span className="b2" />
+        <span className="b3" />
+        <span className="b4" />
+      </div>
+
       <SiteNav page="join" />
 
       <header className="join-hero">
-        <Image
-          className="join-hero-img"
-          src="/join-hero.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-        />
         <div className="join-hero-inner">
           <p className="join-eyebrow">One role open</p>
           <h1>We&apos;re hiring one engineer.</h1>
@@ -45,37 +46,43 @@ export function JoinV2() {
 
       <main className="join-wrap">
         <div className="join-block reveal-in">
-          <span className="join-chip-glass">
-            <span className="dot" aria-hidden="true" />
-            What you&apos;d be building
-          </span>
-          <h2>A restaurant signs about a hundred agreements. Nobody checks them.</h2>
-          <div className="join-narrow">
-            <p>
-              The lease, the linen contract, vendor prices, delivery deals. They all
-              live in one place, the owner&apos;s head. Nobody checks that the money
-              moving through the bank matches what was signed, so it leaks, and when
-              it gets found, it gets found by chance.
-            </p>
-            <p>
-              Big chains pay a person whose whole job is catching this. We&apos;re
-              building that person, and that&apos;s the job you&apos;d be doing.
-            </p>
+          <div className="join-block-inner">
+            <div className="join-block-lead">
+              <span className="join-chip-glass">
+                <span className="dot" aria-hidden="true" />
+                What you&apos;d be building
+              </span>
+              <h2>A restaurant signs about a hundred agreements. Nobody checks them.</h2>
+            </div>
+            <div className="join-block-body">
+              <p>
+                The lease, the linen contract, vendor prices, delivery deals. They all
+                live in one place, the owner&apos;s head. Nobody checks that the money
+                moving through the bank matches what was signed, so it leaks, and when
+                it gets found, it gets found by chance.
+              </p>
+              <p>
+                Big chains pay a person whose whole job is catching this. We&apos;re
+                building that person, and that&apos;s the job you&apos;d be doing.
+              </p>
+            </div>
           </div>
         </div>
 
-        <section className="join-section join-center">
-          <p className="join-eyebrow reveal-in">The role</p>
-          <h2 className="reveal-in" style={{ ["--i" as string]: 1 }}>
-            Founding engineer
-          </h2>
-          <div className="join-terms reveal-in" style={{ ["--i" as string]: 2 }}>
-            <span className="join-pill">Unpaid to start</span>
-            <span className="join-pill join-pill--plain">Denver or remote</span>
-            <span className="join-pill join-pill--plain">Start now</span>
+        <section className="join-section">
+          <div className="join-center">
+            <p className="join-eyebrow reveal-in">The role</p>
+            <h2 className="reveal-in" style={{ ["--i" as string]: 1 }}>
+              Founding engineer
+            </h2>
+            <div className="join-terms reveal-in" style={{ ["--i" as string]: 2 }}>
+              <span className="join-pill">Unpaid to start</span>
+              <span className="join-pill join-pill--plain">Denver or remote</span>
+              <span className="join-pill join-pill--plain">Start now</span>
+            </div>
           </div>
 
-          <div className="join-narrow">
+          <div className="join-role-body">
             <p className="join-straight reveal-in" style={{ ["--i" as string]: 3 }}>
               Let me be straight with you: this is unpaid right now, and I won&apos;t
               dress that up. You&apos;d come in as an intern building a real product
@@ -128,13 +135,19 @@ export function JoinV2() {
 
         <section className="join-section">
           <div className="join-apply reveal-in" id="apply">
-            <div className="join-center join-apply-head">
+            <div className="join-apply-head">
               <p className="join-eyebrow">Apply</p>
               <h2>Tell me who you are.</h2>
+              <p className="join-apply-note">
+                Name, email, and a couple of sentences is enough. A resume is optional,
+                and a link to something you built says more than one anyway.
+              </p>
             </div>
-            <Suspense fallback={null}>
-              <JoinForm />
-            </Suspense>
+            <div className="join-apply-form">
+              <Suspense fallback={null}>
+                <JoinForm />
+              </Suspense>
+            </div>
           </div>
         </section>
       </main>

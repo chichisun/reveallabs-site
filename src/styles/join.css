@@ -1,86 +1,187 @@
 /* ============================================================================
    /join — the careers page.
 
-   The page wrapper is `homev2 joinv2`, so type, colour tokens, the floating
-   nav pill and .btn all come from home-v2.css. This file only adds what is
-   specific to /join. Every selector is `join-` prefixed or scoped under
-   .joinv2 so nothing here can reach the homepage.
+   This page commits to ONE dark world. It does not follow the site's light/dark
+   toggle, and it deliberately does not read the shared --cream / --charcoal
+   tokens: home-v2.css pins those to light values inside `.homev2`, which is
+   what put dark text on dark cards. Every colour here is literal, so the page
+   renders identically whatever the theme is set to.
+
+   The photographs are a single continuous ground. Four bands overlap down the
+   page, each masked to transparent at both ends, so they dissolve into each
+   other and into the black. There is no hero edge and no white section.
    ========================================================================= */
 
 .joinv2 {
-  /* One local deviation from the shared palette: --muted (#797979 light /
-     #8E8B80 dark) sits just under 4.5:1 for the small print on this page, so
-     /join uses a slightly stronger grey. Scoped here on purpose; the rest of
-     the site is untouched. */
-  --join-muted: #6B6B6B;
-  --join-card: var(--cream-lifted);
-  --join-field: var(--cream-lifted);
-  --join-stroke: rgba(46, 46, 46, 0.16);
+  --ink:        #F2F1ED;
+  --ink-soft:   rgba(242, 241, 237, 0.78);
+  --ink-dim:    rgba(242, 241, 237, 0.62);
+  --ground:     #121210;
+  --glass:      rgba(242, 241, 237, 0.055);
+  --glass-line: rgba(242, 241, 237, 0.14);
+  --green:      #8BAF8F;
+  --green-mid:  #5F9568;
+  --green-deep: #355E3B;
+  --bad:        #E0705A;
+
+  position: relative;
+  isolation: isolate;
+  color: var(--ink);
+  background: var(--ground);
+  /* body is a flex column on this site. As a flex item this page was being
+     sized to its min-height and its content overflowed, which left the cream
+     body showing below the hero and pushed the footer up over the content.
+     Grow to content, never shrink below it. */
+  flex: 1 0 auto;
 }
-html[data-theme="dark"] .joinv2 {
-  --join-muted: #A5A296;
-  --join-card: #272620;
-  --join-field: #211F1B;
-  --join-stroke: rgba(236, 235, 228, 0.20);
+
+/* The site paints its own ground behind this page; hold it dark either way. */
+.joinv2.homev2,
+html[data-theme="dark"] .joinv2.homev2,
+html[data-theme="light"] .joinv2.homev2 {
+  background: var(--ground);
+  color: var(--ink);
 }
+
+/* -------------------------------------------------- the photographic ground */
+.joinv2 .join-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.joinv2 .join-bg span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Band 1 runs off the top of the page so the hero has no seam, and fades out
+   into the black well before the next band arrives. */
+.joinv2 .join-bg .b1 {
+  top: 0;
+  height: 46%;
+  background-image: url("/join-bg-1.jpg");
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+}
+.joinv2 .join-bg .b2 {
+  top: 28%;
+  height: 40%;
+  opacity: 0.62;
+  background-image: url("/join-bg-2.jpg");
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 26%, #000 74%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 26%, #000 74%, transparent 100%);
+}
+.joinv2 .join-bg .b3 {
+  top: 55%;
+  height: 38%;
+  opacity: 0.58;
+  background-image: url("/join-bg-3.jpg");
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 72%, transparent 100%);
+}
+.joinv2 .join-bg .b4 {
+  top: 78%;
+  height: 34%;
+  opacity: 0.55;
+  background-image: url("/join-bg-4.jpg");
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+}
+
+/* A soft wash over the whole ground so type never has to fight a bright patch,
+   and the very bottom of the page settles back to solid black. */
+.joinv2 .join-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(18, 18, 16, 0.30) 0%,
+      rgba(18, 18, 16, 0.42) 40%,
+      rgba(18, 18, 16, 0.55) 74%,
+      rgba(18, 18, 16, 0.92) 100%);
+}
+
+.joinv2 > *:not(.join-bg) { position: relative; z-index: 1; }
 
 /* ---------------------------------------------------------------- hero --- */
 .joinv2 .join-hero {
   position: relative;
-  min-height: 88vh;
+  min-height: 92vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 120px 24px 64px;
-  overflow: hidden;
-  /* Holds the white type if the photograph never loads. */
-  background: #1E1E1B;
-}
-.joinv2 .join-hero-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-.joinv2 .join-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(180deg, rgba(20,20,18,0.36) 0%, rgba(20,20,18,0.18) 42%, rgba(20,20,18,0.62) 100%);
+  padding: 140px 24px 80px;
 }
 .joinv2 .join-hero-inner {
-  position: relative;
-  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 760px;
 }
 .joinv2 .join-hero h1 {
-  color: #F2F1ED;
+  color: var(--ink);
   margin: 0;
   max-width: 15ch;
   text-wrap: balance;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
 }
-.joinv2 .join-hero .join-eyebrow { color: rgba(242, 241, 237, 0.72); }
 .joinv2 .join-sub {
-  color: rgba(242, 241, 237, 0.86);
+  color: var(--ink-soft);
   font-size: 19px;
   line-height: 1.55;
   margin: 22px 0 0;
   max-width: 34ch;
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.45);
 }
 .joinv2 .join-cta { margin-top: 32px; gap: 9px; padding: 15px 26px; font-size: 16px; }
 .joinv2 .join-cta svg { width: 15px; height: 15px; }
 
+/* The site's .btn-primary is green-on-cream. On this page it needs to stay
+   legible over photography, so state it outright. */
+.joinv2 .btn-primary,
+.joinv2 nav .btn-primary {
+  background: var(--green-deep);
+  color: #F2F1ED;
+  border: 1px solid rgba(242, 241, 237, 0.14);
+}
+.joinv2 .btn-primary:hover,
+.joinv2 nav .btn-primary:hover { background: #2A4B30; }
+
+/* The nav pill never turns cream on this page; there is no light section for
+   it to sit against. */
+.joinv2 nav.scrolled {
+  background: rgba(18, 18, 16, 0.72);
+  border-color: var(--glass-line);
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.42);
+}
+.joinv2 nav.scrolled .logo,
+.joinv2 nav .logo { color: var(--ink); }
+.joinv2 nav.scrolled .logo em,
+.joinv2 nav .logo em { color: var(--green); }
+.joinv2 nav.scrolled .nav-links a,
+.joinv2 nav .nav-links a { color: rgba(242, 241, 237, 0.78); }
+.joinv2 nav.scrolled .nav-links a:hover,
+.joinv2 nav .nav-links a:hover { color: var(--ink); }
+.joinv2 nav.scrolled .nav-links a.btn-primary { color: #F2F1ED; }
+.joinv2 nav.scrolled .nav-burger,
+.joinv2 nav .nav-burger { color: rgba(242, 241, 237, 0.92); }
+.joinv2 .nav-menu {
+  background: rgba(18, 18, 16, 0.94);
+  border: 1px solid var(--glass-line);
+}
+.joinv2 .nav-menu a { color: var(--ink); }
+
 /* ------------------------------------------------------------ scaffold --- */
-.joinv2 .join-wrap { max-width: 780px; margin: 0 auto; padding: 0 18px; }
-.joinv2 .join-narrow { max-width: 600px; margin-left: auto; margin-right: auto; }
-.joinv2 .join-section { padding: 64px 0 0; }
+.joinv2 .join-wrap { max-width: 780px; margin: 0 auto; padding: 0 18px 90px; }
+.joinv2 .join-section { padding: 92px 0 0; }
 .joinv2 .join-center { text-align: center; }
 
 .joinv2 .join-eyebrow {
@@ -88,35 +189,43 @@ html[data-theme="dark"] .joinv2 {
   font-size: 11.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--join-muted);
+  color: var(--ink-dim);
   margin: 0 0 18px;
 }
+.joinv2 .join-hero .join-eyebrow { color: rgba(242, 241, 237, 0.66); }
+.joinv2 h2 { color: var(--ink); text-wrap: balance; }
+.joinv2 p { color: var(--ink-soft); }
 
-/* ------------------------------------------------------- green block ----- */
+/* --------------------------------------------------- the opening panel --- */
+/* Glass, not a solid green card: it sits inside the photograph instead of
+   cutting a rectangle out of it. */
 .joinv2 .join-block {
-  background: radial-gradient(120% 100% at 50% 0%, #3D6B44 0%, var(--green-700) 42%, var(--green-900, #1E3522) 100%);
+  background:
+    linear-gradient(160deg, rgba(53, 94, 59, 0.42) 0%, rgba(30, 53, 34, 0.30) 62%, rgba(18, 18, 16, 0.30) 100%);
+  border: 1px solid rgba(139, 175, 143, 0.22);
   border-radius: 44px;
   padding: 64px 28px;
-  margin: 18px 0 0;
+  margin: 0;
   text-align: center;
-  color: #F2F1ED;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
-.joinv2 .join-block h2 { color: #F2F1ED; margin: 0 0 18px; text-wrap: balance; }
+.joinv2 .join-block h2 { margin: 0 0 18px; }
 .joinv2 .join-block p {
-  color: rgba(242, 241, 237, 0.84);
+  color: var(--ink-soft);
   font-size: 17.5px;
   line-height: 1.6;
   margin: 0 0 15px;
 }
 .joinv2 .join-block p:last-child { margin-bottom: 0; }
-.joinv2 .join-block .join-eyebrow { color: rgba(242, 241, 237, 0.62); }
+.joinv2 .join-block .join-eyebrow { color: rgba(242, 241, 237, 0.6); }
 .joinv2 .join-chip-glass {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(242, 241, 237, 0.30);
+  border: 1px solid rgba(242, 241, 237, 0.26);
   background: rgba(242, 241, 237, 0.08);
-  color: #F2F1ED;
+  color: var(--ink);
   font-size: 14.5px;
   font-weight: 500;
   padding: 8px 17px;
@@ -124,8 +233,7 @@ html[data-theme="dark"] .joinv2 {
   margin-bottom: 20px;
 }
 .joinv2 .join-chip-glass .dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--green-400);
+  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
 }
 
 /* ---------------------------------------------------------- the role ----- */
@@ -135,31 +243,31 @@ html[data-theme="dark"] .joinv2 {
 }
 .joinv2 .join-pill {
   display: inline-flex; align-items: center;
-  background: var(--green-100); color: var(--green-800);
+  background: rgba(139, 175, 143, 0.16);
+  color: var(--green);
   font-size: 14px; font-weight: 550;
   padding: 7px 15px; border-radius: 999px;
+  border: 1px solid rgba(139, 175, 143, 0.24);
 }
 .joinv2 .join-pill--plain {
-  background: transparent; color: var(--join-muted);
-  border: 1px solid var(--join-stroke);
-}
-html[data-theme="dark"] .joinv2 .join-pill {
-  background: rgba(139, 175, 143, 0.15); color: var(--green-400);
-}
-html[data-theme="dark"] .joinv2 .join-pill--plain {
-  background: transparent; color: var(--join-muted);
+  background: rgba(242, 241, 237, 0.05);
+  color: var(--ink-dim);
+  border: 1px solid var(--glass-line);
 }
 
 .joinv2 .join-straight {
-  background: var(--join-card);
-  border: 1px solid var(--join-stroke);
-  border-left: 3px solid var(--green-500);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-left: 3px solid var(--green-mid);
   border-radius: 16px;
   padding: 24px 26px;
   margin: 0 0 30px;
   font-size: 18px;
   line-height: 1.6;
   text-align: left;
+  color: var(--ink);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
 
 .joinv2 .join-doing { margin: 0; padding: 0; list-style: none; text-align: left; }
@@ -167,7 +275,7 @@ html[data-theme="dark"] .joinv2 .join-pill--plain {
   position: relative;
   padding-left: 28px;
   margin-bottom: 15px;
-  color: var(--charcoal-soft, var(--charcoal));
+  color: var(--ink-soft);
   font-size: 17px;
   line-height: 1.52;
 }
@@ -175,52 +283,57 @@ html[data-theme="dark"] .joinv2 .join-pill--plain {
 .joinv2 .join-doing li::before {
   content: "";
   position: absolute; left: 4px; top: 0.68em;
-  width: 9px; height: 1.5px; background: var(--green-500);
+  width: 9px; height: 1.5px; background: var(--green-mid);
 }
 .joinv2 .join-doing code {
   font-family: var(--font-space-mono), ui-monospace, monospace;
   font-size: 0.85em;
-  background: var(--green-100); color: var(--green-800);
+  background: rgba(139, 175, 143, 0.16);
+  color: var(--green);
   padding: 2px 6px; border-radius: 4px;
-}
-html[data-theme="dark"] .joinv2 .join-doing code {
-  background: rgba(139, 175, 143, 0.15); color: var(--green-400);
 }
 
 /* ------------------------------------------------------------ people ----- */
 .joinv2 .join-people { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 620px) { .joinv2 .join-people { grid-template-columns: 1fr; } }
 .joinv2 .join-person {
-  background: var(--join-card);
-  border: 1px solid var(--join-stroke);
-  border-radius: 16px;
-  padding: 26px 22px;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 20px;
+  padding: 28px 22px;
   text-align: center;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
 .joinv2 .join-person img {
   width: 96px; height: 96px; border-radius: 50%;
   object-fit: cover; display: block; margin: 0 auto 16px;
-  border: 2px solid var(--join-stroke);
+  border: 2px solid rgba(242, 241, 237, 0.18);
 }
-.joinv2 .join-person-name { font-size: 18px; font-weight: 600; letter-spacing: -0.015em; }
+.joinv2 .join-person-name {
+  font-size: 18px; font-weight: 600; letter-spacing: -0.015em;
+  color: var(--ink);
+}
 .joinv2 .join-person-role {
   font-family: var(--font-space-mono), ui-monospace, monospace;
   font-size: 10.5px; letter-spacing: 0.10em; text-transform: uppercase;
-  color: var(--join-muted); margin: 5px 0 12px;
+  color: var(--ink-dim); margin: 5px 0 12px;
 }
 .joinv2 .join-person-body {
   font-size: 15.5px; line-height: 1.5; margin: 0;
-  color: var(--charcoal-soft, var(--charcoal));
+  color: var(--ink-soft);
 }
 
 /* ------------------------------------------------------------- apply ----- */
 .joinv2 .join-apply {
-  background: var(--join-card);
-  border: 1px solid var(--join-stroke);
+  background: rgba(18, 18, 16, 0.55);
+  border: 1px solid var(--glass-line);
   border-radius: 44px;
-  padding: 40px 30px;
+  padding: 44px 30px;
   scroll-margin-top: 96px;
   text-align: left;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 .joinv2 .join-apply-head { margin-bottom: 28px; }
 .joinv2 .join-apply-head h2 { margin-bottom: 0; }
@@ -229,21 +342,24 @@ html[data-theme="dark"] .joinv2 .join-doing code {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--font-space-mono), ui-monospace, monospace;
   font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase;
-  color: var(--join-muted);
-  border: 1px solid var(--join-stroke); border-radius: 999px;
+  color: var(--ink-dim);
+  border: 1px solid var(--glass-line); border-radius: 999px;
   padding: 6px 14px; margin: 0 0 22px;
 }
 .joinv2 .join-source .dot {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--green-500);
+  width: 6px; height: 6px; border-radius: 50%; background: var(--green);
 }
 
 .joinv2 .join-field { margin-bottom: 20px; }
 .joinv2 .join-field:last-of-type { margin-bottom: 26px; }
-.joinv2 .join-field label { display: block; font-size: 14.5px; font-weight: 550; margin-bottom: 7px; }
+.joinv2 .join-field label {
+  display: block; font-size: 14.5px; font-weight: 550;
+  margin-bottom: 7px; color: var(--ink);
+}
 .joinv2 .join-field label .opt {
   font-family: var(--font-space-mono), ui-monospace, monospace;
   font-size: 10px; font-weight: 400; letter-spacing: 0.09em;
-  text-transform: uppercase; color: var(--join-muted); margin-left: 8px;
+  text-transform: uppercase; color: var(--ink-dim); margin-left: 8px;
 }
 .joinv2 .join-field input[type="text"],
 .joinv2 .join-field input[type="email"],
@@ -251,9 +367,9 @@ html[data-theme="dark"] .joinv2 .join-doing code {
   width: 100%;
   font-family: inherit;
   font-size: 16.5px;
-  color: var(--charcoal);
-  background: var(--join-field);
-  border: 1px solid var(--join-stroke);
+  color: var(--ink);
+  background: rgba(242, 241, 237, 0.06);
+  border: 1px solid var(--glass-line);
   border-radius: 10px;
   padding: 13px 14px;
   line-height: 1.45;
@@ -264,82 +380,84 @@ html[data-theme="dark"] .joinv2 .join-doing code {
 .joinv2 .join-field textarea:focus-visible,
 .joinv2 .join-drop:focus-within {
   outline: none;
-  border-color: var(--green-600);
-  box-shadow: 0 0 0 3px rgba(95, 149, 104, 0.28);
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(139, 175, 143, 0.26);
 }
 .joinv2 .join-field input::placeholder,
-.joinv2 .join-field textarea::placeholder { color: var(--light); }
+.joinv2 .join-field textarea::placeholder { color: rgba(242, 241, 237, 0.38); }
 .joinv2 .join-field.bad input,
-.joinv2 .join-field.bad textarea { border-color: var(--error, #C23B22); }
+.joinv2 .join-field.bad textarea { border-color: var(--bad); }
 
 .joinv2 .join-drop {
-  border: 1.5px dashed var(--join-stroke);
+  border: 1.5px dashed var(--glass-line);
   border-radius: 10px;
-  background: var(--join-field);
+  background: rgba(242, 241, 237, 0.04);
   padding: 20px 16px;
   text-align: center;
   cursor: pointer;
   display: block;
   transition: border-color 160ms ease;
 }
-.joinv2 .join-drop:hover { border-color: var(--green-500); }
+.joinv2 .join-drop:hover { border-color: var(--green-mid); }
 .joinv2 .join-drop input[type="file"] {
   position: absolute; width: 1px; height: 1px; opacity: 0;
 }
-.joinv2 .join-drop-main { display: block; font-size: 15.5px; font-weight: 500; }
-.joinv2 .join-drop-main u { color: var(--green-700); text-underline-offset: 2px; }
+.joinv2 .join-drop-main {
+  display: block; font-size: 15.5px; font-weight: 500; color: var(--ink);
+}
+.joinv2 .join-drop-main u { color: var(--green); text-underline-offset: 2px; }
 .joinv2 .join-drop-sub {
   display: block;
   font-family: var(--font-space-mono), ui-monospace, monospace;
   font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase;
-  color: var(--join-muted); margin-top: 6px;
+  color: var(--ink-dim); margin-top: 6px;
 }
-.joinv2 .join-drop.has-file { border-style: solid; border-color: var(--green-500); }
-.joinv2 .join-drop.has-file .join-drop-main { color: var(--green-700); }
-html[data-theme="dark"] .joinv2 .join-drop.has-file .join-drop-main { color: var(--green-400); }
+.joinv2 .join-drop.has-file { border-style: solid; border-color: var(--green-mid); }
+.joinv2 .join-drop.has-file .join-drop-main { color: var(--green); }
 
-/* Honeypot: off-screen for people, still fillable by a bot. Never display:none,
-   which some bots skip. */
+/* Off-screen for people, still fillable by a bot. Never display:none. */
 .joinv2 .join-hp {
-  position: absolute;
-  left: -9999px;
-  width: 1px; height: 1px;
-  overflow: hidden;
+  position: absolute; left: -9999px;
+  width: 1px; height: 1px; overflow: hidden;
 }
 
 .joinv2 .join-submit { width: 100%; justify-content: center; font-size: 17px; padding: 17px; }
 .joinv2 .join-submit:disabled { opacity: 0.6; cursor: default; }
 .joinv2 .join-fineprint {
-  font-size: 13.5px; color: var(--join-muted);
+  font-size: 13.5px; color: var(--ink-dim);
   margin: 14px 0 0; text-align: center;
 }
-.joinv2 .join-err { color: var(--error, #C23B22); font-size: 13.5px; margin: 6px 0 0; }
+.joinv2 .join-err { color: var(--bad); font-size: 13.5px; margin: 6px 0 0; }
 .joinv2 .join-err--server { text-align: center; margin: 0 0 16px; }
 
 .joinv2 .join-done { text-align: center; padding: 10px 0; }
 .joinv2 .join-tick {
   width: 54px; height: 54px; margin: 0 auto 20px; border-radius: 50%;
-  background: var(--green-100); color: var(--green-700);
+  background: rgba(139, 175, 143, 0.16); color: var(--green);
   display: grid; place-items: center;
-}
-html[data-theme="dark"] .joinv2 .join-tick {
-  background: rgba(139, 175, 143, 0.15); color: var(--green-400);
 }
 .joinv2 .join-tick svg { width: 25px; height: 25px; }
 .joinv2 .join-done h3 {
-  font-size: 26px; font-weight: 500; letter-spacing: -0.02em; margin: 0 0 10px;
+  font-size: 26px; font-weight: 500; letter-spacing: -0.02em;
+  margin: 0 0 10px; color: var(--ink);
 }
 .joinv2 .join-done p {
-  color: var(--charcoal-soft, var(--charcoal));
-  font-size: 17px; max-width: 38ch; margin: 0 auto;
+  color: var(--ink-soft); font-size: 17px; max-width: 38ch; margin: 0 auto;
+}
+
+/* The site footer sits under a dark page here, so it gets the dark treatment
+   rather than snapping back to cream. */
+.joinv2 + .site-footer,
+.joinv2 ~ .site-footer {
+  background: var(--ground, #121210);
+  color: rgba(242, 241, 237, 0.7);
+  border-top: 1px solid rgba(242, 241, 237, 0.12);
 }
 
 /* ------------------------------------------------------------ motion ----- */
 /* home-v2.css hides `.homev2 .reveal-in` unconditionally. On this page that
    would mean a blank page whenever the reveal script does not run, so undo it
-   here (higher specificity than `.homev2 .reveal-in`, so import order cannot
-   decide it) and re-arm the hidden state only once JoinReveals has confirmed
-   it can actually reveal them again. */
+   here and re-arm only once JoinReveals confirms it can reveal them again. */
 .joinv2.homev2 .reveal-in { opacity: 1; transform: none; }
 
 html.js-reveals .joinv2.homev2 .reveal-in {
@@ -377,4 +495,78 @@ html.js-reveals .joinv2.homev2 .reveal-in.vis { opacity: 1; transform: none; }
     opacity: 1;
     transform: none;
   }
+}
+
+/* ============================================================================
+   New blocks introduced for the wide layout. Mobile keeps one column; the
+   desktop rules below actually use the width.
+   ========================================================================= */
+.joinv2 .join-block-lead { margin-bottom: 22px; }
+.joinv2 .join-block-body p:last-child { margin-bottom: 0; }
+.joinv2 .join-role-body { max-width: 600px; margin: 0 auto; }
+.joinv2 .join-apply-note {
+  color: var(--ink-dim);
+  font-size: 15.5px;
+  line-height: 1.55;
+  margin: 14px 0 0;
+  max-width: 42ch;
+}
+
+/* ------------------------------------------------------------- desktop --- */
+@media (min-width: 900px) {
+  .joinv2 .join-wrap { max-width: 1180px; padding: 0 40px 120px; }
+  .joinv2 .join-section { padding: 120px 0 0; }
+
+  .joinv2 .join-hero { min-height: 96vh; padding: 160px 40px 100px; }
+  .joinv2 .join-hero-inner { max-width: 900px; }
+  .joinv2 .join-hero h1 { max-width: 18ch; }
+  .joinv2 .join-sub { max-width: 46ch; font-size: 20px; }
+
+  /* Opening panel: statement on the left, the explanation beside it, instead
+     of one narrow centred column with empty gutters either side. */
+  .joinv2 .join-block { padding: 88px 72px; border-radius: 56px; text-align: left; }
+  .joinv2 .join-block-inner {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .joinv2 .join-block-lead { margin-bottom: 0; }
+  .joinv2 .join-block h2 { margin: 0; font-size: clamp(34px, 3.1vw, 46px); }
+  .joinv2 .join-block-body p { font-size: 18px; }
+
+  /* The role: the straight talk and the actual work sit side by side. */
+  .joinv2 .join-role-body {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 52px;
+    align-items: start;
+    margin-top: 8px;
+  }
+  .joinv2 .join-straight { margin: 0; font-size: 19px; padding: 30px 32px; }
+  .joinv2 .join-doing li { font-size: 17.5px; margin-bottom: 20px; }
+
+  .joinv2 .join-people { gap: 24px; max-width: 900px; margin: 0 auto; }
+  .joinv2 .join-person { padding: 36px 30px; }
+  .joinv2 .join-person img { width: 112px; height: 112px; }
+
+  /* Apply: the ask on the left, the form on the right. */
+  .joinv2 .join-apply {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 64px;
+    align-items: start;
+    padding: 64px 64px 68px;
+    border-radius: 56px;
+  }
+  .joinv2 .join-apply-head { margin-bottom: 0; position: sticky; top: 110px; }
+  .joinv2 .join-apply-head h2 { font-size: clamp(30px, 2.6vw, 40px); }
+}
+
+/* Very wide screens: let the photographs breathe rather than stretching the
+   text line past comfortable reading width. */
+@media (min-width: 1500px) {
+  .joinv2 .join-wrap { max-width: 1320px; }
+  .joinv2 .join-hero-inner { max-width: 1000px; }
 }
