@@ -32,8 +32,8 @@ export function JoinV2() {
           <p className="join-eyebrow">One role open</p>
           <h1>We&apos;re hiring one engineer.</h1>
           <p className="join-sub">
-            Unpaid to start. You&apos;d work on software that is already live in two
-            restaurants, checking real money every morning.
+            No salary yet, an ownership stake that vests. You&apos;d work on software that is
+            already live in two restaurants, checking real money every morning.
           </p>
           <a className="btn btn-primary join-cta" href="#apply">
             Apply
@@ -76,7 +76,7 @@ export function JoinV2() {
               Founding engineer
             </h2>
             <div className="join-terms reveal-in" style={{ ["--i" as string]: 2 }}>
-              <span className="join-pill">Unpaid to start</span>
+              <span className="join-pill">Equity, no salary yet</span>
               <span className="join-pill join-pill--plain">Denver or remote</span>
               <span className="join-pill join-pill--plain">Start now</span>
             </div>
@@ -84,11 +84,10 @@ export function JoinV2() {
 
           <div className="join-role-body">
             <p className="join-straight reveal-in" style={{ ["--i" as string]: 3 }}>
-              Let me be straight with you: this is unpaid right now, and I won&apos;t
-              dress that up. You&apos;d come in as an intern building a real product
-              inside real restaurants. When money starts coming in, you&apos;re first
-              in line for the founding engineer job. That&apos;s the risk I&apos;m
-              offering.
+              Let me be straight with you: there is no salary yet, and I won&apos;t
+              dress that up. What there is: an ownership stake that vests over time,
+              on paper before you write a line of code, and a real product inside
+              real restaurants. That&apos;s the risk I&apos;m offering.
             </p>
 
             <ul className="join-doing reveal-in" style={{ ["--i" as string]: 4 }}>
