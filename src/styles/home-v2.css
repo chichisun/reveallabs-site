@@ -255,26 +255,14 @@
 .homev2 .proof-chip strong { color: #FAF9F5; font-weight: 650; }
 .homev2 .proof-chip .tick { color: var(--green-400); }
 
-/* ---------- product dashboard (glass frame; fintech-grade app shell) ----------
-   Product tokens from src/components/dashboard-preview/preview.css */
+/* ---------- product shots (two frames over the video; the PNGs come from
+   oxygen/dashboard/scripts/shoot-site-product.mjs, see public/product/SHOT-MANIFEST.json) ---------- */
 .homev2 .dash-stage {
   margin: 64px auto -170px;
   max-width: 1010px;
   text-align: left;
   position: relative;
-  --ink: #14171F;
-  --ink-2: #667085;
-  --ink-3: #98A2B3;
-  --line: #E8E9EC;
-  --shell: #F6F7F8;
-  --app-red: #C23B22;
-  --app-red-soft: #FDF2F0;
-  --app-green: #355E3B;
-  --app-green-tint: #EAF2EA;
-  --card-shadow: 0 1px 2px rgba(20, 23, 31, 0.05);
 }
-.homev2 .dash-app { font-family: var(--font-inter), system-ui, sans-serif; color: var(--ink); }
-.homev2 .dash-app .tnum { font-variant-numeric: tabular-nums; }
 
 /* frosted glass outer frame over the video */
 .homev2 .dash-glass {
@@ -287,221 +275,16 @@
   padding: 12px;
   margin-right: 190px; /* room for the overlapping phone */
 }
-
-/* app shell: one quiet gray surface, white cards on top */
-.homev2 .dash-desk {
-  display: grid;
-  grid-template-columns: 176px 1fr;
-  background: var(--shell);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 16px;
-  overflow: hidden;
+.homev2 .dash-shot { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.7); }
+.homev2 .dash-caption {
+  margin: 14px 6px 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #14171F;
+  max-width: 62ch;
 }
 
-/* sidebar lives on the shell itself */
-.homev2 .dash-side {
-  display: flex; flex-direction: column;
-  padding: 16px 10px 12px;
-  border-right: 1px solid var(--line);
-}
-.homev2 .dash-side .dlogo {
-  font-family: var(--font-fustat), sans-serif;
-  font-size: 18px; font-weight: 650; letter-spacing: -0.02em;
-  padding: 0 10px 16px;
-}
-.homev2 .dash-side .dlogo em { font-style: normal; color: var(--app-green); }
-.homev2 .dnav {
-  display: flex; align-items: center; gap: 9px;
-  height: 32px;
-  font-size: 13px; font-weight: 500; color: var(--ink-2);
-  padding: 0 10px; border-radius: 8px;
-  margin-bottom: 2px;
-  border: 1px solid transparent;
-}
-.homev2 .dnav svg { width: 15px; height: 15px; flex-shrink: 0; stroke-width: 1.75; }
-.homev2 .dnav.active {
-  background: #fff; color: var(--ink); font-weight: 600;
-  border-color: var(--line);
-  box-shadow: var(--card-shadow);
-}
-.homev2 .dnav .badge {
-  margin-left: auto;
-  background: var(--app-red-soft); color: var(--app-red);
-  font-size: 10.5px; font-weight: 700;
-  padding: 1px 6px; border-radius: 999px;
-  font-variant-numeric: tabular-nums;
-}
-.homev2 .dash-side .spacer { flex: 1; min-height: 18px; }
-.homev2 .workspace {
-  display: flex; align-items: center; gap: 8px;
-  border-top: 1px solid var(--line);
-  padding: 12px 8px 2px;
-}
-.homev2 .workspace .wmark {
-  width: 22px; height: 22px; border-radius: 6px;
-  background: var(--app-green); color: #fff;
-  font-size: 10px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.homev2 .workspace .wname { font-size: 11.5px; font-weight: 600; line-height: 1.3; white-space: nowrap; }
-.homev2 .workspace .wplan { font-size: 10.5px; color: var(--ink-3); white-space: nowrap; }
-
-/* main column */
-.homev2 .dash-main { padding: 16px 18px 18px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
-.homev2 .dash-head { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; }
-.homev2 .dash-head .ht { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-.homev2 .head-tools { display: inline-flex; align-items: center; gap: 14px; }
-.homev2 .dash-head .sync {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 11.5px; color: var(--ink-2);
-}
-.homev2 .dash-head .sync i {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--app-green); font-style: normal;
-}
-.homev2 .head-tools .search {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 12px; color: var(--ink-3);
-  background: #fff; border: 1px solid var(--line);
-  border-radius: 8px; padding: 5px 8px 5px 9px;
-  box-shadow: var(--card-shadow);
-}
-.homev2 .head-tools .search svg { width: 12px; height: 12px; }
-.homev2 .head-tools .search kbd {
-  font-family: inherit; font-size: 10px; font-weight: 500;
-  color: var(--ink-3);
-  background: var(--shell); border: 1px solid var(--line);
-  border-radius: 4px; padding: 1px 4px;
-  margin-left: 6px;
-}
-.homev2 .head-tools .bell { position: relative; display: inline-flex; color: var(--ink-2); }
-.homev2 .head-tools .bell svg { width: 15px; height: 15px; }
-.homev2 .head-tools .bell .nub {
-  position: absolute; top: -1px; right: -2px;
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--app-red);
-  border: 1.5px solid var(--shell);
-}
-.homev2 .dash-avatar {
-  width: 26px; height: 26px; border-radius: 50%;
-  background: var(--app-green); color: #fff;
-  font-size: 11px; font-weight: 600;
-  display: inline-flex; align-items: center; justify-content: center;
-}
-
-/* stat row */
-.homev2 .kpis { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-.homev2 .kpi {
-  background: #fff; border: 1px solid var(--line);
-  border-radius: 12px; padding: 14px 16px;
-  box-shadow: var(--card-shadow);
-  position: relative;
-}
-.homev2 .kpi .label {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
-  color: var(--ink-2);
-}
-.homev2 .kpi .label .live {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--app-red);
-}
-.homev2 .dash-stage.booted .kpi .label .live { animation: sync-breathe 2.2s ease-in-out 1.5s infinite; }
-.homev2 .kpi .value {
-  font-size: 24px; font-weight: 620; letter-spacing: -0.015em;
-  margin-top: 6px; font-variant-numeric: tabular-nums;
-  line-height: 1.1;
-}
-.homev2 .kpi .value.red { color: var(--app-red); }
-.homev2 .kpi .value.green { color: var(--app-green); }
-.homev2 .kpi .meta { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; }
-.homev2 .kpi .spark {
-  position: absolute; right: 16px; bottom: 16px;
-  width: 64px; height: 26px;
-  overflow: visible;
-}
-.homev2 .kpi .spark polyline { fill: none; stroke: var(--app-green); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.homev2 .kpi .spark .fill { stroke: none; }
-.homev2 .kpi .spark .tip {
-  fill: var(--app-green);
-  opacity: 0;
-  transition: opacity 300ms ease 1850ms;
-}
-.homev2 .dash-stage.booted .kpi .spark .tip { opacity: 1; }
-
-/* leaks panel */
-.homev2 .panel {
-  background: #fff; border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: var(--card-shadow);
-  padding: 0 16px;
-}
-.homev2 .panel-title {
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 12.5px; font-weight: 600;
-  padding: 13px 2px 11px;
-  border-bottom: 1px solid var(--line);
-}
-.homev2 .panel-title .pt-left { display: inline-flex; align-items: center; gap: 8px; }
-.homev2 .panel-title .count {
-  font-size: 10.5px; font-weight: 600; color: var(--app-red);
-  background: var(--app-red-soft);
-  padding: 2px 8px; border-radius: 999px;
-  font-variant-numeric: tabular-nums;
-}
-.homev2 .panel-title .viewall {
-  display: inline-flex; align-items: center; gap: 2px;
-  font-size: 11.5px; font-weight: 500; color: var(--ink-3);
-  cursor: pointer;
-  transition: color 150ms ease;
-}
-.homev2 .panel-title .viewall:hover { color: var(--ink-2); }
-.homev2 .panel-title .viewall svg { width: 12px; height: 12px; }
-.homev2 .leak {
-  display: flex; align-items: center; gap: 12px; padding: 12px 2px;
-  transition: background 150ms ease;
-}
-.homev2 .leak:hover { background: #FCFCFD; }
-.homev2 .leak + .leak { border-top: 1px solid var(--line); }
-.homev2 .leak .mono {
-  width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
-  background: var(--app-green-tint);
-  color: var(--app-green);
-  font-size: 10px; font-weight: 700; letter-spacing: 0.02em;
-  display: flex; align-items: center; justify-content: center;
-}
-.homev2 .leak .mono.dp { background: #EEF1F5; color: #4A5568; }
-.homev2 .leak .what { flex: 1; min-width: 0; }
-.homev2 .leak .what b { display: block; font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
-.homev2 .leak .what span {
-  display: block; font-size: 12px; color: var(--ink-2); margin-top: 1px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.homev2 .leak .amt {
-  font-weight: 620; font-size: 13.5px; color: var(--app-red);
-  flex-shrink: 0; text-align: right;
-  width: 62px;
-}
-.homev2 .leak .amt.ok { color: var(--app-green); }
-.homev2 .leak .amt small { display: block; font-size: 10.5px; font-weight: 500; color: var(--ink-3); margin-top: 1px; }
-.homev2 .leak .act {
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: #fff; background: var(--ink);
-  border: none; border-radius: 8px;
-  height: 30px; padding: 0 12px;
-  min-width: 58px;
-  cursor: pointer; white-space: nowrap;
-  box-shadow: var(--card-shadow);
-  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background 150ms ease;
-  margin-left: 4px;
-}
-.homev2 .leak .act:hover { background: #23262F; }
-.homev2 .leak .act:active { transform: scale(0.97); }
-.homev2 .leak .act.ghost { background: #fff; color: var(--ink-2); border: 1px solid var(--line); }
-.homev2 .leak .act.ghost:hover { background: var(--shell); }
-
-/* phone — same product, matching detail level */
+/* the phone, overlapping the glass bottom-right */
 .homev2 .dash-phone {
   position: absolute; right: -10px; bottom: -36px;
   width: 218px; z-index: 3;
@@ -512,135 +295,8 @@
   border-radius: 32px;
   padding: 9px;
   box-shadow: 0 30px 70px rgba(10, 20, 12, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  font-family: var(--font-inter), system-ui, sans-serif; color: var(--ink);
 }
-.homev2 .phone-screen {
-  background: #FFFFFF; border-radius: 24px; overflow: hidden;
-  display: flex; flex-direction: column;
-}
-.homev2 .p-status {
-  display: flex; align-items: center;
-  font-size: 10.5px; font-weight: 600; color: var(--ink);
-  padding: 10px 16px 0;
-}
-.homev2 .p-status .p-time { flex: 1; padding-left: 4px; }
-.homev2 .p-status .p-isl {
-  width: 50px; height: 15px; border-radius: 999px;
-  background: #14171F; flex-shrink: 0;
-}
-.homev2 .p-glyphs { flex: 1; display: inline-flex; justify-content: flex-end; align-items: center; gap: 4px; color: var(--ink); padding-right: 2px; }
-.homev2 .p-glyphs svg { height: 9px; width: auto; display: block; }
-.homev2 .p-head { padding: 16px 18px 0; font-size: 11.5px; font-weight: 500; color: var(--ink); }
-.homev2 .p-sub {
-  display: flex; align-items: center; gap: 5px;
-  padding: 3px 18px 0;
-  font-size: 10px; color: var(--ink-3);
-}
-.homev2 .p-sub i {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--app-green); font-style: normal;
-}
-.homev2 .dash-stage.booted .p-sub i { animation: sync-breathe 2.8s ease-in-out 2s infinite; }
-.homev2 .p-hero { padding: 18px 18px 20px; }
-.homev2 .p-hero .amt {
-  font-size: 29px; font-weight: 650; letter-spacing: -0.02em; line-height: 1;
-  color: var(--app-red);
-}
-.homev2 .p-hero .amt .unit { font-size: 12px; font-weight: 500; color: var(--ink-2); margin-left: 6px; letter-spacing: 0; }
-.homev2 .p-hero .recovered {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 12px;
-  font-size: 11.5px; font-weight: 500; color: var(--app-green);
-}
-.homev2 .p-listhead {
-  display: flex; justify-content: space-between;
-  border-top: 1px solid var(--line);
-  margin: 0 18px; padding: 12px 0 2px;
-  font-size: 9.5px; font-weight: 600; letter-spacing: 0.06em; color: var(--ink-3);
-}
-.homev2 .p-leak { padding: 12px 18px; }
-.homev2 .p-leak .l1 {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
-}
-.homev2 .p-leak .l1 b { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.homev2 .p-leak .l1 .amt { font-size: 12.5px; font-weight: 620; color: var(--app-red); flex-shrink: 0; }
-.homev2 .p-leak .l2 {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  margin-top: 4px;
-}
-.homev2 .p-leak .l2 > span {
-  font-size: 10.5px; color: var(--ink-2); line-height: 1.4;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.homev2 .p-fix {
-  font-family: inherit; font-size: 10px; font-weight: 600;
-  background: var(--ink); color: #fff;
-  border: none; border-radius: 6px;
-  height: 21px; padding: 0 9px;
-  cursor: pointer; flex-shrink: 0;
-  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-.homev2 .p-fix:active { transform: scale(0.96); }
-.homev2 .p-leak + .p-leak { border-top: 1px solid var(--line); margin: 0 18px; padding-left: 0; padding-right: 0; }
-.homev2 .p-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px solid var(--line);
-  padding: 12px 22px 14px;
-  margin-top: 14px;
-}
-.homev2 .p-nav svg { width: 17px; height: 17px; }
-.homev2 .p-nav .it { color: var(--ink-3); display: flex; }
-.homev2 .p-nav .it.on { color: var(--ink); }
-.homev2 .p-nav .plus {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--ink); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 500; line-height: 1;
-}
-
-/* ---------- dashboard boot choreography (plays once, on view) ---------- */
-.homev2 .dash-app .boot-el {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 450ms cubic-bezier(0.23, 1, 0.32, 1), transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
-  transition-delay: calc(var(--b, 0) * 55ms);
-}
-.homev2 .dash-stage.booted .boot-el { opacity: 1; transform: none; }
-/* badge pops in slightly after its nav item */
-.homev2 .dash-app .dnav .badge {
-  opacity: 0; transform: scale(0.85);
-  transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 620ms, transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 620ms;
-}
-.homev2 .dash-stage.booted .dnav .badge { opacity: 1; transform: scale(1); }
-/* sparkline draws itself once the Recovered card has landed */
-.homev2 .kpi .spark polyline {
-  stroke-dasharray: 95;
-  stroke-dashoffset: 95;
-  transition: stroke-dashoffset 950ms cubic-bezier(0.4, 0, 0.2, 1) 900ms;
-}
-.homev2 .dash-stage.booted .kpi .spark polyline { stroke-dashoffset: 0; }
-/* newest leak reads as "just flagged": red wash settles to white */
-@keyframes leak-flash {
-  0% { background: var(--app-red-soft); }
-  100% { background: transparent; }
-}
-.homev2 .dash-stage.booted .leak.is-new {
-  border-radius: 8px;
-  animation: leak-flash 1500ms ease-out 1350ms both;
-}
-/* sync dot breathes — quiet "always watching" ambience */
-@keyframes sync-breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-.homev2 .dash-stage.booted .dash-head .sync i { animation: sync-breathe 2.8s ease-in-out 2s infinite; }
-/* phone floats gently once everything has settled */
-@keyframes phone-float { from { transform: translateY(0); } to { transform: translateY(-7px); } }
-.homev2 .dash-stage.booted .dash-phone { animation: phone-float 6.5s ease-in-out 2.2s infinite alternate; }
-@media (prefers-reduced-motion: reduce) {
-  .homev2 .dash-app .boot-el, .homev2 .dash-app .dnav .badge { opacity: 1; transform: none; transition: none; }
-  .homev2 .kpi .spark polyline { stroke-dashoffset: 0; transition: none; }
-  .homev2 .dash-stage.booted .leak.is-new,
-  .homev2 .dash-stage.booted .dash-head .sync i,
-  .homev2 .dash-stage.booted .dash-phone { animation: none; }
-}
+.homev2 .dash-phone .dash-shot { border-radius: 24px; }
 
 /* ---------- inset section containers (Supy's rounded gray cards) ---------- */
 .homev2 .inset {
@@ -986,7 +642,7 @@
 .homev2 .hero .dash-stage { animation-delay: 720ms; animation-duration: 950ms; }
 
 /* card hover lift */
-.homev2 .pain-card, .homev2 .frow, .homev2 .kpi, .homev2 .mini-card {
+.homev2 .pain-card, .homev2 .frow, .homev2 .mini-card {
   transition: transform 250ms cubic-bezier(0.16,1,0.3,1), box-shadow 250ms ease;
 }
 .homev2 .pain-card:hover, .homev2 .frow:hover {

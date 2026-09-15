@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:shots": "node scripts/check-product-shots.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.1",

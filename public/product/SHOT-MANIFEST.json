@@ -1,0 +1,281 @@
+{
+  "shotAt": "2026-09-15T16:59:42.708Z",
+  "oxygenRepo": "/Users/kase/Desktop/Reveal LLC/oxygen",
+  "oxygenCommit": "89b29d32ab3ff90f798ee66e74fadab4fe734fd4",
+  "oxygenDirty": 31,
+  "desktop": {
+    "file": "ns-home-1440.png",
+    "width": 2880,
+    "height": 1800,
+    "viewport": "1440×900 @2x",
+    "source": "design-history/desktop-northstar-2026-08/_work/scrap-home-v5.html (frozen; ring re-cut on a temp copy)",
+    "recut": {
+      "rule": "food = 0.315 × sales, labor = 0.36 × sales, sales = sales-hero windows.month.rungCents; other slices unchanged; usual moved with the actual so \"down\" is unchanged",
+      "salesCents": 8768995,
+      "foodCents": 2762233,
+      "laborCents": 3156838,
+      "expensesCents": 7972688,
+      "profitCents": 796307,
+      "profitPct": 9.080938009429815,
+      "foodPct": 31.499995153378467,
+      "laborPct": 35.99999771923692,
+      "before": {
+        "profit": "$35,031.38",
+        "profitPct": "40%",
+        "foodPct": "5.7%",
+        "laborPct": "30.9%"
+      }
+    },
+    "figures": [
+      {
+        "shows": "$1,263.27",
+        "source": "banking-hero grubhubStatement.theySayCents · data.json finding f-gh-lkw-0822",
+        "value": "$1,263.27"
+      },
+      {
+        "shows": "6 days",
+        "source": "banking-hero grubhubStatement.daysLate",
+        "value": "6 days"
+      },
+      {
+        "shows": "$13.50 a case",
+        "source": "data.json chickenThigh.change · finding f-shm-lkw-4471",
+        "value": "$13.50"
+      },
+      {
+        "shows": "$7,963.07 · 9%",
+        "source": "recut: sales − Σ slices",
+        "value": "$7,963.07"
+      },
+      {
+        "shows": "down $2,253.10",
+        "source": "_fragment-pnl-p1 usual profit − profit (usual moved with the actual; unchanged)",
+        "value": "$2,253.10"
+      },
+      {
+        "shows": "Food cost 31.5%",
+        "source": "recut: 0.315 × sales",
+        "value": "$27,622.33"
+      },
+      {
+        "shows": "Labor cost 36%",
+        "source": "recut: 0.36 × sales",
+        "value": "$31,568.38"
+      },
+      {
+        "shows": "Sales $87,689.95",
+        "source": "sales-hero windows.month.rungCents",
+        "value": "$87,689.95"
+      },
+      {
+        "shows": "Expenses $79,726.88",
+        "source": "recut: Σ slices",
+        "value": "$79,726.88"
+      },
+      {
+        "shows": "2 checks not on file",
+        "source": "banking-hero lines: Check rows in the window (builder L.cheques)",
+        "value": "2 checks not on file"
+      },
+      {
+        "shows": "$1,264.55",
+        "source": "sales-hero today.rungCents",
+        "value": "$1,264.55"
+      },
+      {
+        "shows": "$199.55 ahead of a usual Friday",
+        "source": "sales-hero today.rungCents − today.usualToHereCents",
+        "value": "$199.55"
+      },
+      {
+        "shows": "A usual Friday, $3,660.00 by close",
+        "source": "sales-hero today.usualDayCents",
+        "value": "$3,660.00"
+      },
+      {
+        "shows": "Today to 2:14pm",
+        "source": "sales-hero today.asOf",
+        "value": "2:14pm"
+      },
+      {
+        "shows": "4 weeks to Aug 28",
+        "source": "the still's Income & Expenses clock (V5.clocks.ie; the 4-week window to the fixture's Friday Aug 28)",
+        "value": "4 weeks to Aug 28"
+      },
+      {
+        "shows": "All checked · 6:02am · next 7:30am",
+        "source": "banking-hero feed.lastReadLabel / feed.nextLookLabel",
+        "value": "6:02am / 7:30am"
+      },
+      {
+        "shows": "10 bank lines · 1 payout · 3 invoices, 34 lines · 2 papers",
+        "source": "_work/_tmp-still.mjs:6 — the Revealer receipt typed for the still (counts, not dollars; pre-existing)",
+        "value": null
+      },
+      {
+        "shows": "Tuk Tuk Thai Grill · Lakewood · Chayadol · Mildy",
+        "source": "the shell; Kase D3 keep · data.json company/people",
+        "value": null
+      }
+    ]
+  },
+  "live": {
+    "file": "live-home-390.png",
+    "width": 780,
+    "height": 1688,
+    "viewport": "390×844 @2x",
+    "url": "https://app.reveallabs.co/home",
+    "finalUrl": "https://app.reveallabs.co/",
+    "assertions": [
+      "route is / or /home",
+      "no login form",
+      "greeting + nav present",
+      "no canvas; shadow roots swept",
+      "zero real strings in innerText/outerHTML/digits",
+      "every number token named by the swap table"
+    ],
+    "swapVersion": 5,
+    "swapRows": [
+      {
+        "fake": "$1,264.55",
+        "near": "rung up so far today",
+        "why": "sales-hero today.rungCents (goes with the 41 tickets)",
+        "hit": 0
+      },
+      {
+        "fake": "41 tickets rung up so far today",
+        "near": null,
+        "why": "sales-hero today.orders (if the line is split into nodes)",
+        "hit": 1
+      },
+      {
+        "fake": "Thursday's close",
+        "near": null,
+        "why": "sales-hero yesterday.label: the fixture's yesterday is Thursday Aug 27",
+        "hit": 1
+      },
+      {
+        "fake": "normal for a Thursday",
+        "near": null,
+        "why": "sales-hero yesterday.verdict 'A normal Thursday.'",
+        "hit": 1
+      },
+      {
+        "fake": "August 28th, 2026",
+        "near": null,
+        "why": "the fixture's clock: Friday, August 28, 2026 (sales-hero today.dateLabel); the phone and the desktop still now read the same day",
+        "hit": 2
+      },
+      {
+        "fake": "4 payment streams",
+        "near": null,
+        "why": "banking-hero inBySource: 4 sources (Uber Eats, Cards, DoorDash, Grubhub)",
+        "hit": 1
+      },
+      {
+        "fake": "since Aug 22",
+        "near": null,
+        "why": "banking-hero grubhubStatement.statementDate 2026-08-22",
+        "hit": 1
+      },
+      {
+        "fake": "4 things are waiting on you",
+        "near": null,
+        "why": "the still's Revealer: Grubhub payout, Shamrock thigh, 2 checks not on file",
+        "hit": 1
+      },
+      {
+        "fake": "Needs you · 4",
+        "near": null,
+        "why": "same four",
+        "hit": 1
+      },
+      {
+        "fake": "$3,215",
+        "near": null,
+        "why": "sales-hero yesterday.closeCents $3,214.60, rounded as the app rounds",
+        "hit": 1
+      },
+      {
+        "fake": "97 orders",
+        "near": null,
+        "why": "sales-hero yesterday.orders",
+        "hit": 1
+      },
+      {
+        "fake": "48 days",
+        "near": null,
+        "why": "the still's Documents card: hood service due in 48 days (documents.html timeline)",
+        "hit": 2
+      },
+      {
+        "fake": "$972",
+        "near": null,
+        "why": "data.json chickenThigh.yearIfItSticks (Shamrock, chicken thigh)",
+        "hit": 1
+      },
+      {
+        "fake": "$106",
+        "near": null,
+        "why": "data.json noticed n-rd-spend: $2,206.44 against a usual $2,100.00",
+        "hit": 2
+      },
+      {
+        "fake": "$1,263.27",
+        "near": null,
+        "why": "banking-hero grubhubStatement.theySayCents: the one payout not landed (on the way)",
+        "hit": 2
+      },
+      {
+        "fake": "2 waiting",
+        "near": null,
+        "why": "the still's Revealer: 2 papers",
+        "hit": 1
+      },
+      {
+        "fake": "Nov 2",
+        "near": null,
+        "why": "the still's Documents card: 48 days from the shot date (nextDue.days)",
+        "hit": 1
+      },
+      {
+        "fake": "$81",
+        "near": null,
+        "why": "data.json chickenThigh.change $13.50 × casesPerMonth 6",
+        "hit": 2
+      },
+      {
+        "fake": "+ 3 more",
+        "near": null,
+        "why": "the still's four things, one shown",
+        "hit": 1
+      },
+      {
+        "fake": "$1,204",
+        "near": null,
+        "why": "data.json invoice 4471 (Shamrock) $1,204.10, rounded as the app rounds",
+        "hit": 1
+      },
+      {
+        "fake": "$1,905",
+        "near": null,
+        "why": "data.json invoice LH-88198 (Lee Hing) $1,904.85, rounded as the app rounds",
+        "hit": 1
+      },
+      {
+        "fake": "August 26th, 2026",
+        "near": null,
+        "why": "data.json invoice 4471 date",
+        "hit": 1
+      },
+      {
+        "fake": "August 6th, 2026",
+        "near": null,
+        "why": "data.json invoice LH-88198 date (noticed n-lh-cadence)",
+        "hit": 1
+      }
+    ],
+    "textSha256": "21afdf419d16a725079e67aa27a6f6976c82ff72919ef505c571892d543e18a7",
+    "text": "August 28th, 2026\nGood morning\nChecked at 9:00 this morning. What could be checked matched.\n\n4 payment streams. Grubhub hasn't reported since Aug 22. 4 things are waiting on you.\n\nAsk about your restaurant…\nTODAY\nSALES · YESTERDAY\nchecked 10:56am\n$3,215Thursday's close · 97 orders\nnormal for a Thursday\n41 tickets rung up so far today · $106\n11a\n12p\n1p\n2p\n3p\n4p\n5p\n6p\n7p\n8p\nSee more\nBANKING\nchecked 10:57am\n$1,263.27on the way to your bank\nYour card money lands today.\nRent doesn't match your lease\nDoorDash\nUber Eats\nGrubhub\nCards\ncan't check\nSee more\nDOCUMENTS\n3 watched\n48 daysliquor license renewal · Nov 2\nSent in for review\n2 waiting\nLicenses\nwatched\nCertifications\nwatched\nLease\nno matching bank debit found by its due window\nstill checking\nSee more\nNEEDS YOU · 4\nThat's right\nShamrock Foods shrank the pack for the same price\n$972\nSee the math ›\nReview\nThat's right\nShamrock Foods shrank the pack for the same price\n$81\nSee the math ›\nReview\nThat's right\nShamrock Foods raised prices above your usual\n$106\nSee the math ›\nReview\n+ 3 more\nRECENT CAPTURES\nLee Hing Foodservice\nAugust 28th, 2026\nNeeds a look\nShamrock Foods Company\nAugust 26th, 2026 · $1,204\nNeeds you\nShamrock Foods Company\nAugust 6th, 2026 · $1,905\nNeeds you\nHome\nBank\nSpending\nChat\n7p\n"
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { HomeWaitlist } from "./HomeWaitlist";
 import { SiteNav } from "./SiteNav";
 
@@ -476,72 +477,9 @@ export function HomeV2() {
       { threshold: 0.6 },
     );
     root.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
-      if (!el.closest(".dash-stage")) countIO.observe(el); /* dash counters fire with the boot */
+      countIO.observe(el);
     });
     cleanups.push(() => countIO.disconnect());
-
-    // dashboard boot: cascade the app to life once it scrolls into view
-    (function () {
-      const stage = root.querySelector<HTMLElement>(".dash-stage");
-      if (!stage) return;
-      const order = [
-        ".dash-side .dlogo",
-        ".dash-side .dnav",
-        ".workspace",
-        ".dash-head",
-        ".kpi",
-        ".panel-title",
-        ".leak",
-        ".p-status",
-        ".p-head",
-        ".p-hero",
-        ".p-listhead",
-        ".p-leak",
-        ".p-nav",
-      ];
-      // StrictMode guard: only assign boot indices once
-      if (!reduce && !stage.dataset.bootPrepped) {
-        stage.dataset.bootPrepped = "1";
-        let b = 0;
-        order.forEach((sel) =>
-          stage.querySelectorAll<HTMLElement>(sel).forEach((el) => {
-            el.classList.add("boot-el");
-            el.style.setProperty("--b", String(b++));
-          }),
-        );
-      }
-      const timers: number[] = [];
-      const bootIO = new IntersectionObserver(
-        (es) => {
-          es.forEach((e) => {
-            if (!e.isIntersecting) return;
-            bootIO.unobserve(stage);
-            timers.push(window.setTimeout(() => stage.classList.add("booted"), 150));
-            timers.push(
-              window.setTimeout(
-                () => stage.querySelectorAll<HTMLElement>("[data-count]").forEach(runCount),
-                550,
-              ),
-            );
-          });
-        },
-        { threshold: 0.25 },
-      );
-      // hold the boot until the intro has handed off and the glass panel has
-      // risen with the hero (dash-stage rise: 720ms delay + 950ms duration) —
-      // otherwise the cascade plays hidden behind the intro scrim.
-      const armBoot = () => timers.push(window.setTimeout(() => bootIO.observe(stage), 1200));
-      if (docEl.classList.contains("intro-pending")) {
-        addEventListener("reveal:introdone", armBoot, { once: true });
-        cleanups.push(() => removeEventListener("reveal:introdone", armBoot));
-      } else {
-        armBoot();
-      }
-      cleanups.push(() => {
-        timers.forEach(clearTimeout);
-        bootIO.disconnect();
-      });
-    })();
 
     // duplicate ticker content for a seamless -50% loop
     const tickerTrack = document.getElementById("tickerTrack");
@@ -740,41 +678,10 @@ export function HomeV2() {
       cleanups.push(() => stepIO.disconnect());
     }
 
-    // mobile hero: keep the desktop dashboard, scaled to fit (Supy-style)
-    (() => {
-      const desk = root.querySelector<HTMLElement>(".dash-desk");
-      const glass = root.querySelector<HTMLElement>(".dash-glass");
-      if (!desk || !glass) return;
-      const DESKW = 920;
-      const scaleDash = () => {
-        if (innerWidth > 900) {
-          desk.style.width = "";
-          desk.style.transform = "";
-          glass.style.height = "";
-          return;
-        }
-        desk.style.width = DESKW + "px";
-        const s = (glass.clientWidth - 24) / DESKW;
-        desk.style.transformOrigin = "top left";
-        desk.style.transform = `scale(${s})`;
-        glass.style.height = desk.offsetHeight * s + 24 + "px";
-      };
-      addEventListener("resize", scaleDash);
-      addEventListener("load", scaleDash);
-      scaleDash();
-      const t = window.setTimeout(scaleDash, 300);
-      cleanups.push(() => {
-        removeEventListener("resize", scaleDash);
-        removeEventListener("load", scaleDash);
-        clearTimeout(t);
-      });
-    })();
-
     // screenshot/debug aid: ?static reveals all scroll-triggered content instantly
     if (location.search.includes("static")) {
       docEl.classList.remove("intro-pending");
       root.querySelectorAll(".reveal-in").forEach((e) => e.classList.add("vis"));
-      root.querySelectorAll(".dash-stage").forEach((e) => e.classList.add("booted"));
     }
 
     return () => cleanups.forEach((fn) => fn());
@@ -816,256 +723,30 @@ export function HomeV2() {
           </div>
         </div>
 
-        <div className="dash-stage dash-app" role="img" aria-label="Preview of the Reveal dashboard on desktop and mobile">
+        <div className="dash-stage">
           <div className="dash-glass">
-            <div className="dash-desk">
-              <aside className="dash-side">
-                <div className="dlogo">
-                  reveal<em>.</em>
-                </div>
-                <div className="dnav active">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                  </svg>
-                  Home
-                </div>
-                <div className="dnav">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />
-                  </svg>
-                  Leaks
-                  <span className="badge">4</span>
-                </div>
-                <div className="dnav">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <path d="M14 2v6h6" />
-                  </svg>
-                  Commitments
-                </div>
-                <div className="dnav">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                  </svg>
-                  Pulse
-                </div>
-                <div className="spacer"></div>
-                <div className="workspace">
-                  <div className="wmark">TT</div>
-                  <div>
-                    <div className="wname">Tuk Tuk Thai Grill</div>
-                    <div className="wplan">Denver, CO</div>
-                  </div>
-                </div>
-              </aside>
-
-              <div className="dash-main">
-                <div className="dash-head">
-                  <span className="ht">Home</span>
-                  <div className="head-tools">
-                    <span className="sync">
-                      <i></i>Synced 2 min ago
-                    </span>
-                    <span className="search">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
-                        <circle cx="11" cy="11" r="7" />
-                        <path d="m21 21-4.3-4.3" />
-                      </svg>
-                      Search<kbd>⌘K</kbd>
-                    </span>
-                    <span className="bell">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                      </svg>
-                      <i className="nub"></i>
-                    </span>
-                    <span className="dash-avatar">K</span>
-                  </div>
-                </div>
-
-                <div className="kpis">
-                  <div className="kpi">
-                    <div className="label">
-                      <span className="live" aria-hidden="true"></span>Leaking now
-                    </div>
-                    <div className="value red" data-count="1240" data-prefix="$" data-commas="1">
-                      $1,240
-                    </div>
-                    <div className="meta">4 open · this week</div>
-                  </div>
-                  <div className="kpi">
-                    <div className="label">Recovered</div>
-                    <div className="value green" data-count="1247" data-prefix="$" data-commas="1">
-                      $1,247
-                    </div>
-                    <div className="meta">this month</div>
-                    <svg className="spark" viewBox="0 0 64 26" aria-hidden="true">
-                      <defs>
-                        <linearGradient id="sparkfill" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#355E3B" stopOpacity="0.22" />
-                          <stop offset="100%" stopColor="#355E3B" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-                      <path className="fill" fill="url(#sparkfill)" d="M2,21 L14,19 L26,19.5 L38,13 L50,10 L60,4 L60,26 L2,26 Z" />
-                      <polyline points="2,21 14,19 26,19.5 38,13 50,10 60,4" />
-                      <circle className="tip" cx="60" cy="4" r="2" />
-                    </svg>
-                  </div>
-                  <div className="kpi">
-                    <div className="label">Checked</div>
-                    <div className="value" data-count="217">
-                      217
-                    </div>
-                    <div className="meta">payments · this week</div>
-                  </div>
-                </div>
-
-                <div className="panel">
-                  <div className="panel-title">
-                    <span className="pt-left">
-                      Open leaks<span className="count tnum">4 open</span>
-                    </span>
-                    <span className="viewall">
-                      View all
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="m9 18 6-6-6-6" />
-                      </svg>
-                    </span>
-                  </div>
-                  <div className="leak is-new">
-                    <span className="mono">PS</span>
-                    <div className="what">
-                      <b>Produce Supplier</b>
-                      <span>Case price crept up: $48 vs the $39 you usually pay</span>
-                    </div>
-                    <span className="amt tnum">
-                      −$184<small>today</small>
-                    </span>
-                    <button className="act" type="button">
-                      Fix it
-                    </button>
-                  </div>
-                  <div className="leak">
-                    <span className="mono dp">DP</span>
-                    <div className="what">
-                      <b>Delivery Platform</b>
-                      <span>Payout was $4,210. Your orders say $4,552</span>
-                    </div>
-                    <span className="amt tnum">
-                      −$342<small>May 15</small>
-                    </span>
-                    <button className="act" type="button">
-                      Fix it
-                    </button>
-                  </div>
-                  <div className="leak">
-                    <span className="mono">PS</span>
-                    <div className="what">
-                      <b>Produce Supplier · credit</b>
-                      <span>Recovered · vendor issued a credit memo</span>
-                    </div>
-                    <span className="amt ok tnum">
-                      +$214<small>May 12</small>
-                    </span>
-                    <button className="act ghost" type="button">
-                      Done
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Image
+              className="dash-shot"
+              src="/product/ns-home-1440.png"
+              alt="Reveal's Home for Tuk Tuk Thai Grill, desktop: the morning check, the profit ring, today's sales"
+              width={1440}
+              height={900}
+              sizes="(max-width: 900px) 100vw, 820px"
+              preload
+            />
+            <p className="dash-caption">
+              Reveal reconciles every dollar in and out of your bank against what you agreed to and signed, and against what it usually costs.
+            </p>
           </div>
-
-          <div className="dash-phone" aria-hidden="true">
-            <div className="phone-screen">
-              <div className="p-status">
-                <span className="p-time tnum">9:41</span>
-                <span className="p-isl" aria-hidden="true"></span>
-                <span className="p-glyphs">
-                  <svg viewBox="0 0 18 12" fill="currentColor">
-                    <rect x="0" y="8" width="3" height="4" rx="0.8" />
-                    <rect x="5" y="5.5" width="3" height="6.5" rx="0.8" />
-                    <rect x="10" y="3" width="3" height="9" rx="0.8" />
-                    <rect x="15" y="0.5" width="3" height="11.5" rx="0.8" />
-                  </svg>
-                  <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-                    <path d="M1.5 4.5a10 10 0 0 1 13 0" />
-                    <path d="M4 7.5a6.5 6.5 0 0 1 8 0" />
-                    <circle cx="8" cy="10.5" r="1.1" fill="currentColor" stroke="none" />
-                  </svg>
-                  <svg viewBox="0 0 25 12" fill="none">
-                    <rect x="0.7" y="0.7" width="21" height="10.6" rx="3" stroke="currentColor" strokeWidth="1.2" opacity="0.5" />
-                    <rect x="2.5" y="2.5" width="14" height="7" rx="1.6" fill="currentColor" />
-                    <path d="M23.5 4v4a2.2 2.2 0 0 0 0-4z" fill="currentColor" opacity="0.5" />
-                  </svg>
-                </span>
-              </div>
-              <div className="p-head">Hi there · Your Restaurant</div>
-              <div className="p-sub">
-                <i></i>Watching · updated just now
-              </div>
-              <div className="p-hero">
-                <div className="amt tnum">
-                  $1,240<span className="unit">leaking</span>
-                </div>
-                <div className="recovered tnum"><IcCheck /> $1,247 recovered</div>
-              </div>
-              <div className="p-listhead">
-                <span>OPEN LEAKS</span>
-                <span className="tnum">4</span>
-              </div>
-              <div className="p-leak">
-                <div className="l1">
-                  <b>Produce Supplier</b>
-                  <span className="amt tnum">−$184</span>
-                </div>
-                <div className="l2">
-                  <span>$48 vs usual $39</span>
-                  <button className="p-fix" type="button">
-                    Fix
-                  </button>
-                </div>
-              </div>
-              <div className="p-leak">
-                <div className="l1">
-                  <b>Delivery Platform</b>
-                  <span className="amt tnum">−$342</span>
-                </div>
-                <div className="l2">
-                  <span>Payout short 4 orders</span>
-                  <button className="p-fix" type="button">
-                    Fix
-                  </button>
-                </div>
-              </div>
-              <div className="p-nav">
-                <span className="it on">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                  </svg>
-                </span>
-                <span className="it">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <path d="M14 2v6h6" />
-                  </svg>
-                </span>
-                <span className="plus">+</span>
-                <span className="it">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                  </svg>
-                </span>
-                <span className="it">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="5" cy="12" r="1.5" />
-                    <circle cx="12" cy="12" r="1.5" />
-                    <circle cx="19" cy="12" r="1.5" />
-                  </svg>
-                </span>
-              </div>
-            </div>
+          <div className="dash-phone">
+            <Image
+              className="dash-shot"
+              src="/product/live-home-390.png"
+              alt="Reveal's Home for Tuk Tuk Thai Grill on a phone: the morning check, yesterday's sales, the bank"
+              width={390}
+              height={844}
+              sizes="220px"
+            />
           </div>
         </div>
       </header>
