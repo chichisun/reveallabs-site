@@ -2,8 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import shots from "../../../public/product/SHOT-MANIFEST.json";
 import { HomeWaitlist } from "./HomeWaitlist";
 import { SiteNav } from "./SiteNav";
+
+// every re-shoot changes the URL, so no browser or CDN cache can show a stale frame
+const shotVersion = encodeURIComponent(shots.shotAt);
 
 /**
  * Supy visual pass homepage, ported 1:1 from
@@ -727,7 +731,7 @@ export function HomeV2() {
           <div className="dash-glass">
             <Image
               className="dash-shot"
-              src="/product/ns-home-1440.png"
+              src={`/product/ns-home-1440.png?v=${shotVersion}`}
               alt="Reveal's Home for Tuk Tuk Thai Grill, desktop: the morning check, the profit ring, today's sales"
               width={1440}
               height={900}
@@ -738,7 +742,7 @@ export function HomeV2() {
           <div className="dash-phone">
             <Image
               className="dash-shot"
-              src="/product/live-home-390.png"
+              src={`/product/live-home-390.png?v=${shotVersion}`}
               alt="Reveal's Home for Tuk Tuk Thai Grill on a phone: the morning check, yesterday's sales, the bank"
               width={390}
               height={844}

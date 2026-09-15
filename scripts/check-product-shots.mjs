@@ -65,7 +65,7 @@ if (M.desktop?.scene) { // the bad-day scene (A2, D6 a): one chosen gap, the sam
 
 const tsx = readFileSync(path.join(ROOT, 'src/components/home-v2/HomeV2.tsx'), 'utf8');
 for (const [file, must] of [['ns-home-1440.png', /alt="Reveal's Home for Tuk Tuk Thai Grill, desktop[^"]*"/], ['live-home-390.png', /alt="Reveal's Home for Tuk Tuk Thai Grill on a phone[^"]*"/]]) {
-  const i = tsx.indexOf(`/product/${file}`);
+  const i = tsx.indexOf(`/product/${file}?v=`); // versioned by the manifest's shotAt, so caches never serve a stale frame
   is(i > 0 && must.test(tsx.slice(i, i + 400)), `HomeV2.tsx places ${file} with alt text naming the screen`);
 }
 is(!/dash-desk|className="kpi"|className="leak"/.test(tsx), 'the hand-drawn dashboard is gone from HomeV2.tsx');

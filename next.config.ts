@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
+import shots from "./public/product/SHOT-MANIFEST.json";
 
 const nextConfig: NextConfig = {
+  images: {
+    // Next 16: a query string on a local image needs an exact `search`. The two product frames are
+    // versioned by the shoot's timestamp (no cache can show a stale frame); everything else in /public
+    // stays query-free. With localPatterns set, anything not listed is refused.
+    localPatterns: [
+      { pathname: "/product/**", search: `?v=${encodeURIComponent(shots.shotAt)}` },
+      { pathname: "/**", search: "" },
+    ],
+  },
   async headers() {
     return [
       {
