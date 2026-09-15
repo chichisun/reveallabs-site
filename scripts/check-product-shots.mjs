@@ -54,6 +54,14 @@ if (M.desktop?.recut) {
   for (const [k, [lo, hi]] of Object.entries(R)) { const p = Math.round(r[k]); is(p >= lo && p <= hi, `${k} ${r[k].toFixed(2)} → ${p}% within ${lo}–${hi}`); }
   is(r.salesCents - r.expensesCents === r.profitCents, 'profit = sales − expenses');
 }
+if (M.desktop?.scene) { // the bad-day scene (A2, D6 a): one chosen gap, the same on both frames, the only figure with no fixture row
+  const sc = M.desktop.scene, gap = '$' + (sc.gapCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2 });
+  is(sc.usualToHereCents - sc.gapCents === sc.todayCents, `scene: today ${sc.todayCents} = usual-to-here ${sc.usualToHereCents} − gap ${sc.gapCents}`);
+  const noFixture = (M.desktop.figures || []).filter((f) => /no fixture row/i.test(f.source));
+  is(noFixture.length === 1 && noFixture[0].value === gap, `exactly one figure without a fixture row on the desktop: ${noFixture.map((f) => f.value).join(', ') || 'none'}`);
+  is((M.live?.text || '').includes(`$${Math.round(sc.gapCents / 100)} behind your usual`), `the phone says the same gap: "$${Math.round(sc.gapCents / 100)} behind your usual …"`);
+  is((M.desktop.figures || []).some((f) => f.shows === `${gap} behind a usual Friday`), `the desktop Sales card says "${gap} behind a usual Friday"`);
+}
 
 const tsx = readFileSync(path.join(ROOT, 'src/components/home-v2/HomeV2.tsx'), 'utf8');
 for (const [file, must] of [['ns-home-1440.png', /alt="Reveal's Home for Tuk Tuk Thai Grill, desktop[^"]*"/], ['live-home-390.png', /alt="Reveal's Home for Tuk Tuk Thai Grill on a phone[^"]*"/]]) {
@@ -68,8 +76,9 @@ if (M.live) {
     const swap = JSON.parse(readFileSync(swapPath, 'utf8'));
     const text = M.live.text || '';
     const digits = (s) => s.replace(/[^0-9]/g, '');
-    const hits = swap.rows.filter((r) => text.includes(r.real) || (digits(r.real).length >= 4 && digits(text).includes(digits(r.real))));
-    is(hits.length === 0, `swap table's real column (${swap.rows.length} rows) has zero hits in the saved phone text${hits.length ? ': ' + hits.map((r) => r.fake).join(', ') : ''}`);
+    const literal = swap.rows.filter((r) => r.real); // pattern rows (a live figure that changes by the minute) are guarded by the shoot's number gate
+    const hits = literal.filter((r) => text.includes(r.real) || (digits(r.real).length >= 4 && digits(text).includes(digits(r.real))));
+    is(hits.length === 0, `swap table's real column (${literal.length} literal rows, ${swap.rows.length - literal.length} patterns) has zero hits in the saved phone text${hits.length ? ': ' + hits.map((r) => r.fake).join(', ') : ''}`);
     is(M.live.swapVersion <= swap.version, `shot with swap table v${M.live.swapVersion}; the table is v${swap.version} now (it only grows, and the scan above ran on the current one)`);
   } else is(false, `swap table not found at ${swapPath}; privacy scan cannot run`);
   is(Array.isArray(M.live.assertions) && M.live.assertions.length >= 6, `phone shot passed ${M.live.assertions?.length ?? 0} fail-closed assertions`);

@@ -276,13 +276,6 @@
   margin-right: 190px; /* room for the overlapping phone */
 }
 .homev2 .dash-shot { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.7); }
-.homev2 .dash-caption {
-  margin: 14px 6px 4px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #14171F;
-  max-width: 62ch;
-}
 
 /* the phone, overlapping the glass bottom-right */
 .homev2 .dash-phone {

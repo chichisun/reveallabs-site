@@ -734,9 +734,6 @@ export function HomeV2() {
               sizes="(max-width: 900px) 100vw, 820px"
               preload
             />
-            <p className="dash-caption">
-              Reveal reconciles every dollar in and out of your bank against what you agreed to and signed, and against what it usually costs.
-            </p>
           </div>
           <div className="dash-phone">
             <Image

@@ -1,8 +1,8 @@
 {
-  "shotAt": "2026-09-15T16:59:42.708Z",
+  "shotAt": "2026-09-15T17:27:43.534Z",
   "oxygenRepo": "/Users/kase/Desktop/Reveal LLC/oxygen",
-  "oxygenCommit": "89b29d32ab3ff90f798ee66e74fadab4fe734fd4",
-  "oxygenDirty": 31,
+  "oxygenCommit": "c0ad982a45912924a35d057bd3f51bf2882e0c21",
+  "oxygenDirty": 35,
   "desktop": {
     "file": "ns-home-1440.png",
     "width": 2880,
@@ -25,6 +25,14 @@
         "foodPct": "5.7%",
         "laborPct": "30.9%"
       }
+    },
+    "scene": {
+      "rule": "the bad-day scene (Kase A2 2026-09-15, D6 a): today = sales-hero today.usualToHereCents − gap; the chart today-line scaled by today ÷ the fixture today; the same gap is the phone headline",
+      "gapCents": 51200,
+      "todayCents": 55300,
+      "usualToHereCents": 106500,
+      "fixtureTodayCents": 126455,
+      "noFixtureRow": "$512.00"
     },
     "figures": [
       {
@@ -78,14 +86,14 @@
         "value": "2 checks not on file"
       },
       {
-        "shows": "$1,264.55",
-        "source": "sales-hero today.rungCents",
-        "value": "$1,264.55"
+        "shows": "$553.00",
+        "source": "scene: sales-hero today.usualToHereCents − the bad-day gap",
+        "value": "$553.00"
       },
       {
-        "shows": "$199.55 ahead of a usual Friday",
-        "source": "sales-hero today.rungCents − today.usualToHereCents",
-        "value": "$199.55"
+        "shows": "$512.00 behind a usual Friday",
+        "source": "THE BAD-DAY SCENE (Kase 09-15): no fixture row; the one chosen figure on the page",
+        "value": "$512.00"
       },
       {
         "shows": "A usual Friday, $3,660.00 by close",
@@ -134,148 +142,241 @@
       "zero real strings in innerText/outerHTML/digits",
       "every number token named by the swap table"
     ],
-    "swapVersion": 5,
+    "swapVersion": 9,
     "swapRows": [
+      {
+        "fake": "$512 behind your usual Friday by 2pm.",
+        "near": null,
+        "regex": "^\\d+ things are waiting on you\\.$",
+        "why": "THE BAD-DAY SCENE (Kase A2, D6 a): when the waiting count owns the whole hero, it becomes the product's pace line (headline-schedule.ts; the count then lives in the sub, which the still's Revealer carries); $512 = the scene gap, same as the desktop Sales card; no fixture row",
+        "hit": 1
+      },
+      {
+        "fake": "4 payment streams",
+        "near": null,
+        "regex": "\\d+ payment streams",
+        "why": "banking-hero inBySource: 4 sources (Uber Eats, Cards, DoorDash, Grubhub)",
+        "hit": 0
+      },
+      {
+        "fake": "4 things are waiting on you",
+        "near": null,
+        "regex": "\\d+ things are waiting on you",
+        "why": "the still's Revealer: Grubhub payout, Shamrock thigh, 2 checks not on file",
+        "hit": 0
+      },
+      {
+        "fake": "Needs you · 4",
+        "near": null,
+        "regex": "Needs you · \\d+",
+        "why": "same four",
+        "hit": 1
+      },
+      {
+        "fake": "+ 3 more",
+        "near": null,
+        "regex": "\\+ \\d+ more",
+        "why": "the still's four things, one shown",
+        "hit": 1
+      },
+      {
+        "fake": "charged you for order errors · 9 times",
+        "near": null,
+        "regex": null,
+        "why": "banking-hero Uber Eats Aug 19: 9 charges with no orders behind them",
+        "hit": 1
+      },
+      {
+        "fake": "$102.09",
+        "near": null,
+        "regex": null,
+        "why": "banking-hero Uber Eats Aug 19 cut: $102.09 has nothing behind it",
+        "hit": 1
+      },
+      {
+        "fake": "for a Friday",
+        "near": null,
+        "regex": null,
+        "why": "sales-hero today.dayName Friday",
+        "hit": 0
+      },
+      {
+        "fake": "Friday",
+        "near": null,
+        "regex": null,
+        "why": "sales-hero today.dayName Friday",
+        "hit": 0
+      },
       {
         "fake": "$1,264.55",
         "near": "rung up so far today",
+        "regex": null,
         "why": "sales-hero today.rungCents (goes with the 41 tickets)",
         "hit": 0
       },
       {
         "fake": "41 tickets rung up so far today",
         "near": null,
+        "regex": null,
         "why": "sales-hero today.orders (if the line is split into nodes)",
-        "hit": 1
+        "hit": 0
       },
       {
         "fake": "Thursday's close",
         "near": null,
+        "regex": null,
         "why": "sales-hero yesterday.label: the fixture's yesterday is Thursday Aug 27",
-        "hit": 1
+        "hit": 0
       },
       {
         "fake": "normal for a Thursday",
         "near": null,
+        "regex": null,
         "why": "sales-hero yesterday.verdict 'A normal Thursday.'",
-        "hit": 1
+        "hit": 0
       },
       {
         "fake": "August 28th, 2026",
         "near": null,
+        "regex": null,
         "why": "the fixture's clock: Friday, August 28, 2026 (sales-hero today.dateLabel); the phone and the desktop still now read the same day",
         "hit": 2
       },
       {
-        "fake": "4 payment streams",
-        "near": null,
-        "why": "banking-hero inBySource: 4 sources (Uber Eats, Cards, DoorDash, Grubhub)",
-        "hit": 1
-      },
-      {
         "fake": "since Aug 22",
         "near": null,
+        "regex": null,
         "why": "banking-hero grubhubStatement.statementDate 2026-08-22",
-        "hit": 1
-      },
-      {
-        "fake": "4 things are waiting on you",
-        "near": null,
-        "why": "the still's Revealer: Grubhub payout, Shamrock thigh, 2 checks not on file",
-        "hit": 1
-      },
-      {
-        "fake": "Needs you · 4",
-        "near": null,
-        "why": "same four",
-        "hit": 1
+        "hit": 0
       },
       {
         "fake": "$3,215",
         "near": null,
+        "regex": null,
         "why": "sales-hero yesterday.closeCents $3,214.60, rounded as the app rounds",
-        "hit": 1
+        "hit": 0
       },
       {
         "fake": "97 orders",
         "near": null,
+        "regex": null,
         "why": "sales-hero yesterday.orders",
-        "hit": 1
+        "hit": 0
       },
       {
         "fake": "48 days",
         "near": null,
+        "regex": null,
         "why": "the still's Documents card: hood service due in 48 days (documents.html timeline)",
         "hit": 2
       },
       {
         "fake": "$972",
         "near": null,
+        "regex": null,
         "why": "data.json chickenThigh.yearIfItSticks (Shamrock, chicken thigh)",
         "hit": 1
       },
       {
         "fake": "$106",
         "near": null,
+        "regex": null,
         "why": "data.json noticed n-rd-spend: $2,206.44 against a usual $2,100.00",
-        "hit": 2
+        "hit": 1
       },
       {
         "fake": "$1,263.27",
         "near": null,
+        "regex": null,
         "why": "banking-hero grubhubStatement.theySayCents: the one payout not landed (on the way)",
         "hit": 2
       },
       {
         "fake": "2 waiting",
         "near": null,
+        "regex": null,
         "why": "the still's Revealer: 2 papers",
         "hit": 1
       },
       {
         "fake": "Nov 2",
         "near": null,
+        "regex": null,
         "why": "the still's Documents card: 48 days from the shot date (nextDue.days)",
         "hit": 1
       },
       {
         "fake": "$81",
         "near": null,
+        "regex": null,
         "why": "data.json chickenThigh.change $13.50 × casesPerMonth 6",
         "hit": 2
       },
       {
-        "fake": "+ 3 more",
-        "near": null,
-        "why": "the still's four things, one shown",
-        "hit": 1
-      },
-      {
         "fake": "$1,204",
         "near": null,
+        "regex": null,
         "why": "data.json invoice 4471 (Shamrock) $1,204.10, rounded as the app rounds",
         "hit": 1
       },
       {
         "fake": "$1,905",
         "near": null,
+        "regex": null,
         "why": "data.json invoice LH-88198 (Lee Hing) $1,904.85, rounded as the app rounds",
         "hit": 1
       },
       {
         "fake": "August 26th, 2026",
         "near": null,
+        "regex": null,
         "why": "data.json invoice 4471 date",
         "hit": 1
       },
       {
         "fake": "August 6th, 2026",
         "near": null,
+        "regex": null,
         "why": "data.json invoice LH-88198 date (noticed n-lh-cadence)",
+        "hit": 1
+      },
+      {
+        "fake": "$512 behind your usual Friday by 2pm.",
+        "near": null,
+        "regex": "^(Running normal for a \\w+ by \\d{1,2}(am|pm)\\.|\\$[\\d,]+ (ahead of|behind) (your usual|the last \\d+) \\w+ by \\d{1,2}(am|pm)\\.|[A-Z][\\w ]+ (is|are) running (heavy|light) today · \\$[\\d,]+ (more|less) than your usual \\w+\\.|Checked at \\d{1,2}:\\d{2} this morning\\. (What could be checked matched|Everything matched)\\.)$",
+        "why": "THE BAD-DAY SCENE (Kase A2, D6 a): the product's own in-service headline family (headline-schedule.ts pace line); $512 = the scene gap, same as the desktop Sales card; no fixture row",
+        "hit": 1
+      },
+      {
+        "fake": "$553",
+        "near": "ales",
+        "regex": "^\\$\\d[\\d,]*(\\.\\d\\d)?$",
+        "why": "scene: sales-hero today.usualToHereCents $1,065.00 − $512 gap, rounded as the app rounds (the in-service tally, right after the Sales label)",
+        "hit": 1
+      },
+      {
+        "fake": "41 orders",
+        "near": null,
+        "regex": "^\\d+ orders( · just opened)?$",
+        "why": "sales-hero today.orders",
+        "hit": 1
+      },
+      {
+        "fake": "$512 behind your usual Friday",
+        "near": null,
+        "regex": "^(—\\s*)?(Running normal for a \\w+|normal for a \\w+|\\$[\\d,]+ (ahead of|behind) (your usual|the last \\d+) \\w+)( by \\d{1,2}(am|pm))?$",
+        "why": "scene: the Sales chip in the product's own words; same $512",
+        "hit": 0
+      },
+      {
+        "fake": "Good afternoon",
+        "near": null,
+        "regex": null,
+        "why": "the fixture's clock is 2:14pm (sales-hero today.asOf)",
         "hit": 1
       }
     ],
-    "textSha256": "21afdf419d16a725079e67aa27a6f6976c82ff72919ef505c571892d543e18a7",
-    "text": "August 28th, 2026\nGood morning\nChecked at 9:00 this morning. What could be checked matched.\n\n4 payment streams. Grubhub hasn't reported since Aug 22. 4 things are waiting on you.\n\nAsk about your restaurant…\nTODAY\nSALES · YESTERDAY\nchecked 10:56am\n$3,215Thursday's close · 97 orders\nnormal for a Thursday\n41 tickets rung up so far today · $106\n11a\n12p\n1p\n2p\n3p\n4p\n5p\n6p\n7p\n8p\nSee more\nBANKING\nchecked 10:57am\n$1,263.27on the way to your bank\nYour card money lands today.\nRent doesn't match your lease\nDoorDash\nUber Eats\nGrubhub\nCards\ncan't check\nSee more\nDOCUMENTS\n3 watched\n48 daysliquor license renewal · Nov 2\nSent in for review\n2 waiting\nLicenses\nwatched\nCertifications\nwatched\nLease\nno matching bank debit found by its due window\nstill checking\nSee more\nNEEDS YOU · 4\nThat's right\nShamrock Foods shrank the pack for the same price\n$972\nSee the math ›\nReview\nThat's right\nShamrock Foods shrank the pack for the same price\n$81\nSee the math ›\nReview\nThat's right\nShamrock Foods raised prices above your usual\n$106\nSee the math ›\nReview\n+ 3 more\nRECENT CAPTURES\nLee Hing Foodservice\nAugust 28th, 2026\nNeeds a look\nShamrock Foods Company\nAugust 26th, 2026 · $1,204\nNeeds you\nShamrock Foods Company\nAugust 6th, 2026 · $1,905\nNeeds you\nHome\nBank\nSpending\nChat\n7p\n"
+    "textSha256": "fbd11b9eb19cb374c9fc99ff814880a9b0e7eec03624878a6672a97950c2354e",
+    "text": "August 28th, 2026\nGood afternoon\n$512 behind your usual Friday by 2pm.\nAsk about your restaurant…\nTODAY\nSALES\nchecked 11:25am\n$55341 orders\n11a\n12p\n1p\n2p\n3p\n4p\n5p\n6p\n7p\n8p\nSee more\nBANKING\nchecked 11:27am\n$1,263.27on the way to your bank\nYour card money lands today.\nUber took extra charges worth checking\nDoorDash\nUber Eats\nGrubhub\nCards\ncan't check\nSee more\nDOCUMENTS\n3 watched\n48 daysliquor license renewal · Nov 2\nSent in for review\n2 waiting\nLicenses\nwatched\nCertifications\nwatched\nLease\nno matching bank debit found by its due window\nstill checking\nSee more\nNEEDS YOU · 4\nThat's right\nUber charged you for order errors · 9 times\n$102.09\nSee the math ›\nReview\nThat's right\nShamrock Foods shrank the pack for the same price\n$972\nSee the math ›\nReview\nThat's right\nShamrock Foods shrank the pack for the same price\n$81\nSee the math ›\nReview\n+ 3 more\nRECENT CAPTURES\nLee Hing Foodservice\nAugust 28th, 2026\nNeeds a look\nShamrock Foods Company\nAugust 26th, 2026 · $1,204\nNeeds you\nShamrock Foods Company\nAugust 6th, 2026 · $1,905\nNeeds you\nHome\nBank\nSpending\nChat\n7p\n"
   }
 }
