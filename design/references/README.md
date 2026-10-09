@@ -2,7 +2,7 @@
 
 Persistent reference materials for the reveal. landing page v1 build.
 
-All paths in `LANDING-PAGE-GAMEPLAN.md` should resolve here, not to `/tmp/` (which is ephemeral).
+All paths in `docs/_archive/landing-page-2026-04/LANDING-PAGE-GAMEPLAN.md` (archived 2026-10-09) should resolve here, not to `/tmp/` (which is ephemeral).
 
 ## Contents
 
